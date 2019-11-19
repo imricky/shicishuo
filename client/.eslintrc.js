@@ -17,6 +17,14 @@ module.exports = {
     "no-use-before-define": 2,//未定义前不能使用
     "semi": [2, "always"],//语句强制分号结尾
     "indent": [2],//缩进风格
+    "no-dupe-args": 2, //禁止 function 定义中出现重名参数
+    "eqeqeq": 2, //要求使用 === 和 !==
+    "require-await" : 2, //禁止使用不带 await 表达式的 async 函数
+    // 'import/extensions': ['error', 'always', {
+    //   'js': 'never',
+    //   'vue': 'never'
+    // }]
+
   },
   parserOptions: {
     parser: 'babel-eslint',
