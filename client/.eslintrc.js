@@ -21,7 +21,8 @@ module.exports = {
     "no-dupe-args": 2, //禁止 function 定义中出现重名参数
     "eqeqeq": 2, //要求使用 === 和 !==
     "require-await" : 2, //禁止使用不带 await 表达式的 async 函数
-    "max-len": ["error", { "code": 200 }] //一行代码的最大长度
+    "max-len": ["error", { "code": 200 }], //一行代码的最大长度
+    "no-trailing-spaces":0,
     // 'import/extensions': ['error', 'always', {
     //   'js': 'never',
     //   'vue': 'never'

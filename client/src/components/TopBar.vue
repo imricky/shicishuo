@@ -15,6 +15,7 @@
                        mode="horizontal" @select="handleSelect"
                        text-color="#303133"
                        active-text-color="#ffd04b">
+<!--                TODO:换icon-->
                 <el-menu-item index="1"><i class="el-icon-location"></i>每日诗词</el-menu-item>
                 <el-menu-item index="2"><i class="el-icon-location"></i>探索好诗</el-menu-item>
                 <el-menu-item index="3"><i class="el-icon-location"></i>文库大全</el-menu-item>
