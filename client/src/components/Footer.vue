@@ -51,6 +51,8 @@ export default {
     align-items: center;
     margin: 0 auto;
     margin-top: 10px;
+    /*底部栏的中心偏移量*/
+    margin-left: 370px;
 
     .copy-right{
       display: flex;
