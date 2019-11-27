@@ -92,29 +92,7 @@
       </el-aside>
       <el-main class="main-container">
       <div v-for="item in 4" :key="item">
-        <el-card class="box-card" shadow="hover">
-
-          <div slot="header" class="top">
-            <span class="title"> 鸿鹄歌</span>
-            <span class="author-info">[两汉] 刘邦</span>
-
-            <div class="collect-container">
-              <el-button type="primary" icon="el-icon-share" size="small" class="collect-button">收藏</el-button>
-            </div>
-          </div>
-
-          <div v-for="o in 4" :key="o" class="text item">
-            {{'列表内容 ' + o }}
-          </div>
-          <el-divider></el-divider>
-          <div class="tag">
-            <el-tag>标签一</el-tag>
-            <el-tag type="success" @click="test">标签二</el-tag>
-            <el-tag type="info">标签三</el-tag>
-            <el-tag type="warning">标签四</el-tag>
-            <el-tag type="danger">标签五</el-tag>
-          </div>
-        </el-card>
+        <PoemCard />
       </div>
 
         <el-divider></el-divider>
@@ -129,8 +107,14 @@
 </template>
 
 <script>
+// eslint-disable-next-line import/extensions
+import PoemCard from './PoemCard';
+
 export default {
   name: 'ExploreGoodPoetry',
+  components: {
+    PoemCard,
+  },
   data() {
     return {
       activeNames: ['1'],
@@ -181,39 +165,5 @@ export default {
   .main-container{
     border: 1px solid #409EFF;
     margin-left: 20px;
-    .box-card{
-      margin: 20px 0;
-    }
-    .top{
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
-    /*TODO:把卡片作为一个单独的组件，每页显示10个*/
-    .collect-container{
-      align-self: flex-start;
-    }
-    .collect-button{
-    }
-    .author-info{
-      margin-left: 150px;
-    }
-    .title{
-      font-size: 30px;
-    }
-    .text {
-      font-size: 14px;
-    }
-    .item {
-      margin-bottom: 18px;
-    }
-    .tag{
-      float: left;
-      margin-bottom: 20px;
-      > :nth-child(n){
-        margin-left: 5px;
-      }
-    }
   }
 </style>

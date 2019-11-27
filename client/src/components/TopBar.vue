@@ -88,13 +88,12 @@ export default {
 
 <style scoped lang="scss">
   .center{
+
     max-width: 1040px;
     border: 1px solid indianred;
     background: #F56C6C;
-    /*display: flex;*/
-    /*justify-content: center;*/
-    /*align-items: center;*/
     margin: 0 auto;
+    margin-top: 20px;
   }
   .el-col {
     border-radius: 4px;
