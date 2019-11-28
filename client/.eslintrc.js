@@ -23,6 +23,7 @@ module.exports = {
     "require-await" : 2, //禁止使用不带 await 表达式的 async 函数
     "max-len": ["error", { "code": 200 }], //一行代码的最大长度
     "no-trailing-spaces":0,
+    'linebreak-style': ["error", "windows"],
     // 'import/extensions': ['error', 'always', {
     //   'js': 'never',
     //   'vue': 'never'
