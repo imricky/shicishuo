@@ -24,6 +24,7 @@ module.exports = {
     "max-len": ["error", { "code": 200 }], //一行代码的最大长度
     "no-trailing-spaces":0,
     'linebreak-style': ["error", "windows"],
+    'linebreak-style': ["error", "unix"],
     "no-param-reassign":0,
     "no-unused-vars":0,
     "import/newline-after-import":0, //导入之后的空行
