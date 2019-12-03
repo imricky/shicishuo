@@ -19,7 +19,7 @@
 import PoemCard from '@/components/PoemCard';
 import TopBar from '@/components/TopBar.vue';
 import Footer from '@/components/Footer.vue';
-
+import Http from '@/api/http';
 export default {
   components: {
     PoemCard,
@@ -33,12 +33,15 @@ export default {
   },
   computed: {},
   methods: {
-    test() {
-      console.log(123);
+    async getDailyPoem() {
+      const res = await Http.getDailyPoem();
+      return res;
     },
   },
   created() {
-
+    this.getDailyPoem().then((res) => {
+      console.log(res);
+    });
   },
   mounted() {
 

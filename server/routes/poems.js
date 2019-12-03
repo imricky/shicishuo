@@ -7,7 +7,7 @@ const Poem = require('../dao/poemsDao');
  *  time: 2019/12/2 2:32 下午
  *  function: 获取每日一首诗
 */
-router.get('/dailyPoem', async (req, res, next) => {
+router.get('/getDailyPoem', async (req, res, next) => {
   try {
     const data = await Poem.generateDailyPoem();
     res.json({

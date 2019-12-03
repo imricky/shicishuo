@@ -28,6 +28,7 @@ module.exports = {
     "no-param-reassign":0,
     "no-unused-vars":0,
     "import/newline-after-import":0, //导入之后的空行
+    "class-methods-use-this": 0,
     // 'import/extensions': ['error', 'always', {
     //   'js': 'never',
     //   'vue': 'never'

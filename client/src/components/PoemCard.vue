@@ -51,7 +51,11 @@ export default {
     };
   },
   computed: {},
-  methods: {},
+  methods: {
+    test() {
+      console.log(123);
+    },
+  },
   created() {
 
   },
