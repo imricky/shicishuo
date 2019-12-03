@@ -1,39 +1,51 @@
 <template>
-  <div class="cool-exploration">
-    <el-container>
-      <el-main class="main">
-        <el-row type="flex" class="row-bg" justify="center" :gutter="40">
-          <el-col :span="8"><div class="grid-content bg-purple">
-            <CoolExplorationCard />
-          </div></el-col>
+  <div>
+    <div>
+      <TopBar />
+    </div>
+    <div class="cool-exploration">
+  <el-container>
+    <el-main class="main">
+      <el-row type="flex" class="row-bg" justify="center" :gutter="40">
+        <el-col :span="8"><div class="grid-content bg-purple">
+          <CoolExplorationCard />
+        </div></el-col>
 
-          <el-col :span="8"><div class="grid-content bg-purple">
-            <CoolExplorationCard />
-          </div></el-col>
-        </el-row>
+        <el-col :span="8"><div class="grid-content bg-purple">
+          <CoolExplorationCard />
+        </div></el-col>
+      </el-row>
 
-        <el-row type="flex" class="row-bg" justify="center" :gutter="40">
-          <el-col :span="8"><div class="grid-content bg-purple">
-            <CoolExplorationCard />
-          </div></el-col>
+      <el-row type="flex" class="row-bg" justify="center" :gutter="40">
+        <el-col :span="8"><div class="grid-content bg-purple">
+          <CoolExplorationCard />
+        </div></el-col>
 
-          <el-col :span="8"><div class="grid-content bg-purple">
-            <CoolExplorationCard />
-          </div></el-col>
-        </el-row>
-      </el-main>
-    </el-container>
+        <el-col :span="8"><div class="grid-content bg-purple">
+          <CoolExplorationCard />
+        </div></el-col>
+      </el-row>
+    </el-main>
+  </el-container>
+</div>
+    <div>
+      <Footer />
+    </div>
   </div>
 </template>
 
 <script>
 // eslint-disable-next-line import/extensions
 import CoolExplorationCard from '@/components/CoolExplorationCard.vue';
+import TopBar from '@/components/TopBar.vue';
+import Footer from '@/components/Footer.vue';
 // TODO:需要加上全屏背景图
 export default {
   name: 'CoolExploration',
   components: {
     CoolExplorationCard,
+    TopBar,
+    Footer,
   },
   data() {
     return {

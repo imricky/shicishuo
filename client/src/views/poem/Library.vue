@@ -1,4 +1,8 @@
 <template>
+  <div>
+  <div>
+    <TopBar />
+  </div>
   <div class="library">
     <el-container>
       <el-aside class="aside-container">
@@ -102,10 +106,20 @@
       </el-main>
     </el-container>
   </div>
+    <div>
+      <Footer />
+    </div>
+  </div>
 </template>
 
 <script>
+import TopBar from '@/components/TopBar.vue';
+import Footer from '@/components/Footer.vue';
 export default {
+  components: {
+    TopBar,
+    Footer,
+  },
   name: 'Library',
   data() {
     return {

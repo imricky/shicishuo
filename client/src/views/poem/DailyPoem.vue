@@ -1,5 +1,6 @@
 <template>
   <div class="daily-poem">
+  <TopBar />
   <el-container>
     <el-main class="main">
           <PoemCard />
@@ -9,16 +10,21 @@
 <!--      </el-aside>-->
     </el-main>
   </el-container>
+    <Footer />
   </div>
 </template>
 
 <script>
 // eslint-disable-next-line import/extensions
 import PoemCard from '@/components/PoemCard';
+import TopBar from '@/components/TopBar.vue';
+import Footer from '@/components/Footer.vue';
 
 export default {
   components: {
     PoemCard,
+    TopBar,
+    Footer,
   },
   name: 'DailyPoem',
   data() {

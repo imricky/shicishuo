@@ -1,4 +1,8 @@
 <template>
+  <div>
+  <div>
+    <TopBar />
+  </div>
   <div class="explore-good-poetry">
     <el-container>
       <el-aside class="aside-container">
@@ -103,10 +107,17 @@
         </el-pagination>
       </el-main>
     </el-container>
+    <Footer />
+  </div>
+    <div>
+      <Footer />
+    </div>
   </div>
 </template>
 
 <script>
+import TopBar from '@/components/TopBar.vue';
+import Footer from '@/components/Footer.vue';
 // eslint-disable-next-line import/extensions
 import PoemCard from '@/components/PoemCard';
 
@@ -114,6 +125,8 @@ export default {
   name: 'ExploreGoodPoetry',
   components: {
     PoemCard,
+    TopBar,
+    Footer,
   },
   data() {
     return {
@@ -165,5 +178,6 @@ export default {
   .main-container{
     border: 1px solid #409EFF;
     margin-left: 20px;
+
   }
 </style>

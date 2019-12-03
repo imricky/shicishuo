@@ -4,25 +4,27 @@
       <el-header>
         <el-row :gutter="10" justify="space-between">
           <el-col :span="4" :xs="8" :sm="6" :md="4" :lg="4" :xl="4">
-            <div class="grid-content bg-purple">
-              <i class="el-icon-location"></i>
-<!--              TODO:最后换logo-->
-            <span class="logo-word">SHICISHUO</span>
-          </div>
+            <router-link id="logo" to="/">
+              <div class="grid-content bg-purple">
+                <i class="el-icon-location"></i>
+                <!--              TODO:最后换logo-->
+                <span class="logo-word">SHICISHUO</span>
+              </div>
+            </router-link>
           </el-col>
-
 <!--          中间的标签和搜索栏-->
           <el-col :span="16"  :xs="4" :sm="6" :md="14" :lg="16" :xl="16">
             <div class="middle-content bg-purple">
               <el-menu :default-active="activeIndex" class="top-bar-middle"
                        mode="horizontal" @select="handleSelect"
                        text-color="#303133"
-                       active-text-color="#ffd04b">
+                       active-text-color="#ffd04b"
+                       :router="true">
 <!--                TODO:换icon-->
-                <el-menu-item index="1"><i class="el-icon-postcard"></i>每日诗词</el-menu-item>
-                <el-menu-item index="2"><i class="el-icon-search"></i>探索好诗</el-menu-item>
-                <el-menu-item index="3"><i class="el-icon-files"></i>文库大全</el-menu-item>
-                <el-menu-item index="4"><i class="el-icon-potato-strips"></i>实验楼</el-menu-item>
+                <el-menu-item index="DailyPoem"><i class="el-icon-postcard"></i>每日诗词</el-menu-item>
+                <el-menu-item index="ExploreGoodPoetry"><i class="el-icon-search"></i>探索好诗</el-menu-item>
+                <el-menu-item index="Library"><i class="el-icon-files"></i>文库大全</el-menu-item>
+                <el-menu-item index="CoolExploration"><i class="el-icon-potato-strips"></i>实验楼</el-menu-item>
               </el-menu>
               <span class="search">
                 <el-input
@@ -62,20 +64,30 @@
 </template>
 
 <script>
+// 在单独构建的版本中辅助函数为 Vuex.mapState
+import { mapState } from 'vuex';
 export default {
   name: 'TopBar',
   data() {
     return {
-      activeIndex: '1',
       isLogin: false,
       input2: '',
     };
   },
-  computed: {},
+  // computed: {
+  //   activeIndex() {
+  //     return this.$store.state.menubarActiveIndex;
+  //   },
+  // },
+  computed: mapState({
+    // 传字符串参数 'count' 等同于 `state => state.count`
+    activeIndex: 'menubarActiveIndex',
+  }),
   methods: {
-    handleSelect(key, keyPath) {
-      console.log(key, keyPath);
+    handleSelect(key) {
+      this.$store.commit('updateMenubarActiveIndex', key);
     },
+
   },
   created() {
 
@@ -93,7 +105,7 @@ export default {
     border: 1px solid indianred;
     background: #F56C6C;
     margin: 0 auto;
-    margin-top: 20px;
+    /*margin-top: 20px;*/
   }
   .el-col {
     border-radius: 4px;
@@ -127,23 +139,17 @@ export default {
     border-radius: 4px;
     /*min-height: 60px;*/
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
     /*background: #409EFF;*/
   }
-  .top-bar-middle{
-    /*第一个子元素负-20px*/
-    &:nth-child(1){
-      margin-left: -20px;
-    }
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
-  }
+
   .search{
-    /*width: 200px;*/
-    margin: 0 10px;
+    /*padding-left: 80px;*/
+    /*align-self: center;*/
+    /*margin-right: 10px;*/
   }
+
 
   /*右侧的登录注册css*/
   .login-container{

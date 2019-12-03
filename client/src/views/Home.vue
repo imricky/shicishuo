@@ -2,7 +2,7 @@
   <div class="home">
     <TopBar />
 <!--    <DailyPoem />-->
-    <ExploreGoodPoetry />
+<!--    <ExploreGoodPoetry />-->
 <!--    <library />-->
 <!--    <CoolExploration />-->
     <Footer />
@@ -13,7 +13,7 @@
 // @ is an alias to /src
 import TopBar from '@/components/TopBar.vue';
 // import DailyPoem from '@/components/DailyPoem.vue';
-import ExploreGoodPoetry from '@/views/poem/ExploreGoodPoetry.vue';
+// import ExploreGoodPoetry from '@/views/poem/ExploreGoodPoetry.vue';
 import Footer from '@/components/Footer.vue';
 // import Library from '@/components/Library.vue';
 // import CoolExploration from '@/components/CoolExploration.vue';
@@ -23,7 +23,7 @@ export default {
   components: {
     TopBar,
     // DailyPoem,
-    ExploreGoodPoetry,
+    // ExploreGoodPoetry,
     // Library,
     // CoolExploration,
     Footer,
