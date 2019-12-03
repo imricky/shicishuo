@@ -3,7 +3,7 @@
   <TopBar />
   <el-container>
     <el-main class="main">
-          <PoemCard />
+          <PoemCard :poemCardData="poemCardData"/>
 <!--      <el-aside class="aside">-->
 <!--        123dasldasd-->
 <!--        sdhjkasdhjaksdjh-->
@@ -29,6 +29,7 @@ export default {
   name: 'DailyPoem',
   data() {
     return {
+      poemCardData: {},
     };
   },
   computed: {},
@@ -40,7 +41,9 @@ export default {
   },
   created() {
     this.getDailyPoem().then((res) => {
-      console.log(res);
+      // eslint-disable-next-line prefer-destructuring
+      this.poemCardData = res.data[0];
+      // console.log(res);
     });
   },
   mounted() {

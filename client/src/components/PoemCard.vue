@@ -2,15 +2,16 @@
   <div class="poem-card">
     <el-card class="box-card" shadow="hover">
       <div slot="header" class="top">
-        <span class="title"> 鸿鹄歌</span>
-        <span class="author-info">[两汉] 刘邦</span>
+        {{poemCardData}}
+        <span class="title"> {{poemCardData.title}}</span>
+        <span class="author-info">[唐] {{poemCardData.author}}</span>
 
         <div class="collect-container">
           <el-button type="primary" icon="el-icon-share" size="small" class="collect-button">收藏</el-button>
         </div>
       </div>
 
-      <div v-for="o in dailyPoem" :key="o" class="text item">
+      <div v-for="o in poemCardData.paragraphs" :key="o" class="text item">
         {{ o }}
       </div>
       <el-divider></el-divider>
@@ -28,26 +29,11 @@
 <script>
 export default {
   name: 'PoemCard',
+  props: {
+    poemCardData: Object,
+  },
   data() {
     return {
-      dailyPoem: [
-        '鸿鹄高飞，一举千里。',
-        '羽翮已就，横绝四海。',
-        '横绝四海，当可奈何？',
-        '虽有矰缴，尚安所施？',
-        '鸿鹄高飞，一举千里1。',
-        '羽翮已就，横绝四海1。',
-        '横绝四海，当可奈何1？',
-        '虽有矰缴，尚安所施1？',
-        '鸿鹄高飞，一举千里2。',
-        '羽翮已就，横绝四海2。',
-        '横绝四海，当可奈何2？',
-        '虽有矰缴，尚安所施2？',
-        '鸿鹄高飞，一举千里3。',
-        '羽翮已就，横绝四海3。',
-        '横绝四海，当可奈何3？',
-        '虽有矰缴，尚安所施3？',
-      ],
     };
   },
   computed: {},
@@ -57,7 +43,7 @@ export default {
     },
   },
   created() {
-
+    console.log(this.poemCardData);
   },
   mounted() {
 
