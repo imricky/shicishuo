@@ -6,11 +6,25 @@ const logger = require('morgan');
 
 require('./utils/mongo');
 
+
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const poemsRouter = require('./routes/poems');
 
 const app = express();
+
+// allow custom header and CORS
+app.all('*', (req, res, next) => {
+  res.header('Access-Control-Allow-Origin', 'http://localhost:8080'); // 跨域请求的域名端口号
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
+  res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS, PATCH');
+  if (req.method === 'OPTIONS') {
+    res.send(200);
+    // /让options请求快速返回/
+  } else {
+    next();
+  }
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

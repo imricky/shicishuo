@@ -140,5 +140,25 @@ router.get('/getDatabaseAllInfo', async (req, res, next) => {
   }
 });
 
+/*
+ *  author: imricky
+ *  time: 2019/12/3 10:36 上午
+ *  function: 搜索接口
+*/
+router.post('/search', async (req, res, next) => {
+  try {
+    const { keyword } = req.body;
+    const data = await Poem.search(keyword);
+    res.json({
+      data,
+    });
+  } catch (e) {
+    res.json({
+      success: false,
+      errorMessage: e,
+    });
+  }
+});
+
 
 module.exports = router;
