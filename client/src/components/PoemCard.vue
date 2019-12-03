@@ -15,12 +15,13 @@
         {{ o }}
       </div>
       <el-divider></el-divider>
-      <div class="tag">
-        <el-tag>标签一</el-tag>
-        <el-tag type="success" @click="test">标签二</el-tag>
-        <el-tag type="info">标签三</el-tag>
-        <el-tag type="warning">标签四</el-tag>
-        <el-tag type="danger">标签五</el-tag>
+      <div class="tag" v-for="i in poemCardData.tags" :key="i">
+        <el-tag>{{i}}</el-tag>
+<!--        <el-tag>标签一</el-tag>-->
+<!--        <el-tag type="success" @click="test">标签二</el-tag>-->
+<!--        <el-tag type="info">标签三</el-tag>-->
+<!--        <el-tag type="warning">标签四</el-tag>-->
+<!--        <el-tag type="danger">标签五</el-tag>-->
       </div>
     </el-card>
   </div>
