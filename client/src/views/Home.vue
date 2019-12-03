@@ -13,7 +13,7 @@
 // @ is an alias to /src
 import TopBar from '@/components/TopBar.vue';
 // import DailyPoem from '@/components/DailyPoem.vue';
-import ExploreGoodPoetry from '@/components/ExploreGoodPoetry.vue';
+import ExploreGoodPoetry from '@/views/poem/ExploreGoodPoetry.vue';
 import Footer from '@/components/Footer.vue';
 // import Library from '@/components/Library.vue';
 // import CoolExploration from '@/components/CoolExploration.vue';

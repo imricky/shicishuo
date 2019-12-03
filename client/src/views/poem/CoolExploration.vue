@@ -28,7 +28,7 @@
 
 <script>
 // eslint-disable-next-line import/extensions
-import CoolExplorationCard from './CoolExplorationCard';
+import CoolExplorationCard from '@/components/CoolExplorationCard.vue';
 // TODO:需要加上全屏背景图
 export default {
   name: 'CoolExploration',

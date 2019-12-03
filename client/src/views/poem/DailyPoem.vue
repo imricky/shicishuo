@@ -14,7 +14,7 @@
 
 <script>
 // eslint-disable-next-line import/extensions
-import PoemCard from './PoemCard';
+import PoemCard from '@/components/PoemCard';
 
 export default {
   components: {
