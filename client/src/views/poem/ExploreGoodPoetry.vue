@@ -107,7 +107,6 @@
         </el-pagination>
       </el-main>
     </el-container>
-    <Footer />
   </div>
     <div>
       <Footer />
