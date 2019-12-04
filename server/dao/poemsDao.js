@@ -43,10 +43,10 @@ class Poem {
           }
         }
       }
-      // 再根据tags数量进行排序，取前三
+      // 再根据tags数量进行排序，取前四
       let result;
-      if (pushArr.length > 3) {
-        result = pushArr.sort(compare('num_of_tag')).slice(0, 3);
+      if (pushArr.length > 5) {
+        result = pushArr.sort(compare('num_of_tag')).slice(0, 5);
       } else {
         result = pushArr.sort(compare('num_of_tag'));
       }
@@ -71,13 +71,12 @@ class Poem {
   /*
    *  author: imricky
    *  time: 2019/12/2 7:56 下午
-   *  function: 获取历史每日一诗推荐，分页，每页10条
+   *  function: 获取历史每日一诗推荐，只取最近的前10条
    *  获取的时候去掉paragraphs字段和id字段
   */
-  static async getHistoryDailyPoem(tagName, page) {
+  static async getHistoryDailyPoem() {
     const res = await DailyPoems
       .find({}, { paragraphs: 0, id: 0 })
-      .skip(page * 10)
       .limit(10)
       .sort({ created: -1 })
       .exec();
