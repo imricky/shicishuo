@@ -29,6 +29,8 @@ module.exports = {
     "no-unused-vars":0,
     "import/newline-after-import":0, //导入之后的空行
     "class-methods-use-this": 0,
+    "no-plusplus": 0, //允许 i++ 这种形式
+    "no-void": 0, //允许void 0 替换undefined
     // 'import/extensions': ['error', 'always', {
     //   'js': 'never',
     //   'vue': 'never'

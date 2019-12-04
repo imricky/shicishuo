@@ -1,6 +1,7 @@
 const moment = require('moment');
 const _ = require('lodash');
 const { TangPoets, DailyPoems } = require('../models/poemsModel');
+const { jiebaSeparateVerse, compare } = require('../utils/tools');
 
 class Poem {
   // eslint-disable-next-line no-empty-function,no-useless-constructor
@@ -25,7 +26,44 @@ class Poem {
     ]);
     res[0].created = currentDay;
     res[0].updated = currentDay;
+    // 判断是否存在tags，若没有，则调用分词，然后在标签库里取3个词出来，然后反向存入原来的诗词中
+    if (res[0].tags === void 0 || res[0].tags.length === 0) {
+      const SeparateResult = jiebaSeparateVerse(res[0].paragraphs);
+      const tagsAll = await TangPoets.aggregate([
+        { $unwind: '$tags' },
+        { $group: { _id: '$tags', num_of_tag: { $sum: 1 } } },
+        { $project: { _id: 0, tags: '$_id', num_of_tag: 1 } },
+        { $sort: { num_of_tag: -1 } }]);
+      // 选出原本的tags里存在的分词
+      const pushArr = [];
+      for (let i = 0; i < SeparateResult.length; i++) {
+        for (let j = 0; j < tagsAll.length; j++) {
+          if (tagsAll[j].tags === SeparateResult[i]) {
+            pushArr.push(tagsAll[j]);
+          }
+        }
+      }
+      // 再根据tags数量进行排序，取前三
+      let result;
+      if (pushArr.length > 3) {
+        result = pushArr.sort(compare('num_of_tag')).slice(0, 3);
+      } else {
+        result = pushArr.sort(compare('num_of_tag'));
+      }
 
+      const finalTags = result.reduce((acc, val) => {
+        acc.push(val.tags);
+        return acc;
+      }, []);
+      res[0].tags = finalTags;
+      // 向原来数据库中存入诗词
+      if (finalTags.length !== 0) {
+        // eslint-disable-next-line no-underscore-dangle
+        await TangPoets.updateOne({ id: res[0].id }, { $set: { tags: finalTags } });
+      }
+    }
+
+    // 向每日一诗中存入得到的诗词
     const insertDailyPoem = await new DailyPoems(res[0]).save();
     return insertDailyPoem;
   }
