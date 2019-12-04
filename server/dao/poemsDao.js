@@ -2,6 +2,7 @@ const moment = require('moment');
 const _ = require('lodash');
 const { TangPoets, DailyPoems } = require('../models/poemsModel');
 const { jiebaSeparateVerse, compare } = require('../utils/tools');
+const { logger } = require('../utils/logger');
 
 class Poem {
   // eslint-disable-next-line no-empty-function,no-useless-constructor
@@ -18,6 +19,7 @@ class Poem {
     const currentDay = moment(new Date()).format('YYYY-MM-DD');
     const currentDailyPoem = await DailyPoems.find({ created: currentDay });
     if (currentDailyPoem.length !== 0) {
+      logger.info(`${currentDailyPoem}`);
       return currentDailyPoem;
     }
     // mongodb随机查询一条
@@ -65,6 +67,7 @@ class Poem {
 
     // 向每日一诗中存入得到的诗词
     const insertDailyPoem = await new DailyPoems(res[0]).save();
+    logger.info(insertDailyPoem);
     return insertDailyPoem;
   }
 
