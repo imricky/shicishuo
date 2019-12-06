@@ -5,24 +5,29 @@
         {{poemCardData}}
         <span class="title"> {{poemCardData.title}}</span>
         <span class="author-info">[唐] {{poemCardData.author}}</span>
-
-        <div class="collect-container">
-          <el-button type="primary" icon="el-icon-share" size="small" class="collect-button">收藏</el-button>
-        </div>
       </div>
 
       <div v-for="o in poemCardData.paragraphs" :key="o" class="text item">
         {{ o }}
       </div>
       <el-divider></el-divider>
-      <div class="tag" v-for="i in poemCardData.tags" :key="i">
-        <el-tag>{{i}}</el-tag>
-<!--        <el-tag>标签一</el-tag>-->
-<!--        <el-tag type="success" @click="test">标签二</el-tag>-->
-<!--        <el-tag type="info">标签三</el-tag>-->
-<!--        <el-tag type="warning">标签四</el-tag>-->
-<!--        <el-tag type="danger">标签五</el-tag>-->
+      <div class="tags-and-button">
+        <div>
+        <span class="tag" v-for="i in poemCardData.tags" :key="i">
+            <el-tag>{{i}}</el-tag>
+          <!--        <el-tag>标签一</el-tag>-->
+          <!--        <el-tag type="success" @click="test">标签二</el-tag>-->
+          <!--        <el-tag type="info">标签三</el-tag>-->
+          <!--        <el-tag type="warning">标签四</el-tag>-->
+          <!--        <el-tag type="danger">标签五</el-tag>-->
+          </span>
       </div>
+
+        <div class="collect-container">
+          <el-button type="success" icon="el-icon-goods" size="small" class="collect-button">收藏</el-button>
+        </div>
+      </div>
+
     </el-card>
   </div>
 </template>
@@ -63,8 +68,9 @@ export default {
     align-items: center;
   }
   .box-card {
-    width: 680px;
-    /*height: 320px;*/
+    /*TODO: 适配不同分辨率*/
+    max-width: 680px;
+    min-height: 320px;
   }
   .top{
     display: flex;
@@ -72,16 +78,32 @@ export default {
     justify-content: center;
     align-items: center;
   }
-  .collect-container{
-    align-self: flex-start;
+  .tags-and-button{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /*margin-bottom: 5px;*/
+    .tag{
+      float: left;
+      margin-bottom: 20px;
+      > :nth-child(n){
+        margin-left: 5px;
+      }
+    }
+    .collect-container{
+      align-self: end;
+      .collect-button{
+        /*color: #41B883;*/
+      }
+    }
   }
-  .collect-button{
-  }
+
   .author-info{
     margin-left: 150px;
   }
   .title{
     font-size: 30px;
+    font-weight: bold;
   }
   .text {
     font-size: 14px;
@@ -89,11 +111,5 @@ export default {
   .item {
     margin-bottom: 18px;
   }
-  .tag{
-    float: left;
-    margin-bottom: 20px;
-    > :nth-child(n){
-      margin-left: 5px;
-    }
-  }
+
 </style>
