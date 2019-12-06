@@ -177,6 +177,5 @@ export default {
   .main-container{
     border: 1px solid #409EFF;
     margin-left: 20px;
-
   }
 </style>
