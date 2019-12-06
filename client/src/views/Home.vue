@@ -5,8 +5,8 @@
 <!--    <CoolExplorationCard />-->
 <!--    <DailyPoem />-->
 <!--    <ExploreGoodPoetry />-->
-<!--    <library />-->
-    <CoolExploration />
+    <library />
+<!--    <CoolExploration />-->
 <!--    <Footer />-->
   </div>
 </template>
@@ -19,8 +19,8 @@ import TopBar from '@/components/TopBar.vue';
 // import DailyPoem from '@/components/DailyPoem.vue';
 // import ExploreGoodPoetry from '@/views/poem/ExploreGoodPoetry.vue';
 import Footer from '@/components/Footer.vue';
-// import Library from '@/components/Library.vue';
-import CoolExploration from '@/views/poem/CoolExploration.vue';
+import Library from '@/views/poem/Library.vue';
+// import CoolExploration from '@/views/poem/CoolExploration.vue';
 
 export default {
   name: 'home',
@@ -30,8 +30,8 @@ export default {
     // CoolExplorationCard,
     // DailyPoem,
     // ExploreGoodPoetry,
-    // Library,
-    CoolExploration,
+    Library,
+    // CoolExploration,
     // Footer,
   },
   data() {

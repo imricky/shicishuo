@@ -11,8 +11,8 @@
             <span>网站信息</span>
           </div>
           <div>
-            <p class="all-poetry">本网站共收录：<span>20000</span>首诗词</p>
-            <p>本网站共收录：<span>3000</span>位诗人</p>
+            <p class="all-poetry">本网站共收录：<span class="poem-count">20000</span>首诗词</p>
+            <p>本网站共收录：<span class="author-count">3000</span>位诗人</p>
           </div>
         </el-card>
         <el-card class="one-card top-ten-poet">
@@ -212,7 +212,17 @@ export default {
       margin-bottom: 20px;
     }
     .all-poetry{
-      border-bottom: 1px solid gray;
+      margin-bottom: 10px;
+      .poem-count{
+        font-weight: bold;
+        color: #AA314D;
+      }
+      /*border-bottom: 1px solid gray;*/
+    }
+    .author-count{
+      font-weight: bold;
+      /*TODO: 各种颜色需要调整*/
+      color: aquamarine;
     }
   }
   .main-container{
