@@ -61,6 +61,15 @@
               <div v-else class="login-container">
                 <el-button type="primary" plain >signin</el-button>
                 <el-button type="success" plain >signup</el-button>
+<!--                <el-dropdown placement="bottom">-->
+<!--                  <span class="el-dropdown-link">-->
+<!--                    <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>-->
+<!--                  </span>-->
+<!--                  <el-dropdown-menu slot="dropdown">-->
+<!--                    <el-dropdown-item icon="el-icon-s-custom">signin</el-dropdown-item>-->
+<!--                    <el-dropdown-item icon="el-icon-remove">signup</el-dropdown-item>-->
+<!--                  </el-dropdown-menu>-->
+<!--                </el-dropdown>-->
               </div>
             </div>
           </el-col>
