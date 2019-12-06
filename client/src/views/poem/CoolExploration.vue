@@ -7,21 +7,21 @@
   <el-container>
     <el-main class="main">
       <el-row type="flex" class="row-bg" justify="center" :gutter="40">
-        <el-col :span="8"><div class="grid-content bg-purple">
+        <el-col :span="12"><div class="grid-content bg-purple">
           <CoolExplorationCard />
         </div></el-col>
 
-        <el-col :span="8"><div class="grid-content bg-purple">
+        <el-col :span="12"><div class="grid-content bg-purple">
           <CoolExplorationCard />
         </div></el-col>
       </el-row>
 
       <el-row type="flex" class="row-bg" justify="center" :gutter="40">
-        <el-col :span="8"><div class="grid-content bg-purple">
+        <el-col :span="12"><div class="grid-content bg-purple">
           <CoolExplorationCard />
         </div></el-col>
 
-        <el-col :span="8"><div class="grid-content bg-purple">
+        <el-col :span="12"><div class="grid-content bg-purple">
           <CoolExplorationCard />
         </div></el-col>
       </el-row>
