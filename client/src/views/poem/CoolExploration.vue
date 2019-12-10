@@ -3,7 +3,7 @@
     <div>
       <TopBar />
     </div>
-    <div class="cool-exploration">
+    <div class="all-container">
   <el-container>
     <el-main class="main">
       <el-row type="flex" class="row-bg" justify="center" :gutter="40">
@@ -67,14 +67,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-  .cool-exploration{
-    max-width: 1000px;
-    border: 1px solid rebeccapurple;
-    /*background-color: #E9EEF3;*/
-    color: #333;
-    margin: 0 auto;
-    margin-top: 20px;
-  }
   .main{
     border: 1px solid rebeccapurple;
     background-color: #E9EEF3;

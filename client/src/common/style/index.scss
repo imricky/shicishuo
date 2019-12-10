@@ -1,0 +1,19 @@
+//页面结构样式
+// 中间栏
+.all-container{
+  max-width: 1000px;
+  border: 1px solid rebeccapurple;
+  background-color: #E9EEF3;
+  color: #333;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  margin-top: 20px;
+}
+
+// 侧边栏
+.aside-container{
+  //width: 200px;
+  border: 1px solid #E6A23C;
+}

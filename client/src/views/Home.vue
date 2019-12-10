@@ -13,7 +13,7 @@
 
 <script>
 // @ is an alias to /src
-import TopBar from '@/components/TopBar.vue';
+// import TopBar from '@/components/TopBar.vue';
 // import PoemCard from '@/components/PoemCard.vue'; //诗词卡片
 // import CoolExplorationCard from '@/components/CoolExplorationCard.vue';
 // import DailyPoem from '@/components/DailyPoem.vue';

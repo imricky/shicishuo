@@ -3,7 +3,7 @@
     <div>
       <TopBar />
     </div>
-  <div class="daily-poem">
+  <div class="all-container">
     <el-container>
     <el-aside class="aside-container">
       <el-card class="one-card website-info">
@@ -130,33 +130,24 @@ export default {
 </script>
 
 <style scoped lang="scss">
-  .daily-poem{
-    max-width: 1040px;
-    border: 1px solid indianred;
-    /*background: #F56C6C;*/
-    margin: 0 auto;
-    margin-top: 20px;
+
+  .one-card{
+    margin-bottom: 20px;
   }
-  .aside-container{
-    width: 200px;
-    border: 1px solid #E6A23C;
-    .one-card{
-      margin-bottom: 20px;
-    }
-    .all-poetry{
-      margin-bottom: 10px;
-      .poem-count{
-        font-weight: bold;
-        color: #AA314D;
-      }
-      /*border-bottom: 1px solid gray;*/
-    }
-    .author-count{
+  .all-poetry{
+    margin-bottom: 10px;
+    .poem-count{
       font-weight: bold;
-      /*TODO: 各种颜色需要调整*/
-      color: aquamarine;
+      color: #AA314D;
     }
+    /*border-bottom: 1px solid gray;*/
   }
+  .author-count{
+    font-weight: bold;
+    /*TODO: 各种颜色需要调整*/
+    color: aquamarine;
+  }
+
   .main{
     border: 1px solid rebeccapurple;
     background-color: #E9EEF3;

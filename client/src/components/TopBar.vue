@@ -1,9 +1,10 @@
 <template>
-  <div class="center">
+  <div class="topall">
+  <div class="topbar-center">
     <el-container>
       <el-header>
         <el-row :gutter="10" justify="space-between">
-          <el-col :span="4" :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
+          <el-col :span="4" :xs="2" :sm="2" :md="4" :lg="4" :xl="4">
             <router-link id="logo" to="/">
               <div class="grid-content bg-purple">
                 <i class="el-icon-location"></i>
@@ -77,6 +78,7 @@
       </el-header>
     </el-container>
   </div>
+  </div>
 </template>
 
 <script>
@@ -120,30 +122,30 @@ export default {
 </script>
 
 <style scoped lang="scss">
-  .center{
-
+  .topall{
+    width: 100%;
+    border-bottom: 1px solid red;
+  }
+  .topbar-center{
     max-width: 1040px;
-    border: 1px solid indianred;
-    background: #F56C6C;
+    /*border: 1px solid indianred;*/
+    background: #ffffff;
     margin: 0 auto;
-    /*margin-top: 20px;*/
+    /*border-bottom: 1px solid #00B7FF;*/
   }
   .el-col {
     border-radius: 4px;
   }
   .bg-purple-dark {
-    background: #99a9bf;
+    background: #ffffff;
   }
   .bg-purple {
-    background: #d3dce6;
+    background: #ffffff;
   }
-  /*顶栏的css*/
-  .top-header{
-    margin-left: -20px;
-  }
+  /*顶栏左侧的css*/
   .logo-word{
-    /*padding-left: 40px;*/
-    /*text-align: center;*/
+    font-size: 20px;
+    font-weight: bold;
   }
   .grid-content {
     border-radius: 4px;
@@ -164,7 +166,7 @@ export default {
     justify-content: center;
     align-items: center;
     flex-wrap: nowrap;
-    background: #409EFF;
+    background: #ffffff;
     .top-bar-middle{
       display: flex;
       justify-content: center;

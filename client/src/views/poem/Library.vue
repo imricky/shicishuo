@@ -3,7 +3,7 @@
   <div>
     <TopBar />
   </div>
-  <div class="library">
+  <div class="all-container">
     <el-container>
       <el-aside class="aside-container">
         <el-card class="one-card website-info">
@@ -194,37 +194,24 @@ export default {
 </script>
 
 <style scoped lang="scss">
-  .library{
-    max-width: 1000px;
-    border: 1px solid rebeccapurple;
-    background-color: #E9EEF3;
-    color: #333;
-    /*margin: 10px 20px;*/
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0 auto;
+
+  .one-card{
+    margin-bottom: 20px;
   }
-  .aside-container{
-    width: 200px;
-    border: 1px solid #E6A23C;
-    .one-card{
-      margin-bottom: 20px;
-    }
-    .all-poetry{
-      margin-bottom: 10px;
-      .poem-count{
-        font-weight: bold;
-        color: #AA314D;
-      }
-      /*border-bottom: 1px solid gray;*/
-    }
-    .author-count{
+  .all-poetry{
+    margin-bottom: 10px;
+    .poem-count{
       font-weight: bold;
-      /*TODO: 各种颜色需要调整*/
-      color: aquamarine;
+      color: #AA314D;
     }
+    /*border-bottom: 1px solid gray;*/
   }
+  .author-count{
+    font-weight: bold;
+    /*TODO: 各种颜色需要调整*/
+    color: aquamarine;
+  }
+
   .main-container{
     border: 1px solid #409EFF;
     margin-left: 20px;

@@ -5,6 +5,9 @@ import store from './store';
 // eslint-disable-next-line import/extensions
 import './plugins/element.js';
 // eslint-disable-next-line import/order
+// 引入公共样式
+import './common/style/index.scss';
+// eslint-disable-next-line import/order
 import animated from 'animate.css';
 
 Vue.use(animated);

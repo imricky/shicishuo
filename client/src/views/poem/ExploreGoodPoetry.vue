@@ -3,7 +3,7 @@
   <div>
     <TopBar />
   </div>
-  <div class="explore-good-poetry">
+  <div class="all-container">
     <el-container>
       <el-aside class="aside-container">
         <el-collapse accordion>
@@ -144,36 +144,23 @@ export default {
 </script>
 
 <style scoped lang="scss">
-  .explore-good-poetry{
-    max-width: 1000px;
-    border: 1px solid rebeccapurple;
-    background-color: #E9EEF3;
-    color: #333;
-    /*margin: 10px 20px;*/
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0 auto;
+
+  .aside-title{
+    padding: 0 10px;
+    font-size: 15px;
   }
-  .aside-container{
-    width: 200px;
-    border: 1px solid #E6A23C;
-    .aside-title{
-      padding: 0 10px;
-      font-size: 15px;
-    }
-    .aside-type{
-      /*display: flex;*/
-      /*justify-content: flex-start;*/
+  .aside-type{
+    /*display: flex;*/
+    /*justify-content: flex-start;*/
+    float: left;
+    > :nth-child(n){
+      font-size: 14px;
+      width: 50px;
+      padding: 5px 10px;
       float: left;
-      > :nth-child(n){
-        font-size: 14px;
-        width: 50px;
-        padding: 5px 10px;
-        float: left;
-      }
     }
   }
+
   .main-container{
     border: 1px solid #409EFF;
     margin-left: 20px;
