@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { uri } = require('../config/db');
+const { logger } = require('./logger');
 
 mongoose.connect(uri, {
   useNewUrlParser: true,
@@ -13,7 +14,7 @@ const db = mongoose.connection;
 
 db.on('open', () => {
   // logger.info(`数据库连接成功 || 成功时间: ${Date()}`);
-  console.log(`数据库连接成功 || 成功时间: ${Date()}`);
+  logger.info(`数据库连接成功 || 成功时间: ${Date()}`);
 });
 
 db.on('error', (error) => {
