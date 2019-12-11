@@ -8,7 +8,7 @@ const User = require('../models/userModel');
 
 /* GET users listing. */
 router.get('/', (req, res, next) => {
-  res.send('respond with a resource');
+  res.send('user respond with a resource');
 });
 
 router.post('/register', async (req, res, next) => {
@@ -60,6 +60,40 @@ router.post('/register', async (req, res, next) => {
     return res.json({
       code: 500,
       msg: '注册失败，服务器错误',
+    });
+  } catch (e) {
+    return res.json({
+      code: 500,
+      msg: e,
+    });
+  }
+});
+
+router.post('/login', async (req, res, next) => {
+  let {
+    username = '', password = '',
+  } = req.body;
+  try {
+    username = Xss(username);
+    password = sha1(sha1(password + sha1Salt));
+    const result = await User.find({ username, password });
+    console.log(result);
+    if (result.length === 0) {
+      return res.json({
+        code: 401,
+        msg: '登录失败，用户名或密码错误',
+      });
+    }
+    const jwtToken = createToken(username);
+    return res.json({
+      code: 200,
+      msg: '登录成功',
+      data: {
+        _id: result[0]._id,
+        username,
+        token: jwtToken,
+        avatar: result[0].avatar,
+      },
     });
   } catch (e) {
     return res.json({
