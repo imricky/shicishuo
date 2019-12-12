@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
 require('./utils/mongo');
+const { checkToken } = require('./utils/auth');
 
 
 const indexRouter = require('./routes/index');
@@ -35,6 +36,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// 后端添加token校验
+app.use(checkToken);
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
