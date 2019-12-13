@@ -25,7 +25,7 @@
       </div>
       <div class="register-bottom">
         <el-button type="primary" class="register-button" @click="doRegister('registerForm')">注册</el-button>
-        <el-link href="/login" class="already-have-username">已有账号？登录</el-link>
+        <el-link class="already-have-username" @click="goLogin">已有账号？登录</el-link>
       </div>
     </div>
   </div>
@@ -138,7 +138,11 @@ export default {
         }
       });
     },
-
+    goLogin() {
+      this.$router.push({
+        path: '/login',
+      });
+    },
   },
   created() {
 
