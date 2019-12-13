@@ -67,7 +67,7 @@ export default {
             this.$message({
               message: '登录成功,正在跳转中...',
               type: 'success',
-              duration: 500,
+              duration: 1000,
               onClose() {
                 _self.$router.push({
                   path: '/1',
@@ -78,7 +78,7 @@ export default {
             this.$message({
               message: `登录失败,失败原因：${msg}`,
               type: 'error',
-              duration: 500,
+              duration: 1000,
               onClose() {
                 _self.loginForm.password = '';
               },

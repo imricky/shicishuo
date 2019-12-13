@@ -111,7 +111,7 @@ export default {
             this.$message({
               message: '注册成功,正在跳转到登录页面...',
               type: 'success',
-              duration: 2000,
+              duration: 1000,
               onClose() {
                 _self.$router.push({
                   path: '/login',
@@ -122,7 +122,7 @@ export default {
             this.$message({
               message: `注册失败,失败原因：${msg}`,
               type: 'error',
-              duration: 2000,
+              duration: 1000,
               onClose() {
                 _self.$refs[formName].resetFields();
               },
