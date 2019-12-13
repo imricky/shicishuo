@@ -1,25 +1,31 @@
 <template>
-<!--  TODO： 增加背景图-->
-  <div class="login-wrap1">
-    <div class="login-main">
+  <!--  TODO： 增加背景图-->
+  <div class="register-wrap1">
+    <div class="register-main">
       <div class="logo">
         <p class="logo-word">
-          SHICISHUO  -  login
+          SHICISHUO  -  register
         </p>
       </div>
       <div class="main">
-        <el-form label-position="top" label-width="80px" :model="loginForm" :rules="rules" ref="loginForm">
+        <el-form label-position="top" label-width="80px" :model="registerForm" :rules="rules" ref="registerForm">
           <el-form-item label="用户名" prop="username">
-            <el-input v-model="loginForm.username"></el-input>
+            <el-input v-model="registerForm.username"></el-input>
           </el-form-item>
           <el-form-item label="密码" prop="password">
-            <el-input type="password" v-model="loginForm.password"></el-input>
+            <el-input type="password" v-model="registerForm.password"></el-input>
+          </el-form-item>
+          <el-form-item label="确认密码" prop="repassword">
+            <el-input type="password" v-model="registerForm.repassword"></el-input>
+          </el-form-item>
+          <el-form-item label="邮箱" prop="email">
+            <el-input v-model="registerForm.email" placeholder="后期用于找回密码"></el-input>
           </el-form-item>
         </el-form>
       </div>
-      <div class="login-bottom">
-        <el-button type="primary" class="login-button" @click="doLogin('loginForm')">登录</el-button>
-        <el-link href="/t" target="_blank"  class="forgot">我忘记密码了</el-link>
+      <div class="register-bottom">
+        <el-button type="primary" class="register-button" @click="doRegister('registerForm')">注册</el-button>
+        <el-link href="/login" class="already-have-username">已有账号？登录</el-link>
       </div>
     </div>
   </div>
@@ -28,59 +34,97 @@
 <script>
 import Http from '@/api/http';
 export default {
-  name: 'Login',
+  name: 'Register',
   data() {
+    const validateUsername = (rule, value, callback) => {
+      const reg = /^[a-zA-Z0-9_-]{3,10}$/;
+      if (value === '') {
+        callback(new Error('请输入用户名'));
+      } else if (!reg.test(value)) {
+        callback(new Error('用户名长度应为3-10位、支持字母、数字、下划线、减号'));
+      } else {
+        callback();
+      }
+    };
+    const validatePass = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入密码'));
+      } else if (value.length < 6) {
+        callback(new Error('密码长度必须6位及以上'));
+      } else {
+        if (this.registerForm.repassword !== '') {
+          this.$refs.registerForm.validateField('repassword');
+        }
+        callback();
+      }
+    };
+    const validateRepassword = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请再次输入密码'));
+      } else if (value !== this.registerForm.password) {
+        callback(new Error('两次输入密码不一致!'));
+      } else {
+        callback();
+      }
+    };
     return {
-      loginForm: {
+      registerForm: {
         username: '',
         password: '',
+        repassword: '',
+        email: '',
       },
       rules: {
         username: [
-          { required: true, message: '请输入用户名', trigger: 'blur' },
+          { validator: validateUsername, trigger: 'blur' },
         ],
         password: [
-          { required: true, message: '请输入密码', trigger: 'blur' },
-          {
-            min: 6, message: '长度必须大于6个字符', trigger: 'blur',
-          },
+          { validator: validatePass, trigger: 'blur' },
+        ],
+        repassword: [
+          { validator: validateRepassword, trigger: 'blur' },
+        ],
+        email: [
+          { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] },
         ],
       },
     };
   },
   computed: {},
   methods: {
-    doLogin(formName) {
+    doRegister(formName) {
       this.$refs[formName].validate(async (valid) => {
-        console.log(this.loginForm);
         if (valid) {
           const _self = this;
-          const { username = '', password = '' } = this.loginForm;
-          const loginData = {
+          const {
+            username = '', password = '', repassword = '', email = '',
+          } = this.registerForm;
+          const registerData = {
             username,
             password,
+            repassword,
+            email,
           };
-          const res = await Http.login(loginData);
-          const { code, msg, data = {} } = res.data;
+          const res = await Http.register(registerData);
+          const { code, msg } = res.data;
           if (code === 200) {
-            this.$store.dispatch('saveUserToken', data);
             this.$message({
-              message: '登录成功,正在跳转中...',
+              message: '注册成功,正在跳转到登录页面...',
               type: 'success',
-              duration: 500,
+              duration: 2000,
               onClose() {
                 _self.$router.push({
-                  path: '/1',
+                  path: '/login',
                 });
               },
             });
           } else {
             this.$message({
-              message: `登录失败,失败原因：${msg}`,
+              message: `注册失败,失败原因：${msg}`,
               type: 'error',
-              duration: 500,
+              duration: 2000,
               onClose() {
-                _self.loginForm.password = '';
+                _self.$refs[formName].resetFields();
               },
             });
             return false;
@@ -94,6 +138,7 @@ export default {
         }
       });
     },
+
   },
   created() {
 
@@ -105,7 +150,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-  .login-wrap{
+  .register-wrap{
     background: url('../../assets/bg2.jpg');
     /*让整个div固定在屏幕的最上方和最左方*/
     position: fixed;
@@ -133,7 +178,7 @@ export default {
     /*position: relative;*/  //必须要注释掉才能居中，不清楚为啥
 
   }
-  .login-main{
+  .register-main{
     width: 500px;
     /*height: 400px;*/
     position: absolute;
@@ -162,13 +207,13 @@ export default {
   }
 
   /*按钮区域*/
-  .login-bottom{
+  .register-bottom{
     display: flex;
     flex-direction: column; //垂直对齐
     justify-content: center;
     align-items: center;
     margin: 20px 40px;
-    .forgot{
+    .already-have-username{
       margin-top: 10px;
     }
   }

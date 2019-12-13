@@ -13,4 +13,5 @@ export const Url = {
 
   // 和用户相关的东西
   login: `${baseURL}/users/login`,
+  register: `${baseURL}/users/register`,
 };

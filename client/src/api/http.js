@@ -52,6 +52,10 @@ class Http {
   login(data) {
     return post(Url.login, data);
   }
+
+  register(data) {
+    return post(Url.register, data);
+  }
 }
 
 export default new Http();
