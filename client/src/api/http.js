@@ -1,4 +1,4 @@
-import { get, post } from '@/utils/request';
+import { get, post } from '@/utils/axios';
 import { Url } from './url';
 
 class Http {
@@ -40,6 +40,17 @@ class Http {
   // 搜索接口
   search(keyword) {
     return post(Url.searchApi, { keyword });
+  }
+
+  /*
+   *  @author: imricky(github.com/imricky)
+   *  @time: 2019/12/12 4:50 下午
+   *  @function: 分割开,
+   *  @param:
+   *  @return:
+  */
+  login(data) {
+    return post(Url.login, data);
   }
 }
 

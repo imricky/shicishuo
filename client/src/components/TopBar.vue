@@ -108,7 +108,7 @@ export default {
       if (key === 'search') {
         return;
       }
-      this.$store.commit('updateMenubarActiveIndex', key);
+      this.$store.dispatch('updateMenubarActiveIndex', key);
     },
 
   },

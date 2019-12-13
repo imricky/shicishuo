@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { Message } from 'element-ui';
-import store from '../store';
+import store from '../store/index';
 import router from '../router';
 const $message = Message;
 
@@ -12,9 +12,8 @@ axios.defaults.timeout = 30000; // 超时时间
 axios.interceptors.request.use(
   (config) => {
     // 每次发送请求，检查 vuex 中是否有token,如果有放在headers中
-    debugger;
     if (store.state.user.token) {
-      config.headers.Authorization = store.state.user.token;
+      config.headers.Authorization = `Bearer  ${store.state.user.token}`;
     }
     return config;
   },
@@ -24,17 +23,17 @@ axios.interceptors.request.use(
 // response拦截器，每次发送请求的时候拦截下来
 axios.interceptors.response.use((response) => {
   console.log(response);
-  if (response.data.status) {
-    return Promise.resolve(response.data);
+  if (response.data.code) {
+    return Promise.resolve(response);
   }
-  store.dispatch('showMassage', {
-    type: 'error',
-    message: response.data.message || response.data.msg || response.data.errMsg,
-  });
+  // store.dispatch('showMassage', {
+  //   type: 'error',
+  //   message: response.data.message || response.data.msg || response.data.errMsg,
+  // });
   return Promise.reject(response);
 }, (err) => {
   if (err && err.response) {
-    switch (err.response.status) {
+    switch (err.response.code) {
       case 400:
         err.message = '错误请求';
         break;
@@ -53,6 +52,9 @@ axios.interceptors.response.use((response) => {
         break;
       case 408:
         err.message = '请求超时';
+        break;
+      case 409:
+        err.message = '发送冲突';
         break;
       case 500:
         err.message = err.response.data.message;
@@ -75,11 +77,72 @@ axios.interceptors.response.use((response) => {
   } else {
     err.message = '连接到服务器失败';
   }
-  store.dispatch('showMassage', {
-    type: 'error',
-    data: err.message || err.response.msg,
-  });
+  // store.dispatch('showMassage', {
+  //   type: 'error',
+  //   data: err.message || err.response.msg,
+  // });
   return Promise.reject(err.response);
 });
 
-export default axios;
+
+/*
+ *  author: imricky
+ *  time: 2019/12/3 7:34 下午
+ *  function: 封装get
+*/
+export function get(url, params = {}) {
+  return new Promise((resolve, reject) => {
+    axios.get(url, { params })
+      .then((res) => {
+        if (res.status === 200) {
+          if (res.data) {
+            // 请求成功
+            resolve(res);
+          } else {
+            // 请求错误
+            reject(res);
+          }
+        } else {
+          // 服务器错误
+          console.log('服务器错误!');
+          reject(res);
+        }
+      })
+      .catch((error) => {
+        // console.log('网络错误!');
+        reject(error);
+      });
+  });
+}
+
+/*
+ *  author: imricky
+ *  time: 2019/12/3 7:34 下午
+ *  function: 封装post
+*/
+export function post(url, data = {}) {
+  return new Promise((resolve, reject) => {
+    axios.post(url, data)
+      .then((res) => {
+        if (res.status === 200) {
+          if (res.data) {
+            // 请求成功
+            resolve(res);
+          } else {
+            // 请求错误
+            reject(res);
+          }
+        } else {
+          // 服务器错误
+          console.log('服务器错误!');
+          reject(res);
+        }
+      })
+      .catch((error) => {
+        // console.log('网络错误!');
+        reject(error);
+      });
+  });
+}
+
+// export default axios;
