@@ -14,3 +14,8 @@ $--font-path: '~element-ui/lib/theme-chalk/fonts';
 .el-menu-item{
   padding: 0 10px;
 }
+
+// 输入框的间距 以前是40px,现在调整到20px
+.el-form-item__label{
+  line-height: 20px;
+}
