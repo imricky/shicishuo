@@ -1,6 +1,6 @@
 <template>
 <!--  TODO： 增加背景图-->
-  <div class="login-wrap1">
+  <div class="login-wrap">
     <div class="login-main">
       <div class="logo">
         <p class="logo-word">
@@ -70,7 +70,7 @@ export default {
               duration: 1000,
               onClose() {
                 _self.$router.push({
-                  path: '/1',
+                  path: '/t',
                 });
               },
             });
@@ -106,32 +106,10 @@ export default {
 
 <style scoped lang="scss">
   .login-wrap{
-    background: url('../../assets/bg2.jpg');
-    /*让整个div固定在屏幕的最上方和最左方*/
-    position: fixed;
-    top: 0;
-    left: 0;
-    /*让整个div跟屏幕实现一模一样的大小，从而达到全屏效果，
-    而min-width是为了实现让屏幕宽度在1000px以内时，div的大小保持不变，
-    也就是说在这种情况下，缩放屏幕宽度时，图片不要缩放（只有在1000px以内才有效）*/
-    width: 100%;
     height: 100%;
-    min-width: 600px;
-    /*整个div在HTML页面中各个层级的下方*/
-    z-index: -10;
-    zoom: 1;
-    background-color: #000;
-    /*上面这个是背景不要重复*/
-    background-repeat: no-repeat;
-    /*就是让图片随屏幕大小同步缩放，但是有部分可能会被裁切，不过不至于会露白*/
-    background-size: cover;
-    -webkit-background-size: cover;
-    -o-background-size: cover;
-    /*这句的意思就是图片的位置，居中，靠左对齐*/
-    background-position: center 0;
-    /*background-color: #AA314D;*/
-    /*position: relative;*/  //必须要注释掉才能居中，不清楚为啥
-
+    background: url('../../assets/bg2.jpg');
+    background-size: 100% 100%;
+    position: relative;
   }
   .login-main{
     width: 500px;
