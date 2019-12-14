@@ -47,21 +47,21 @@
 
           <el-col :span="4" :xs="2" :sm="2" :md="4" :lg="4" :xl="4">
             <div class="grid-content bg-purple">
-              <div v-if="isLogin" class="login-container">
+              <div v-if="user.token !== '' && user.username !== ''" class="login-container">
 <!--                <el-avatar icon="el-icon-user-solid" class="user-avatar"></el-avatar>-->
-                <el-dropdown placement="bottom">
+                <el-dropdown placement="bottom" @command="handleCommand">
                   <span class="el-dropdown-link">
                     <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
                   </span>
                   <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item icon="el-icon-s-custom">个人中心</el-dropdown-item>
-                    <el-dropdown-item icon="el-icon-remove">注销</el-dropdown-item>
+                    <el-dropdown-item icon="el-icon-s-custom" command="userCenter">个人中心</el-dropdown-item>
+                    <el-dropdown-item icon="el-icon-remove" command="logout">注销</el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
               </div>
               <div v-else class="login-container">
-                <el-button type="primary" plain >signin</el-button>
-                <el-button type="success" plain >signup</el-button>
+                <el-button type="primary" plain @click="goLogin">登录</el-button>
+                <el-button type="success" plain @click="goRegister">注册</el-button>
 <!--                <el-dropdown placement="bottom">-->
 <!--                  <span class="el-dropdown-link">-->
 <!--                    <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>-->
@@ -97,10 +97,15 @@ export default {
   //     return this.$store.state.menubarActiveIndex;
   //   },
   // },
-  computed: mapState({
-    // 传字符串参数 'count' 等同于 `state => state.count`
-    activeIndex: 'menubarActiveIndex',
-  }),
+  computed: {
+    ...mapState({
+      // 传字符串参数 'count' 等同于 `state => state.count`
+      activeIndex: 'menubarActiveIndex',
+    }),
+    user() {
+      return this.$store.state.user;
+    },
+  },
   methods: {
     // eslint-disable-next-line consistent-return
     handleSelect(key) {
@@ -110,7 +115,29 @@ export default {
       }
       this.$store.dispatch('updateMenubarActiveIndex', key);
     },
-
+    goLogin() {
+      this.$router.push({
+        path: '/login',
+      });
+    },
+    goRegister() {
+      this.$router.push({
+        path: '/register',
+      });
+    },
+    handleCommand(command) {
+      const _self = this;
+      if (command === 'logout') {
+        this.$message({
+          message: '注销成功',
+          type: 'success',
+          duration: 1000,
+          onClose() {
+            _self.$store.dispatch('removeUserToken');
+          },
+        });
+      }
+    },
   },
   created() {
 
