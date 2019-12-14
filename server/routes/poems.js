@@ -12,11 +12,13 @@ router.get('/getDailyPoem', async (req, res, next) => {
     const data = await Poem.generateDailyPoem();
     res.json({
       data,
+      code: 200,
     });
   } catch (e) {
     res.json({
       success: false,
       errorMessage: e,
+      code: 500,
     });
   }
 });
@@ -31,11 +33,13 @@ router.get('/getHistoryDailyPoem', async (req, res, next) => {
     const data = await Poem.getHistoryDailyPoem();
     res.json({
       data,
+      code: 200,
     });
   } catch (e) {
     res.json({
       success: false,
       errorMessage: e,
+      code: 500,
     });
   }
 });
@@ -51,11 +55,13 @@ router.post('/getPoemsByTags', async (req, res, next) => {
     const data = await Poem.getPoemsByTags(tagName, page);
     res.json({
       data,
+      code: 200,
     });
   } catch (e) {
     res.json({
       success: false,
       errorMessage: e,
+      code: 500,
     });
   }
 });
@@ -71,11 +77,13 @@ router.post('/getPoemsByAuthor', async (req, res, next) => {
     const data = await Poem.getPoemsByAuthor(author, page);
     res.json({
       data,
+      code: 200,
     });
   } catch (e) {
     res.json({
       success: false,
       errorMessage: e,
+      code: 500,
     });
   }
 });
@@ -91,11 +99,13 @@ router.post('/getHotTop50List', async (req, res, next) => {
     const data = await Poem.getHotTop50List(type);
     res.json({
       data,
+      code: 200,
     });
   } catch (e) {
     res.json({
       success: false,
       errorMessage: e,
+      code: 500,
     });
   }
 });
@@ -111,11 +121,13 @@ router.post('/getOneInfo', async (req, res, next) => {
     const data = await Poem.getOneInfo(_id);
     res.json({
       data,
+      code: 200,
     });
   } catch (e) {
     res.json({
       success: false,
       errorMessage: e,
+      code: 500,
     });
   }
 });
@@ -131,11 +143,13 @@ router.get('/getDatabaseAllInfo', async (req, res, next) => {
     const data = await Poem.getDatabaseAllInfo();
     res.json({
       data,
+      code: 200,
     });
   } catch (e) {
     res.json({
       success: false,
       errorMessage: e,
+      code: 500,
     });
   }
 });
@@ -151,11 +165,14 @@ router.post('/search', async (req, res, next) => {
     const data = await Poem.search(keyword);
     res.json({
       data,
+      code: 200,
+
     });
   } catch (e) {
     res.json({
       success: false,
       errorMessage: e,
+      code: 500,
     });
   }
 });

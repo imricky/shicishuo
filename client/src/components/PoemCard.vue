@@ -6,10 +6,9 @@
         <span class="title"> {{poemCardData.title}}</span>
         <span class="author-info">[唐] {{poemCardData.author}}</span>
       </div>
-
-      <div v-for="o in poemCardData.paragraphs" :key="o" class="text item">
-        {{ o }}
-      </div>
+        <p v-for="o in poemCardData.paragraphs" :key="o" class="text item">
+          {{ o }}
+        </p>
       <el-divider></el-divider>
       <div class="tags-and-button">
         <div>
@@ -107,6 +106,7 @@ export default {
   }
   .text {
     font-size: 14px;
+    text-align: center;
   }
   .item {
     margin-bottom: 18px;

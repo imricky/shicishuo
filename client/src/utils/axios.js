@@ -4,6 +4,13 @@ import store from '../store/index';
 import router from '../router';
 const $message = Message;
 
+// 有三种方式会导致这种现象：
+//
+// 1、请求方法不是GET/HEAD/POST
+//
+// 2、POST请求的Content-Type并非application/x-www-form-urlencoded, multipart/form-data, 或text/plain
+//
+// 3、请求设置了自定义的header字段
 
 axios.defaults.headers['Content-Type'] = 'application/json;charset=UTF-8';
 axios.defaults.timeout = 30000; // 超时时间

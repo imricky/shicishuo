@@ -119,8 +119,9 @@ export default {
   created() {
     this.getDailyPoem().then((res) => {
       // eslint-disable-next-line prefer-destructuring
-      this.poemCardData = res.data[0];
-      // console.log(res);
+      console.log(res);
+      // eslint-disable-next-line prefer-destructuring
+      this.poemCardData = res.data.data[0];
     });
   },
   mounted() {
