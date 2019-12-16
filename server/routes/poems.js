@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
+const mongoose = require('mongoose');
 const Poem = require('../dao/poemsDao');
+const { ObjectId } = mongoose.Types;
 
 /*
  *  author: imricky
@@ -118,7 +120,7 @@ router.post('/getHotTop50List', async (req, res, next) => {
 router.post('/getOneInfo', async (req, res, next) => {
   try {
     const { _id } = req.body;
-    const data = await Poem.getOneInfo(_id);
+    const data = await Poem.getOneInfo({ _id: ObjectId(_id) });
     res.json({
       data,
       code: 200,

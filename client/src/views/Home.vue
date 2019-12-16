@@ -1,11 +1,11 @@
 <template>
   <div class="home">
-<!--    <TopBar />-->
+    <TopBar />
 <!--    <PoemCard :poemCardData="poemCardData"/>-->
 <!--    <CoolExplorationCard />-->
 <!--    <DailyPoem />-->
 <!--    <ExploreGoodPoetry />-->
-    <library />
+<!--    <library />-->
 <!--    <CoolExploration />-->
 <!--    <Footer />-->
   </div>
@@ -13,24 +13,24 @@
 
 <script>
 // @ is an alias to /src
-// import TopBar from '@/components/TopBar.vue';
+import TopBar from '@/components/TopBar.vue';
 // import PoemCard from '@/components/PoemCard.vue'; //诗词卡片
 // import CoolExplorationCard from '@/components/CoolExplorationCard.vue';
 // import DailyPoem from '@/components/DailyPoem.vue';
 // import ExploreGoodPoetry from '@/views/poem/ExploreGoodPoetry.vue';
 import Footer from '@/components/Footer.vue';
-import Library from '@/views/poem/Library.vue';
+// import Library from '@/views/poem/Library.vue';
 // import CoolExploration from '@/views/poem/CoolExploration.vue';
 
 export default {
   name: 'home',
   components: {
-    // TopBar,
+    TopBar,
     // PoemCard,
     // CoolExplorationCard,
     // DailyPoem,
     // ExploreGoodPoetry,
-    Library,
+    // Library,
     // CoolExploration,
     // Footer,
   },

@@ -80,7 +80,7 @@ class Poem {
   static async getHistoryDailyPoem() {
     const res = await DailyPoems
       .find({}, { paragraphs: 0, id: 0 })
-      .limit(10)
+      .limit(5)
       .sort({ created: -1 })
       .exec();
     const totalCount = await DailyPoems
