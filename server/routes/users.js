@@ -4,7 +4,8 @@ const Xss = require('xss');
 const sha1 = require('sha1');
 const { sha1Salt } = require('../config/jwtSecret');
 const { createToken } = require('../utils/auth');
-const User = require('../models/userModel');
+const { User } = require('../models/userModel');
+const UsersDao = require('../dao/userDao');
 
 /* GET users listing. */
 router.get('/', (req, res, next) => {
@@ -99,6 +100,42 @@ router.post('/login', async (req, res, next) => {
     return res.json({
       code: 500,
       msg: e,
+    });
+  }
+});
+
+// 用户点击收藏
+router.post('/collect', async (req, res, next) => {
+  const userid = req.body._id;
+  const { poemid } = req.body;
+  try {
+    const data = await UsersDao.collect(userid, poemid);
+    res.json({
+      data,
+      code: 200,
+    });
+  } catch (e) {
+    res.json({
+      success: false,
+      errorMessage: e,
+      code: 500,
+    });
+  }
+});
+// 获取用户收藏
+router.post('/getUserCollections', async (req, res, next) => {
+  const { _id } = req.body;
+  try {
+    const data = await UsersDao.getCollectionsByUserId(_id);
+    res.json({
+      data,
+      code: 200,
+    });
+  } catch (e) {
+    res.json({
+      success: false,
+      errorMessage: e,
+      code: 500,
     });
   }
 });

@@ -13,7 +13,13 @@ const userSchema = {
   status: { type: Number, enum: [0, 1], default: 1 }, // 0代表被删除，1代表在线
 };
 
+const userCollectionSchema = {
+  userid: { type: String, required: [true, 'userid不能为空'] },
+  collections: { type: Array },
+};
+
 // Model
 const User = mongoose.model('user', userSchema, 'users');
+const UserCollections = mongoose.model('usercollection', userCollectionSchema, 'usercollection');
 
-module.exports = User;
+module.exports = { User, UserCollections };
