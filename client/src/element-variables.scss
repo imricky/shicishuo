@@ -19,3 +19,8 @@ $--font-path: '~element-ui/lib/theme-chalk/fonts';
 .el-form-item__label{
   line-height: 20px;
 }
+
+// table 鼠标悬停样式
+.el-table__row{
+  cursor: pointer;
+}
