@@ -2,7 +2,7 @@
   <div class="poem-card">
     <el-card class="box-card" shadow="hover">
       <div slot="header" class="top">
-        {{poemCardData}}
+<!--        {{poemCardData}}-->
         <span class="title"> {{poemCardData.title}}</span>
         <span class="author-info">[唐] {{poemCardData.author}}</span>
       </div>
@@ -61,15 +61,18 @@ export default {
     border: 1px solid rebeccapurple;
     background-color: #E9EEF3;
     color: #333;
-    margin: 10px 20px;
+    margin: 10px 0;
     display: flex;
     justify-content: center;
     align-items: center;
-  }
-  .box-card {
-    /*TODO: 适配不同分辨率*/
     max-width: 680px;
     min-height: 320px;
+  }
+  .box-card {
+    /*TODO: 媒体查询，适配不同分辨率*/
+    max-width: 680px;
+    min-height: 320px;
+    min-width: 650px;
   }
   .top{
     display: flex;

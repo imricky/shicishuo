@@ -6,82 +6,36 @@
   <div class="all-container">
     <el-container>
     <el-aside class="aside-container">
-      <el-card class="one-card website-info">
-        <div slot="header">
-          <span>网站信息</span>
-        </div>
-        <div>
-          <p class="all-poetry">本网站共收录：<span class="poem-count">20000</span>首诗词</p>
-          <p>本网站共收录：<span class="author-count">3000</span>位诗人</p>
-        </div>
-      </el-card>
       <el-card class="one-card top-ten-poet">
         <div slot="header">
-          <span>十大高产诗人</span>
+          <span>历史每日诗词</span>
         </div>
         <div>
           <el-table
-            :data="tableData"
-            style="width: 100%">
-            <el-table-column type="expand">
-              <template slot-scope="props">
-                <el-form label-position="left" inline class="demo-table-expand">
-                  <el-form-item label="商品名称">
-                    <span>{{ props.row.name }}</span>
-                  </el-form-item>
-                  <el-form-item label="所属店铺">
-                    <span>{{ props.row.shop }}</span>
-                  </el-form-item>
-                  <el-form-item label="商品 ID">
-                    <span>{{ props.row.id }}</span>
-                  </el-form-item>
-                  <el-form-item label="店铺 ID">
-                    <span>{{ props.row.shopId }}</span>
-                  </el-form-item>
-                  <el-form-item label="商品分类">
-                    <span>{{ props.row.category }}</span>
-                  </el-form-item>
-                  <el-form-item label="店铺地址">
-                    <span>{{ props.row.address }}</span>
-                  </el-form-item>
-                  <el-form-item label="商品描述">
-                    <span>{{ props.row.desc }}</span>
-                  </el-form-item>
-                </el-form>
-              </template>
+            :data="historyDailyPoemData"
+            stripe
+            style="width: 100%"
+            @row-click="rowClick">
+            <el-table-column
+              prop="created"
+              label="日期"
+              width="60">
             </el-table-column>
             <el-table-column
-              label="商品 ID"
-              prop="id">
+              prop="author"
+              label="作者"
+              width="55">
             </el-table-column>
             <el-table-column
-              label="商品名称"
-              prop="name">
+              prop="title"
+              label="题目">
             </el-table-column>
           </el-table>
         </div>
       </el-card>
-      <el-card class="one-card popular-words">
-        <div slot="header">
-          <span>热门词语</span>
-        </div>
-        <div>
-          <el-tag
-            v-for="item in items"
-            :key="item.label"
-            :type="item.type"
-            effect="plain">
-            {{ item.label }}
-          </el-tag>
-        </div>
-      </el-card>
     </el-aside>
     <el-main class="main">
-          <PoemCard :poemCardData="poemCardData"/>
-<!--      <el-aside class="aside">-->
-<!--        123dasldasd-->
-<!--        sdhjkasdhjaksdjh-->
-<!--      </el-aside>-->
+      <PoemCard :poemCardData="poemCardData"/>
     </el-main>
   </el-container>
   </div>
@@ -107,6 +61,7 @@ export default {
   data() {
     return {
       poemCardData: {},
+      historyDailyPoemData: [],
     };
   },
   computed: {},
@@ -115,13 +70,35 @@ export default {
       const res = await Http.getDailyPoem();
       return res;
     },
+    async getHistoryDailyPoem() {
+      const res = await Http.getHistoryDailyPoem();
+      return res;
+    },
+    async rowClick(row, column, event) {
+      console.log(row, column, event);
+      try {
+        const res = await Http.getOneInfo(row._id);
+        // eslint-disable-next-line prefer-destructuring
+        this.poemCardData = res.data.data.res[0];
+      } catch (e) {
+        this.$message({
+          message: '获取诗词信息失败',
+          type: 'warning',
+        });
+      }
+    },
   },
   created() {
     this.getDailyPoem().then((res) => {
       // eslint-disable-next-line prefer-destructuring
-      console.log(res);
-      // eslint-disable-next-line prefer-destructuring
       this.poemCardData = res.data.data[0];
+    });
+    this.getHistoryDailyPoem().then((res) => {
+      res.data.data.res.map((i) => {
+        i.created = i.created.substring(5);
+      });
+      // eslint-disable-next-line prefer-destructuring
+      this.historyDailyPoemData = res.data.data.res;
     });
   },
   mounted() {
@@ -133,27 +110,14 @@ export default {
 <style scoped lang="scss">
 
   .one-card{
-    margin-bottom: 20px;
-  }
-  .all-poetry{
-    margin-bottom: 10px;
-    .poem-count{
-      font-weight: bold;
-      color: #AA314D;
-    }
-    /*border-bottom: 1px solid gray;*/
-  }
-  .author-count{
-    font-weight: bold;
-    /*TODO: 各种颜色需要调整*/
-    color: aquamarine;
-  }
+    /*margin: 20px 0;*/
 
+  }
   .main{
     border: 1px solid rebeccapurple;
     background-color: #E9EEF3;
     color: #333;
-    margin: 10px 20px;
+    margin: 0 20px;
     display: flex;
     justify-content: center;
     align-items: center;
