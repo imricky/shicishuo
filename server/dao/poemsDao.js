@@ -102,7 +102,7 @@ class Poem {
   static async getPoemsByTags(tagName, page) {
     const res = await TangPoets
       .find({ tags: tagName })
-      .skip(page * 10)
+      .skip((page - 1) * 10)
       .limit(10)
       .sort({ _id: -1 })
       .exec();
@@ -221,6 +221,31 @@ class Poem {
       $or: [{ author: `${keyword}` }, { title: `${keyword}` }, { paragraphs: `${keyword}` }, { tags: `${keyword}` }],
     }).limit(20);
     return res;
+  }
+
+  static async exploreGoodPoemAll() {
+    // 排名前20的tags,诗句里
+    const top20Tags = await TangPoets.aggregate([
+      // eslint-disable-next-line no-useless-escape
+      { $unwind: '$tags' },
+      {
+        $group: { _id: '$tags', count: { $sum: 1 } },
+      },
+    ]).sort({ count: -1 })
+      .limit(20);
+
+    const top20Authors = await TangPoets.aggregate([
+      // eslint-disable-next-line no-useless-escape
+      { $unwind: '$author' },
+      {
+        $group: { _id: '$author', count: { $sum: 1 } },
+      },
+    ]).sort({ count: -1 })
+      .limit(20);
+    return {
+      top20Tags,
+      top20Authors,
+    };
   }
 }
 module.exports = Poem;

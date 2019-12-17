@@ -34,6 +34,7 @@ module.exports = {
     "no-debugger": 0, // 允许debugger
     "no-underscore-dangle": 0, // 允许res._id这种形式的
     "consistent-return": "off",
+    "array-callback-return": "off",
     // 'import/extensions': ['error', 'always', {
     //   'js': 'never',
     //   'vue': 'never'

@@ -10,6 +10,7 @@ export const Url = {
   getOneInfoApi: `${baseURL}/poems/getOneInfo`, // 根据前端传过来的_id ，获取完整的一首诗，用于每日一诗中点击标题，右侧展示完整诗句
   getDatabaseAllInfoApi: `${baseURL}/poems/getDatabaseAllInfo`, // 获取数据库里的汇总信息
   searchApi: `${baseURL}/poems/search`, // 搜索接口
+  exploreGoodPoemAllApi: `${baseURL}/poems/exploreGoodPoemAll`, // 探索诗词页面获取Top20的接口
 
   // 和用户相关的东西
   login: `${baseURL}/users/login`,

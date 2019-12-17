@@ -92,11 +92,6 @@ export default {
       input2: '',
     };
   },
-  // computed: {
-  //   activeIndex() {
-  //     return this.$store.state.menubarActiveIndex;
-  //   },
-  // },
   computed: {
     ...mapState({
       // 传字符串参数 'count' 等同于 `state => state.count`

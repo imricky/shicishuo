@@ -42,6 +42,11 @@ class Http {
     return post(Url.searchApi, { keyword });
   }
 
+  // 探索诗词页面获取Top20的接口
+  exploreGoodPoemAll() {
+    return get(Url.exploreGoodPoemAllApi);
+  }
+
   /*
    *  @author: imricky(github.com/imricky)
    *  @time: 2019/12/12 4:50 下午

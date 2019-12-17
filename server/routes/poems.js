@@ -179,5 +179,22 @@ router.post('/search', async (req, res, next) => {
   }
 });
 
+router.get('/exploreGoodPoemAll', async (req, res, next) => {
+  try {
+    const data = await Poem.exploreGoodPoemAll();
+    res.json({
+      data,
+      code: 200,
+
+    });
+  } catch (e) {
+    res.json({
+      success: false,
+      errorMessage: e,
+      code: 500,
+    });
+  }
+});
+
 
 module.exports = router;
