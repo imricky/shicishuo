@@ -77,10 +77,11 @@
           <el-table-column type="expand">
             <template slot-scope="props">
               <el-form label-position="left" inline class="demo-table-expand">
-                <el-form-item label="内容">
-                  <span v-for="paragraph in props.row.paragraphs" :key="paragraph">
+                <el-form-item class="paragraph-table">
+<!--                  // TODO: 增加样式-->
+                  <div v-for="paragraph in props.row.paragraphs" :key="paragraph" >
                     {{ paragraph }}
-                  </span>
+                  </div>
                 </el-form-item>
               </el-form>
             </template>
@@ -97,6 +98,7 @@
             label="标签🏷"
             width="180">
             <template slot-scope="scope">
+<!--              :type="scope.row.tag === '家' ? 'primary' : 'success'"-->
               <el-tag type="success" v-for="tag in scope.row.tags" :key="tag">
                 {{ tag }}
               </el-tag>
@@ -175,7 +177,7 @@ export default {
           this.currentPage = page; // 将分页条的页数等于当前页
         }));
       } else if (this.activeNames === '2') {
-        Http.getPoemsByTags(this.currentAuthor, page).then(((res) => {
+        Http.getPoemsByAuthor(this.currentAuthor, page).then(((res) => {
           this.poemList = res.data.data.res;
           this.totalCount = res.data.data.totalCount;
           this.currentPage = page; // 将分页条的页数等于当前页
@@ -219,5 +221,10 @@ export default {
   .main-container{
     border: 1px solid #409EFF;
     margin-left: 20px;
+  }
+  .paragraph-table{
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 </style>
