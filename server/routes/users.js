@@ -2,10 +2,12 @@ const express = require('express');
 const router = express.Router();
 const Xss = require('xss');
 const sha1 = require('sha1');
+const mongoose = require('mongoose');
 const { sha1Salt } = require('../config/jwtSecret');
 const { createToken } = require('../utils/auth');
 const { User } = require('../models/userModel');
 const UsersDao = require('../dao/userDao');
+const { ObjectId } = mongoose.Types;
 
 /* GET users listing. */
 router.get('/', (req, res, next) => {
@@ -104,6 +106,22 @@ router.post('/login', async (req, res, next) => {
   }
 });
 
+router.post('/getUserInfo', async (req, res, next) => {
+  const { _id } = req.body;
+  try {
+    const data = await User.find({ _id: ObjectId(_id) });
+    return res.json({
+      code: 200,
+      data,
+    });
+  } catch (e) {
+    return res.json({
+      code: 500,
+      msg: e,
+    });
+  }
+});
+
 // 用户点击收藏
 router.post('/collect', async (req, res, next) => {
   const userid = req.body._id;
@@ -123,10 +141,28 @@ router.post('/collect', async (req, res, next) => {
   }
 });
 // 获取用户收藏
-router.post('/getUserCollections', async (req, res, next) => {
-  const { _id } = req.body;
+// router.post('/getUserCollections', async (req, res, next) => {
+//   const { _id } = req.body;
+//   try {
+//     const data = await UsersDao.getCollectionsByUserId(_id);
+//     res.json({
+//       data,
+//       code: 200,
+//     });
+//   } catch (e) {
+//     res.json({
+//       success: false,
+//       errorMessage: e,
+//       code: 500,
+//     });
+//   }
+// });
+
+// 获取用户收藏
+router.post('/getCollectionsByUserId', async (req, res, next) => {
+  const { _id, page } = req.body;
   try {
-    const data = await UsersDao.getCollectionsByUserId(_id);
+    const data = await UsersDao.getCollectionsByUserId(_id, page);
     res.json({
       data,
       code: 200,

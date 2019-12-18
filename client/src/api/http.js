@@ -66,6 +66,10 @@ class Http {
   register(data) {
     return post(Url.register, data);
   }
+
+  getCollectionsByUserId(_id, page = 1) {
+    return post(Url.getCollectionsByUserIdApi, { _id, page });
+  }
 }
 
 export default new Http();

@@ -1,4 +1,6 @@
+const mongoose = require('mongoose');
 const { User, UserCollections } = require('../models/userModel');
+const { ObjectId } = mongoose.Types;
 
 class UsersDao {
   // eslint-disable-next-line no-useless-constructor,no-empty-function
@@ -38,9 +40,40 @@ class UsersDao {
    *  @param: _id
    *  @return: 该用户收藏的列表
   */
-  static async getCollectionsByUserId(_id) {
-    const res = await UserCollections.find({ userid: _id });
-    return res;
+  static async getCollectionsByUserId(_id, page) {
+    // const skipPage = (page - 1) * 10;
+    const res = await UserCollections.aggregate([
+      {
+        $lookup: {
+          from: 'tangpoets',
+          localField: 'collections',
+          foreignField: '_id',
+          as: 'poems',
+        },
+      },
+      {
+        $match: { userid: _id },
+      },
+      // { $skip: skipPage },
+      // { $limit: 10 },
+      // { $sort: { _id: -1 } },
+      // {
+      //   $group: { _id: '$poems.title' },
+      // },
+    ]).skip((page - 1) * 10)
+      .limit(10)
+      .sort({ _id: -1 })
+      .exec();
+    // mongoose 5 不支持不写中括号的aggregate()，必须要写aggregate([])
+
+    const total = await UserCollections.aggregate([
+      { $match: { userid: _id } },
+      { $unwind: '$collections' },
+      { $project: { count: { $add: 1 } } },
+      { $group: { _id: null, number: { $sum: '$count' } } },
+    ]);
+    const totalCount = total[0].number;
+    return { res, totalCount };
   }
 }
 

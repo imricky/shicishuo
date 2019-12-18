@@ -16,6 +16,7 @@ const userSchema = {
 const userCollectionSchema = {
   userid: { type: String, required: [true, 'userid不能为空'] },
   collections: { type: Array },
+  created: { type: Date, default: Date.now() }, // 创建数据的时间
 };
 
 // Model

@@ -1,6 +1,7 @@
 <template>
   <div class="home">
     <TopBar />
+    <Profile />
 <!--    <PoemCard :poemCardData="poemCardData"/>-->
 <!--    <CoolExplorationCard />-->
 <!--    <DailyPoem />-->
@@ -21,11 +22,13 @@ import TopBar from '@/components/TopBar.vue';
 import Footer from '@/components/Footer.vue';
 // import Library from '@/views/poem/Library.vue';
 // import CoolExploration from '@/views/poem/CoolExploration.vue';
+import Profile from '@/views/user/Profile.vue';
 
 export default {
   name: 'home',
   components: {
     TopBar,
+    Profile,
     // PoemCard,
     // CoolExplorationCard,
     // DailyPoem,
