@@ -47,6 +47,11 @@ class Http {
     return get(Url.exploreGoodPoemAllApi);
   }
 
+  // 获取诗词总数列表
+  getPoemList(page = 1) {
+    return post(Url.getPoemListApi, { page });
+  }
+
   /*
    *  @author: imricky(github.com/imricky)
    *  @time: 2019/12/12 4:50 下午

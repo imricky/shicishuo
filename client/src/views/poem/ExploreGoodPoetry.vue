@@ -25,7 +25,7 @@
 
           <el-collapse-item name="2">
             <template slot="title">
-              <span class="aside-title">作者 Feedback</span><i class="header-icon el-icon-info"></i>
+              <span class="aside-title">作者 Author</span><i class="header-icon el-icon-info"></i>
             </template>
             <div class="aside-type">
               <el-link
@@ -73,7 +73,8 @@
         <div><i class="el-icon-s-promotion"></i> 点击左侧标签，探索你的爱❤️</div>
         <el-table
           :data="poemList"
-          style="width: 100%">
+          style="width: 100%"
+          v-if="poemList.length !== 0">
           <el-table-column type="expand">
             <template slot-scope="props">
               <el-form label-position="left" inline class="demo-table-expand">

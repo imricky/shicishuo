@@ -179,6 +179,32 @@ router.post('/search', async (req, res, next) => {
   }
 });
 
+
+/*
+ *  @author: imricky(github.com/imricky)
+ *  @time: 2019/12/18 11:51 上午
+ *  @function: 获取诗词总列表，分页，每页10条
+ *  @param: page
+ *  @return: array
+*/
+router.post('/getPoemList', async (req, res, next) => {
+  try {
+    const { page } = req.body;
+    const data = await Poem.getPoemList(page);
+    res.json({
+      data,
+      code: 200,
+
+    });
+  } catch (e) {
+    res.json({
+      success: false,
+      errorMessage: e,
+      code: 500,
+    });
+  }
+});
+
 router.get('/exploreGoodPoemAll', async (req, res, next) => {
   try {
     const data = await Poem.exploreGoodPoemAll();

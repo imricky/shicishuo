@@ -148,7 +148,7 @@ class Poem {
    *  参数：tagName: 可以是   author,tags ，统计top50
    *  return 返回数据类型：[{"写景":123},{"庐山":456}]    [{"白居易":123},{"杜甫":456}]
   */
-  static async getHotTop50List(type) {
+  static async getHotTopNList(type, n) {
     const allTags = await TangPoets.aggregate([
       // eslint-disable-next-line no-useless-escape
       { $unwind: `$${type}` },
@@ -156,7 +156,7 @@ class Poem {
         $group: { _id: `$${type}`, count: { $sum: 1 } },
       },
     ]).sort({ count: -1 })
-      .limit(50);
+      .limit(n);
     return allTags;
   }
 
@@ -208,10 +208,37 @@ class Poem {
       }
     }
 
+    // 排名前5的标签
+    const top10Tags = await this.getHotTopNList('tags', 10);
+
     return {
       authorCount,
       poemCount,
       top10PoemArr,
+      top10Tags,
+    };
+  }
+
+  /*
+   *  @author: imricky(github.com/imricky)
+   *  @time: 2019/12/18 11:51 上午
+   *  @function: 获取诗词总列表，分页，每页10条
+   *  @param: page
+   *  @return: array
+  */
+  static async getPoemList(page) {
+    const res = await TangPoets
+      .find({})
+      .skip((page - 1) * 20)
+      .limit(20)
+      .sort({ _id: -1 })
+      .exec();
+    const totalCount = await TangPoets
+      .find({ })
+      .countDocuments();
+    return {
+      res,
+      totalCount,
     };
   }
 

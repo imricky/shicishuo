@@ -11,6 +11,7 @@ export const Url = {
   getDatabaseAllInfoApi: `${baseURL}/poems/getDatabaseAllInfo`, // 获取数据库里的汇总信息
   searchApi: `${baseURL}/poems/search`, // 搜索接口
   exploreGoodPoemAllApi: `${baseURL}/poems/exploreGoodPoemAll`, // 探索诗词页面获取Top20的接口
+  getPoemListApi: `${baseURL}/poems/getPoemList`, // 获取诗词总数的页面
 
   // 和用户相关的东西
   login: `${baseURL}/users/login`,
