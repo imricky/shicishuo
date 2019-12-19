@@ -43,6 +43,8 @@ const routes = [
     name: 'CoolExploration',
     component: () => import(/* webpackChunkName: "about" */ '@/views/poem/CoolExploration.vue'),
   },
+
+
   // 和用户相关的路由
   {
     path: '/login',
@@ -53,6 +55,11 @@ const routes = [
     path: '/register',
     name: 'register',
     component: () => import(/* webpackChunkName: "about" */ '@/views/user/Register.vue'),
+  },
+  {
+    path: '/userProfile',
+    name: 'userProfile',
+    component: () => import(/* webpackChunkName: "about" */ '@/views/user/Profile.vue'),
   },
 ];
 

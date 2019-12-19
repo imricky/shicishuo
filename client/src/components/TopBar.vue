@@ -54,7 +54,7 @@
                     <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
                   </span>
                   <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item icon="el-icon-s-custom" command="userCenter">个人中心</el-dropdown-item>
+                    <el-dropdown-item icon="el-icon-s-custom" command="userProfile">个人中心</el-dropdown-item>
                     <el-dropdown-item icon="el-icon-remove" command="logout">注销</el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
@@ -130,6 +130,11 @@ export default {
           onClose() {
             _self.$store.dispatch('removeUserToken');
           },
+        });
+      }
+      if (command === 'userProfile') {
+        this.$router.push({
+          path: '/userProfile',
         });
       }
     },
