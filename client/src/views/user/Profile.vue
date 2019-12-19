@@ -123,6 +123,7 @@ export default {
     changeCollectionPage(page) {
       this.getCollectionsByUserId(page).then((res) => {
         // 如果收藏列表里存在 则赋值进去
+        // TODO： 加入容错机制和提醒，提取公共方法（这里写了两遍）
         if (res.data.data.res.length !== 0) {
           this.collectionList = res.data.data.res[0].poems;
           this.collectionTotalCount = res.data.data.totalCount;
@@ -182,7 +183,7 @@ export default {
     // 处理没有的情况
     this.getCollectionsByUserId().then((res) => {
       // 如果收藏列表里存在 则赋值进去
-      if (res.data.data.res.length !== 0) {
+      if (res.data.data && res.data.data.res.length !== 0) {
         this.collectionList = res.data.data.res[0].poems;
         this.collectionTotalCount = res.data.data.totalCount;
       }
