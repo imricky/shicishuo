@@ -11,9 +11,10 @@
             用户头像
           </div>
           <div class="user-other">
-            <div class="user-name animated" :class="{ jello: usernameAnimate }"  ref="username" :contenteditable="isInSetting">
-              {{userInfo.username}}
-            </div>
+            <input type="text" v-model="userInfo.username"
+                   :readonly="!isInSetting" ref="username"
+                   class="user-name animated"
+                   :class="{ jello: isInSetting }">
             <div class="user-desc">{{userInfo.userDescription}}</div>
             <div class="user-collection">被关注，被收藏，点赞数</div>
             <div class="user-setting">
@@ -137,15 +138,18 @@ export default {
     // 点击设置
     userSetting() {
       this.isInSetting = true;
-      this.usernameAnimate = true;
+      this.$refs.username.focus();
+      // 下面两行代码，解决输入框光标定位问题
+      this.$refs.username.value = '';
+      this.$refs.username.value = this.userInfo.username;
     },
     userSettingCancel() {
       this.isInSetting = false;
-      this.usernameAnimate = false;
+      this.userInfo.username = window.localStorage.getItem('username'); // 取消则从store里去获取真实值
     },
     async userSettingSave() {
       const _self = this;
-      const username = this.$refs.username.innerHTML;
+      const { username } = this.userInfo;
       // 原来的username,更新失败了就恢复,必须要从vuex里取，不能直接oldUsername = this.$refs.username.innerHTML;
       const oldUsername = this.$store.state.user.username;
       const { _id } = this.$store.state.user;
@@ -158,7 +162,6 @@ export default {
           duration: 1000,
           onClose() {
             window.localStorage.setItem('username', username);
-            _self.isInSetting = false;
           },
         });
       } else {
@@ -167,14 +170,12 @@ export default {
           type: 'warning',
           duration: 1000,
           onClose() {
-            _self.isInSetting = false;
-            _self.$refs.username.innerHTML = oldUsername;
+            _self.userInfo.username = oldUsername;
           },
         });
       }
       // 最后全部设置为false
       this.isInSetting = false;
-      this.usernameAnimate = false;
     },
   },
   created() {
@@ -220,6 +221,7 @@ export default {
       .user-other{
         border: 1px solid darkcyan;
         text-align: left;
+        margin-left: 20px;
         // 模拟光标闪动
         .user-name{
           font-size: 20px;
@@ -229,7 +231,6 @@ export default {
           &[contenteditable=true]{
             /*TODO: 改变输入框的颜色*/
             border: 1px solid #409EFF;
-            animation: blink 1s infinite steps(1, start);
           }
         }
         .user-desc{
@@ -250,19 +251,6 @@ export default {
       }
     }
   }
-
-  /*这里设置动画blink*/
-  @keyframes blink {
-    0%, 100% {
-      background-color: #000;
-      color: #aaa;
-    }
-    50% {
-      background-color: #bbb; /* not #aaa because it's seem there is Google Chrome bug */
-      color: #000;
-    }
-  }
-
 
   .main-container{
     width: 680px;
