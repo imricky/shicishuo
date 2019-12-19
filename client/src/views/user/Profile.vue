@@ -15,7 +15,13 @@
             <div class="user-desc">简介</div>
             <div class="user-collection">被关注，被收藏，点赞数</div>
             <div class="user-setting">
-              <el-button type="primary">设置</el-button>
+              <span v-if="isInSetting === false">
+                <el-button type="primary" size="mini" @click="userSetting">设置</el-button>
+              </span>
+              <span v-else>
+                <el-button type="primary" size="mini" @click="userSettingSave">保存</el-button>
+                <el-button type="primary" size="mini" @click="userSettingCancel">取消</el-button>
+              </span>
             </div>
           </div>
         </div>
@@ -87,6 +93,14 @@ export default {
       activeName: 'first',
       collectionList: [], // 收藏列表
       collectionTotalCount: 100, // 收藏诗词的数量
+      isInSetting: false, // 是否正在设置，默认为false
+      userInfo: {
+        username: '',
+        userDescription: '',
+        userAvatar: '',
+        userHaveBeenCollected: 1,
+        userHaveBeenThumbsUp: 1,
+      },
     };
   },
   computed: {},
@@ -94,12 +108,14 @@ export default {
     handleClick(tab, event) {
       console.log(tab, event);
     },
+    // 获取用户的收藏列表
     async getCollectionsByUserId(page) {
       // TODO： 加入容错机制和提醒，提取公共方法（这里写了两遍）
       const _id = window.localStorage.getItem('_id');
       const res = await Http.getCollectionsByUserId(_id, page);
       return res;
     },
+    // 翻页的方法
     changeCollectionPage(page) {
       this.getCollectionsByUserId(page).then((res) => {
         // 如果收藏列表里存在 则赋值进去
@@ -108,6 +124,21 @@ export default {
           this.collectionTotalCount = res.data.data.totalCount;
         }
       });
+    },
+    // 获取用户信息
+    async getUserInfo() {
+      const _id = window.localStorage.getItem('_id');
+      const res = await Http.getUserInfo(_id);
+      return res;
+    },
+    // 点击设置
+    userSetting() {
+      this.isInSetting = true;
+    },
+    userSettingCancel() {
+      this.isInSetting = false;
+    },
+    userSettingSave() {
     },
   },
   created() {
@@ -118,6 +149,12 @@ export default {
         this.collectionList = res.data.data.res[0].poems;
         this.collectionTotalCount = res.data.data.totalCount;
       }
+    });
+
+    // 获取用户信息
+    this.getUserInfo().then((res) => {
+      this.userInfo.username = res.data.data[0].username;
+      this.userInfo.userDescription = 'test1';
     });
   },
   mounted() {

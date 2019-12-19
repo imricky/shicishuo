@@ -52,6 +52,10 @@ class Http {
     return post(Url.getPoemListApi, { page });
   }
 
+
+  // ********************************************************************************************
+  // ***********************************以下是关于用户的方法*****************************************
+  // ********************************************************************************************
   /*
    *  @author: imricky(github.com/imricky)
    *  @time: 2019/12/12 4:50 下午
@@ -69,6 +73,10 @@ class Http {
 
   getCollectionsByUserId(_id, page = 1) {
     return post(Url.getCollectionsByUserIdApi, { _id, page });
+  }
+
+  getUserInfo(_id) {
+    return post(Url.getUserInfoApi, { _id });
   }
 }
 

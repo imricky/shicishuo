@@ -18,4 +18,5 @@ export const Url = {
   login: `${baseURL}/users/login`,
   register: `${baseURL}/users/register`,
   getCollectionsByUserIdApi: `${baseURL}/users/getCollectionsByUserId`, // 获取当前用户的收藏诗词
+  getUserInfoApi: `${baseURL}/users/getUserInfo`, // 获取当前用户的信息
 };
