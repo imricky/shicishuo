@@ -122,6 +122,32 @@ router.post('/getUserInfo', async (req, res, next) => {
   }
 });
 
+router.post('/updateUserInfo', async (req, res, next) => {
+  const { _id } = req.body;
+  const userUpdate = {
+    username: Xss(req.body.username),
+    updated: Date.now(),
+  };
+  try {
+    const data = await UsersDao.updateUserInfo(_id, userUpdate);
+    if (data.code === 200) {
+      return res.json({
+        code: 200,
+        data: data.res,
+      });
+    }
+    return res.json({
+      code: 500,
+      msg: data.msg,
+    });
+  } catch (e) {
+    return res.json({
+      code: 500,
+      msg: e,
+    });
+  }
+});
+
 // 用户点击收藏
 router.post('/collect', async (req, res, next) => {
   const userid = req.body._id;

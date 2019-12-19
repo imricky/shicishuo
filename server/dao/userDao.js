@@ -7,6 +7,7 @@ class UsersDao {
   constructor() {
   }
 
+  // TODO: 所有Dao方法加上try catch
   static async collect(userid, poemid) {
     // 先在数据库里找到是否存在该用户，不存在先新建一个userid，再进行收藏，存在的话则直接收藏
     const isExistUser = await UserCollections.find({ userid });
@@ -74,6 +75,31 @@ class UsersDao {
     ]);
     const totalCount = total[0].number;
     return { res, totalCount };
+  }
+
+  static async updateUserInfo(_id, userUpdate) {
+    try {
+      const oldUser = await User.findOne({ _id });
+      const { username: oldUsername } = oldUser;
+      const isExistDumpUsername = await User.find({ username: userUpdate.username });
+      // 如果在数据库中查到存在用户名，并且用户名不属于当前用户，那么就提示重复了
+      if (isExistDumpUsername.length !== 0 && userUpdate.username !== oldUsername) {
+        return {
+          code: 500,
+          msg: '用户名重复了，请换一个吧',
+        };
+      }
+      const res = await User.updateOne({ _id }, userUpdate);
+      return {
+        res,
+        code: 200,
+      };
+    } catch (e) {
+      return {
+        code: 500,
+        msg: e.stack,
+      };
+    }
   }
 }
 

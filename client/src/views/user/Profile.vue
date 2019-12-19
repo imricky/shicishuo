@@ -11,8 +11,10 @@
             用户头像
           </div>
           <div class="user-other">
-            <div class="user-name">用户名</div>
-            <div class="user-desc">简介</div>
+            <div class="user-name animated" :class="{ jello: usernameAnimate }"  ref="username" :contenteditable="isInSetting">
+              {{userInfo.username}}
+            </div>
+            <div class="user-desc">{{userInfo.userDescription}}</div>
             <div class="user-collection">被关注，被收藏，点赞数</div>
             <div class="user-setting">
               <span v-if="isInSetting === false">
@@ -94,6 +96,7 @@ export default {
       collectionList: [], // 收藏列表
       collectionTotalCount: 100, // 收藏诗词的数量
       isInSetting: false, // 是否正在设置，默认为false
+      usernameAnimate: false, // 用户名修改输入框的动效
       userInfo: {
         username: '',
         userDescription: '',
@@ -134,11 +137,44 @@ export default {
     // 点击设置
     userSetting() {
       this.isInSetting = true;
+      this.usernameAnimate = true;
     },
     userSettingCancel() {
       this.isInSetting = false;
+      this.usernameAnimate = false;
     },
-    userSettingSave() {
+    async userSettingSave() {
+      const _self = this;
+      const username = this.$refs.username.innerHTML;
+      // 原来的username,更新失败了就恢复,必须要从vuex里取，不能直接oldUsername = this.$refs.username.innerHTML;
+      const oldUsername = this.$store.state.user.username;
+      const { _id } = this.$store.state.user;
+      const res = await Http.updateUserInfo(_id, username);
+      // 如果更新成功
+      if (res.data.code === 200) {
+        this.$message({
+          message: '更新成功',
+          type: 'success',
+          duration: 1000,
+          onClose() {
+            window.localStorage.setItem('username', username);
+            _self.isInSetting = false;
+          },
+        });
+      } else {
+        this.$message({
+          message: res.data.msg,
+          type: 'warning',
+          duration: 1000,
+          onClose() {
+            _self.isInSetting = false;
+            _self.$refs.username.innerHTML = oldUsername;
+          },
+        });
+      }
+      // 最后全部设置为false
+      this.isInSetting = false;
+      this.usernameAnimate = false;
     },
   },
   created() {
@@ -184,11 +220,17 @@ export default {
       .user-other{
         border: 1px solid darkcyan;
         text-align: left;
+        // 模拟光标闪动
         .user-name{
           font-size: 20px;
           font-weight: bold;
           line-height: 45px;
           border: 1px solid #E6A23C;
+          &[contenteditable=true]{
+            /*TODO: 改变输入框的颜色*/
+            border: 1px solid #409EFF;
+            animation: blink 1s infinite steps(1, start);
+          }
         }
         .user-desc{
           margin-top: 20px;
@@ -208,6 +250,19 @@ export default {
       }
     }
   }
+
+  /*这里设置动画blink*/
+  @keyframes blink {
+    0%, 100% {
+      background-color: #000;
+      color: #aaa;
+    }
+    50% {
+      background-color: #bbb; /* not #aaa because it's seem there is Google Chrome bug */
+      color: #000;
+    }
+  }
+
 
   .main-container{
     width: 680px;

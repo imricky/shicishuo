@@ -78,6 +78,10 @@ class Http {
   getUserInfo(_id) {
     return post(Url.getUserInfoApi, { _id });
   }
+
+  updateUserInfo(_id, username) {
+    return post(Url.updateUserInfoApi, { _id, username });
+  }
 }
 
 export default new Http();
