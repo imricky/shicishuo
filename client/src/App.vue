@@ -32,7 +32,7 @@ body,html {
   height: 100%;
 }
 #app {
-  text-align: center;
+  /*text-align: center;*/
   height: 100%;
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
