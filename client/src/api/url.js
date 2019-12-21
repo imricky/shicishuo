@@ -20,4 +20,5 @@ export const Url = {
   getCollectionsByUserIdApi: `${baseURL}/users/getCollectionsByUserId`, // 获取当前用户的收藏诗词
   getUserInfoApi: `${baseURL}/users/getUserInfo`, // 获取当前用户的信息
   updateUserInfoApi: `${baseURL}/users/updateUserInfo`, // 更新用户信息
+  collectApi: `${baseURL}/users/collect`, // 用户收藏
 };

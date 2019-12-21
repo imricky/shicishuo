@@ -21,10 +21,10 @@ class UsersDao {
         return [];
       }
 
-      const res = await UserCollections.updateOne({ userid }, { $addToSet: { collections: poemid } });
+      const res = await UserCollections.updateOne({ userid }, { $addToSet: { collections: ObjectId(poemid) } });
       return res;
     }
-    const res = await UserCollections.updateOne({ userid }, { $addToSet: { collections: poemid } });
+    const res = await UserCollections.updateOne({ userid }, { $addToSet: { collections: ObjectId(poemid) } });
     return res;
 
     // let query = { /* query */ };

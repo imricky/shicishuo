@@ -150,8 +150,7 @@ router.post('/updateUserInfo', async (req, res, next) => {
 
 // 用户点击收藏
 router.post('/collect', async (req, res, next) => {
-  const userid = req.body._id;
-  const { poemid } = req.body;
+  const { userid, poemid } = req.body;
   try {
     const data = await UsersDao.collect(userid, poemid);
     res.json({

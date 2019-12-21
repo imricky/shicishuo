@@ -82,6 +82,10 @@ class Http {
   updateUserInfo(_id, username) {
     return post(Url.updateUserInfoApi, { _id, username });
   }
+
+  collect(userid, poemid) {
+    return post(Url.collectApi, { userid, poemid });
+  }
 }
 
 export default new Http();
