@@ -43,6 +43,11 @@ const routes = [
     name: 'CoolExploration',
     component: () => import(/* webpackChunkName: "about" */ '@/views/poem/CoolExploration.vue'),
   },
+  {
+    path: '/tag/:tagName',
+    name: 'Tag',
+    component: () => import(/* webpackChunkName: "about" */ '@/views/poem/Tag.vue'),
+  },
 
 
   // 和用户相关的路由
