@@ -31,6 +31,14 @@
                 {{ item }}
               </el-tag>
             </div>
+            <el-pagination
+              small
+              layout="prev, pager, next"
+              :total="totalTagCount"
+              :page-size = "20"
+              @current-change="changeTagPage"
+              :current-page="currentTagPage">
+            </el-pagination>
           </el-card>
         </el-aside>
         <el-main class="main-container">
@@ -99,11 +107,15 @@ export default {
   },
   data() {
     return {
-      currentTag: '', // 当前点击的标签
-      tagList: [{ _id: 123 }, { _id: 456 }, { _id: 123 }, { _id: 456 }, { _id: 123 }, { _id: 456 }, { _id: 123 }, { _id: 456 }, { _id: 123 }, { _id: 456 }, { _id: 123 }, { _id: 456 }],
+      // 诗词列表相关
       poemList: [], // 右侧诗词的列表
       totalCount: 100, // 分页条的总数量
       currentPage: 1, // 当前页数
+      // 标签相关
+      currentTag: '', // 当前点击的标签
+      tagList: [], // 左侧标签的列表
+      currentTagPage: 1, // 当前左侧标签的页数
+      totalTagCount: 200, // 左侧标签的分页条的总数量
     };
   },
   computed: {},
@@ -125,6 +137,18 @@ export default {
         this.currentPage = page; // 将分页条的页数等于当前页
       }));
     },
+
+    changeTagPage(page) {
+      // TODO: 边界条件判断，防御性编程
+      Http.getAllTags(page).then(((res) => {
+        this.tagList = res.data.data.AllTags.reduce((total, curValue, curIndex, arr) => {
+          total.push(curValue._id);
+          return total;
+        }, []);
+
+        this.currentTagPage = page; // 将分页条的页数等于当前页
+      }));
+    },
   },
   created() {
     // 当前标签赋值：
@@ -137,14 +161,13 @@ export default {
 
     // 获取所有的标签
     Http.getAllTags().then((res) => {
-      console.log('获取标签');
-      console.log(res.data.data);
       const tempTags = res.data.data.AllTags;
       const tempTagsArr = tempTags.reduce((total, curValue, curIndex, arr) => {
         total.push(curValue._id);
         return total;
       }, []);
       this.tagList = tempTagsArr;
+      this.totalTagCount = res.data.data.totalTagCount;
     });
   },
   mounted() {
