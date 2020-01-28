@@ -12,6 +12,7 @@ export const Url = {
   searchApi: `${baseURL}/poems/search`, // 搜索接口
   exploreGoodPoemAllApi: `${baseURL}/poems/exploreGoodPoemAll`, // 探索诗词页面获取Top20的接口
   getPoemListApi: `${baseURL}/poems/getPoemList`, // 获取诗词总数的页面
+  getAllTagsApi: `${baseURL}/poems/getAllTags`, // 获取所有标签
 
 
   // 和用户相关的东西

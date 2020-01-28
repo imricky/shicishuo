@@ -22,13 +22,13 @@
             </div>
             <div class="other-tag-container">
               <el-tag
-                v-for="item in tagList"
-                :key="item._id"
+                v-for="(item,index) in tagList"
+                :key="index"
                 size="medium"
                 effect="plain"
                 class="other-tag"
-                @click="changeTag(item._id)">
-                {{ item._id }}
+                @click="changeTag(item)">
+                {{ item }}
               </el-tag>
             </div>
           </el-card>
@@ -110,7 +110,6 @@ export default {
   methods: {
     // 其他标签的点击事件
     changeTag(id) {
-      console.log(id);
       this.$router.push({ path: `/tag/${id}` }); // -> /user/123
       this.currentTag = id; // 当前选中的tag，用于分页的时候带上
       this.currentPage = 1; // 切换标签的时候，将分页条设置为1
@@ -130,10 +129,23 @@ export default {
   created() {
     // 当前标签赋值：
     this.currentTag = this.$route.params.tagName;
-    Http.getPoemsByTags(this.currentTag).then(((res) => {
+    // 获取当前标签对应的诗词
+    Http.getPoemsByTags(this.currentTag).then((res) => {
       this.poemList = res.data.data.res;
       this.totalCount = res.data.data.totalCount;
-    }));
+    });
+
+    // 获取所有的标签
+    Http.getAllTags().then((res) => {
+      console.log('获取标签');
+      console.log(res.data.data);
+      const tempTags = res.data.data.AllTags;
+      const tempTagsArr = tempTags.reduce((total, curValue, curIndex, arr) => {
+        total.push(curValue._id);
+        return total;
+      }, []);
+      this.tagList = tempTagsArr;
+    });
   },
   mounted() {
 

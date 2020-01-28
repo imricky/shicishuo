@@ -274,5 +274,21 @@ class Poem {
       top20Authors,
     };
   }
+
+  static async getAllTags(page) {
+    const AllTags = await TangPoets.aggregate([
+      // eslint-disable-next-line no-useless-escape
+      { $unwind: '$tags' },
+      {
+        $group: { _id: '$tags', count: { $sum: 1 } },
+      },
+    ]).sort({ count: -1 })
+      .skip((page - 1) * 20)
+      .limit(20)
+      .exec();
+    return {
+      AllTags,
+    };
+  }
 }
 module.exports = Poem;

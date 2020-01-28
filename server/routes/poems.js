@@ -222,5 +222,23 @@ router.get('/exploreGoodPoemAll', async (req, res, next) => {
   }
 });
 
+router.post('/getAllTags', async (req, res, next) => {
+  try {
+    const { page } = req.body;
+    const data = await Poem.getAllTags(page);
+    res.json({
+      data,
+      code: 200,
+
+    });
+  } catch (e) {
+    res.json({
+      success: false,
+      errorMessage: e,
+      code: 500,
+    });
+  }
+});
+
 
 module.exports = router;
