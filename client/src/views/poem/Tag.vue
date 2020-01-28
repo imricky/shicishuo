@@ -71,7 +71,7 @@
               width="180">
               <template slot-scope="scope">
                 <!--              :type="scope.row.tag === '家' ? 'primary' : 'success'"-->
-                <el-tag type="success" v-for="tag in scope.row.tags" :key="tag">
+                <el-tag type="success" v-for="tag in scope.row.tags" :key="tag" @click="changeTag(tag)" class="list-tag">
                   {{ tag }}
                 </el-tag>
               </template>
@@ -220,5 +220,12 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+  .list-tag{
+    cursor:pointer;
+    margin: 5px 8px;
+    &:hover{
+      background-color: darken(#BBE3A9,5%);
+    }
   }
 </style>
