@@ -40,12 +40,7 @@
             <span>热门词语</span>
           </div>
           <div>
-            <el-tag
-              v-for="item in top10Tags"
-              :key="item._id"
-              effect="plain">
-              {{ item._id }}
-            </el-tag>
+            <TagButton :text="item._id" button-type='success' v-for="item in top10Tags" :key="item._id"></TagButton>
           </div>
         </el-card>
       </el-aside>
@@ -79,9 +74,7 @@
             width="180">
             <template slot-scope="scope">
               <!--              :type="scope.row.tag === '家' ? 'primary' : 'success'"-->
-              <el-tag type="success" v-for="tag in scope.row.tags" :key="tag">
-                {{ tag }}
-              </el-tag>
+              <TagButton :text="tag" button-type='success' v-for="tag in scope.row.tags" :key="tag"></TagButton>
             </template>
           </el-table-column>
         </el-table>
@@ -107,10 +100,13 @@
 import Http from '@/api/http';
 import TopBar from '@/components/TopBar.vue';
 import Footer from '@/components/Footer.vue';
+import TagButton from '@/components/TagButton.vue';
+
 export default {
   components: {
     TopBar,
     Footer,
+    TagButton,
   },
   name: 'Library',
   data() {

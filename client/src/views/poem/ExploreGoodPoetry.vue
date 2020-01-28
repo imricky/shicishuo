@@ -100,9 +100,10 @@
             width="180">
             <template slot-scope="scope">
 <!--              :type="scope.row.tag === '家' ? 'primary' : 'success'"-->
-              <el-tag type="success" v-for="tag in scope.row.tags" :key="tag">
-                {{ tag }}
-              </el-tag>
+<!--              <el-tag type="success" v-for="tag in scope.row.tags" :key="tag">-->
+<!--                {{ tag }}-->
+<!--              </el-tag>-->
+              <TagButton :text="tag" button-type='success' v-for="tag in scope.row.tags" :key="tag"></TagButton>
             </template>
           </el-table-column>
         </el-table>
@@ -127,12 +128,14 @@
 import Http from '@/api/http';
 import TopBar from '@/components/TopBar.vue';
 import Footer from '@/components/Footer.vue';
+import TagButton from '@/components/TagButton.vue';
 
 export default {
   name: 'ExploreGoodPoetry',
   components: {
     TopBar,
     Footer,
+    TagButton,
   },
   data() {
     return {

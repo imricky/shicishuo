@@ -98,12 +98,15 @@
 import Http from '@/api/http';
 import TopBar from '@/components/TopBar.vue';
 import Footer from '@/components/Footer.vue';
+import TagButton from '@/components/TagButton.vue';
 
 export default {
   name: 'Tag',
   components: {
     TopBar,
     Footer,
+    // eslint-disable-next-line vue/no-unused-components
+    TagButton,
   },
   data() {
     return {

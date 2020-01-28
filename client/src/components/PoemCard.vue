@@ -13,7 +13,8 @@
       <div class="tags-and-button">
         <div>
         <span class="tag" v-for="i in poemCardData.tags" :key="i">
-            <el-tag>{{i}}</el-tag>
+<!--            <el-tag>{{i}}</el-tag>-->
+          <TagButton :text="i"></TagButton>
           <!--        <el-tag>标签一</el-tag>-->
           <!--        <el-tag type="success" @click="test">标签二</el-tag>-->
           <!--        <el-tag type="info">标签三</el-tag>-->
@@ -36,9 +37,13 @@
 
 <script>
 import Http from '@/api/http';
+import TagButton from '@/components/TagButton.vue';
 
 export default {
   name: 'PoemCard',
+  components: {
+    TagButton,
+  },
   props: {
     poemCardData: Object,
   },
