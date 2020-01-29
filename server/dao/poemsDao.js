@@ -68,7 +68,7 @@ class Poem {
     // 向每日一诗中存入得到的诗词
     const insertDailyPoem = await new DailyPoems(res[0]).save();
     logger.info(insertDailyPoem);
-    return insertDailyPoem;
+    return res;
   }
 
   /*
