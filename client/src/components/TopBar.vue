@@ -26,7 +26,7 @@
                 <el-menu-item index="ExploreGoodPoetry" route="ExploreGoodPoetry"><i class="el-icon-search"></i>探索好诗</el-menu-item>
                 <el-menu-item index="Library" route="Library"><i class="el-icon-files"></i>文库大全</el-menu-item>
                 <el-menu-item index="CoolExploration" route="CoolExploration"><i class="el-icon-potato-strips"></i>实验楼</el-menu-item>
-                <el-menu-item index="">
+                <el-menu-item>
                   <el-input
                     placeholder="请输入内容"
                     prefix-icon="el-icon-search"
@@ -106,7 +106,7 @@ export default {
     handleSelect(key) {
       // eslint-disable-next-line no-debugger
       if (key === 'search') {
-        return;
+        return false;
       }
       this.$store.dispatch('updateMenubarActiveIndex', key);
     },
