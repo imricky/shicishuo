@@ -242,14 +242,6 @@ class Poem {
     };
   }
 
-  static async search(keyword) {
-    // TODO:搜索接口需要大改造，根据不同内容，显示不同的东西，结合es进行搜索，后期可能需要花1个星期来处理
-    const res = await TangPoets.find({
-      $or: [{ author: `${keyword}` }, { title: `${keyword}` }, { paragraphs: `${keyword}` }, { tags: `${keyword}` }],
-    }).limit(20);
-    return res;
-  }
-
   static async exploreGoodPoemAll() {
     // 排名前20的tags,诗句里
     const top20Tags = await TangPoets.aggregate([

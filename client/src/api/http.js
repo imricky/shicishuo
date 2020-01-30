@@ -37,10 +37,6 @@ class Http {
     return get(Url.getDatabaseAllInfoApi);
   }
 
-  // 搜索接口
-  search(keyword) {
-    return post(Url.searchApi, { keyword });
-  }
 
   // 探索诗词页面获取Top20的接口
   exploreGoodPoemAll() {
@@ -89,6 +85,13 @@ class Http {
 
   collect(userid, poemid) {
     return post(Url.collectApi, { userid, poemid });
+  }
+
+
+  // 公共方法
+  // 搜索接口
+  search(keyword) {
+    return post(Url.searchApi, { keyword });
   }
 }
 

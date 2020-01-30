@@ -9,7 +9,6 @@ export const Url = {
   getHotTop50ListApi: `${baseURL}/poems/getHotTop50List`, // 获取热门的前50的tags
   getOneInfoApi: `${baseURL}/poems/getOneInfo`, // 根据前端传过来的_id ，获取完整的一首诗，用于每日一诗中点击标题，右侧展示完整诗句
   getDatabaseAllInfoApi: `${baseURL}/poems/getDatabaseAllInfo`, // 获取数据库里的汇总信息
-  searchApi: `${baseURL}/poems/search`, // 搜索接口
   exploreGoodPoemAllApi: `${baseURL}/poems/exploreGoodPoemAll`, // 探索诗词页面获取Top20的接口
   getPoemListApi: `${baseURL}/poems/getPoemList`, // 获取诗词总数的页面
   getAllTagsApi: `${baseURL}/poems/getAllTags`, // 获取所有标签
@@ -22,4 +21,8 @@ export const Url = {
   getUserInfoApi: `${baseURL}/users/getUserInfo`, // 获取当前用户的信息
   updateUserInfoApi: `${baseURL}/users/updateUserInfo`, // 更新用户信息
   collectApi: `${baseURL}/users/collect`, // 用户收藏
+
+
+  // 公共接口
+  searchApi: `${baseURL}/search`, // 用户收藏
 };

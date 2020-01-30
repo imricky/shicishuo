@@ -17,7 +17,7 @@
           <el-col :span="16"  :xs="16" :sm="16" :md="16" :lg="16" :xl="16">
             <div class="middle-content bg-purple">
               <el-menu :default-active="activeIndex" class="top-bar-middle"
-                       mode="horizontal" @select="handleSelect"
+                       mode="horizontal" @select="handleMenuSelect"
                        text-color="#303133"
                        active-text-color="#ffd04b"
                        :router="true">
@@ -27,11 +27,31 @@
                 <el-menu-item index="Library" route="Library"><i class="el-icon-files"></i>文库大全</el-menu-item>
                 <el-menu-item index="CoolExploration" route="CoolExploration"><i class="el-icon-potato-strips"></i>实验楼</el-menu-item>
                 <el-menu-item>
-                  <el-input
-                    placeholder="请输入内容"
-                    prefix-icon="el-icon-search"
-                    v-model="input2">
-                  </el-input>
+<!--                  <el-input-->
+<!--                    placeholder="请输入内容"-->
+<!--                    prefix-icon="el-icon-search"-->
+<!--                    v-model="input2">-->
+<!--                  </el-input>-->
+<!--                  <el-autocomplete-->
+<!--                    v-model="input2"-->
+<!--                    :fetch-suggestions="querySearchAsync"-->
+<!--                    placeholder="李白"-->
+<!--                    @select="handleSelect"-->
+<!--                  ></el-autocomplete>-->
+
+                  <el-autocomplete
+                    popper-class="my-autocomplete"
+                    v-model="input2"
+                    :fetch-suggestions="querySearchAsync"
+                    placeholder="李白"
+                    @select="handleSelect"
+                    :select-when-unmatched="true">
+                    <i
+                      class="el-icon-search"
+                      slot="suffix"
+                      @click="handleIconClick">
+                    </i>
+                  </el-autocomplete>
                 </el-menu-item>
               </el-menu>
 <!--              <span class="search">-->
@@ -84,12 +104,18 @@
 <script>
 // 在单独构建的版本中辅助函数为 Vuex.mapState
 import { mapState } from 'vuex';
+import Http from '@/api/http';
+
 export default {
   name: 'TopBar',
   data() {
     return {
       isLogin: false,
+      // 搜索框相关
       input2: '',
+      searchList: [],
+      state: '',
+      timeout: null,
     };
   },
   computed: {
@@ -103,7 +129,7 @@ export default {
   },
   methods: {
     // eslint-disable-next-line consistent-return
-    handleSelect(key) {
+    handleMenuSelect(key) {
       // eslint-disable-next-line no-debugger
       if (key === 'search') {
         return false;
@@ -138,12 +164,32 @@ export default {
         });
       }
     },
+
+    // 搜索相关
+    async querySearchAsync(queryString, cb) {
+      const queryRes = await Http.search(queryString);
+      this.searchList = queryRes.data.data;
+      cb(this.searchList);
+      // const { searchList } = this;
+      // const results = queryString ? searchList.filter(this.createStateFilter(queryString)) : searchList;
+      //
+      // clearTimeout(this.timeout);
+      // this.timeout = setTimeout(() => {
+      //   cb(results);
+      // }, 3000 * Math.random());
+    },
+    handleSelect(item) {
+      console.log(item);
+      this.$router.push(`/s/${item.value}`);
+    },
+    handleIconClick(ev) {
+      this.handleSelect();
+    },
   },
   created() {
 
   },
   mounted() {
-
   },
 };
 </script>
