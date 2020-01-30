@@ -183,7 +183,7 @@ export default {
       this.$router.push(`/s/${item.value}`);
     },
     handleIconClick(ev) {
-      this.handleSelect();
+      this.$router.push(`/s/${this.input2}`);
     },
   },
   created() {
