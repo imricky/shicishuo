@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const { User, UserCollections } = require('../models/userModel');
 const { ObjectId } = mongoose.Types;
+const client = require('../utils/elasticsearch');
 
 class CommonDao {
   // eslint-disable-next-line no-useless-constructor,no-empty-function
@@ -27,8 +28,6 @@ class CommonDao {
       console.log(e);
     }
   }
-
-
 }
 
 module.exports = CommonDao;

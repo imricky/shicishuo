@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
 require('./utils/mongo');
+require('./utils/elasticsearch');
 const { checkToken } = require('./utils/auth');
 
 
