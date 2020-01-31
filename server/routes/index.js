@@ -2,8 +2,7 @@ const express = require('express');
 const router = express.Router();
 const CommonDao = require('../dao/commonDao');
 const client = require('../utils/elasticsearch');
-const cities = require('./cities.json');
-const t = require('./t.json');
+// const allpoets = require('./allpoets.json');
 
 /* GET home page. */
 router.get('/', (req, res, next) => {
@@ -128,14 +127,14 @@ router.get('/pushDataInES', async (req, res, next) => {
     // 循环遍历每个城市，并在每个循环中创建并将两个对象推入数组中
     // 第一个对象发送索引和类型，保存数据
     // 第二个对象是你想索引的数据
-    t.forEach((city) => {
+    [1].forEach((poem) => {
       bulk.push({
         index: {
-          _index: 'ci',
-          _type: 'cities_list',
+          _index: 'tangsongpoems',
+          _type: 'poems',
         },
       });
-      bulk.push(city);
+      bulk.push(poem);
     });
     // 对传递的数据执行批量索引
     const result = await client.bulk({ body: bulk });
@@ -176,5 +175,28 @@ router.get('/t1', (req, res) => {
     });
 });
 
+// 测试从mongodb导出的数据导入elastic
+router.get('/searcht1', (req, res) => {
+  // 声明查询对象以搜索弹性搜索，并从找到的第一个结果中仅返回200个结果。
+  // 还匹配其中名称与发送的查询字符串类似的任何数据
+  const body = {
+    size: 200,
+    from: 0,
+    query: {
+      match: {
+        paragraphs: req.query.q,
+      },
+    },
+  };
+  // 在索引中执行实际的搜索传递，搜索查询和类型
+  client.search({ index: 'tangsongpoems', body, type: 'allpoets' })
+    .then((results) => {
+      res.send(results.hits.hits);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.send([]);
+    });
+});
 
 module.exports = router;
