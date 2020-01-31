@@ -9,8 +9,9 @@ const PoemsSchema = new Schema({
   tags: Array,
   paragraphs: Array,
   id: String,
+  type: String,
 });
-const TangPoets = mongoose.model('tangpoets', PoemsSchema);
+const AllPoets = mongoose.model('allpoets', PoemsSchema);
 
 
 // 历史每日一诗数据模型
@@ -26,6 +27,6 @@ const DailyPoemsSchema = new Schema({
 const DailyPoems = mongoose.model('dailypoems', DailyPoemsSchema);
 
 module.exports = {
-  TangPoets,
+  AllPoets,
   DailyPoems,
 };

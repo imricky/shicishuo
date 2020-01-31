@@ -1,6 +1,6 @@
 const moment = require('moment');
 const _ = require('lodash');
-const { TangPoets, DailyPoems } = require('../models/poemsModel');
+const { AllPoets, DailyPoems } = require('../models/poemsModel');
 const { jiebaSeparateVerse, compare } = require('../utils/tools');
 const { logger } = require('../utils/logger');
 
@@ -23,7 +23,7 @@ class Poem {
       return currentDailyPoem;
     }
     // mongodb随机查询一条
-    const res = await TangPoets.aggregate([
+    const res = await AllPoets.aggregate([
       { $sample: { size: 1 } },
     ]);
     res[0].created = currentDay;
@@ -31,7 +31,7 @@ class Poem {
     // 判断是否存在tags，若没有，则调用分词，然后在标签库里取3个词出来，然后反向存入原来的诗词中
     if (res[0].tags === void 0 || res[0].tags.length === 0) {
       const SeparateResult = jiebaSeparateVerse(res[0].paragraphs);
-      const tagsAll = await TangPoets.aggregate([
+      const tagsAll = await AllPoets.aggregate([
         { $unwind: '$tags' },
         { $group: { _id: '$tags', num_of_tag: { $sum: 1 } } },
         { $project: { _id: 0, tags: '$_id', num_of_tag: 1 } },
@@ -61,7 +61,7 @@ class Poem {
       // 向原来数据库中存入诗词
       if (finalTags.length !== 0) {
         // eslint-disable-next-line no-underscore-dangle
-        await TangPoets.updateOne({ id: res[0].id }, { $set: { tags: finalTags } });
+        await AllPoets.updateOne({ id: res[0].id }, { $set: { tags: finalTags } });
       }
     }
 
@@ -100,14 +100,14 @@ class Poem {
   */
 
   static async getPoemsByTags(tagName, page) {
-    const res = await TangPoets
+    const res = await AllPoets
       .find({ tags: tagName })
       .skip((page - 1) * 10)
       .limit(10)
       .sort({ _id: -1 })
       .exec();
 
-    const totalCount = await TangPoets
+    const totalCount = await AllPoets
       .find({ tags: tagName })
       .countDocuments();
 
@@ -123,14 +123,14 @@ class Poem {
    *  function: 根据作者名称获取诗词，带分页
   */
   static async getPoemsByAuthor(author, page) {
-    const res = await TangPoets
+    const res = await AllPoets
       .find({ author })
       .skip(page * 10)
       .limit(10)
       .sort({ _id: -1 })
       .exec();
 
-    const totalCount = await TangPoets
+    const totalCount = await AllPoets
       .find({ author })
       .countDocuments();
 
@@ -149,7 +149,7 @@ class Poem {
    *  return 返回数据类型：[{"写景":123},{"庐山":456}]    [{"白居易":123},{"杜甫":456}]
   */
   static async getHotTopNList(type, n) {
-    const allTags = await TangPoets.aggregate([
+    const allTags = await AllPoets.aggregate([
       // eslint-disable-next-line no-useless-escape
       { $unwind: `$${type}` },
       {
@@ -166,7 +166,7 @@ class Poem {
 *  function: 根据前端传过来的_id ，获取完整的一首诗，用于每日一诗中点击标题，右侧展示完整诗句
 */
   static async getOneInfo(_id) {
-    const res = await TangPoets.find({ _id });
+    const res = await AllPoets.find({ _id });
     return {
       res,
     };
@@ -180,17 +180,17 @@ class Poem {
   */
   static async getDatabaseAllInfo() {
     // 作者总数
-    const authorCount = await TangPoets.aggregate([
+    const authorCount = await AllPoets.aggregate([
       { $project: { author: true } },
       { $group: { _id: '$author' } },
       { $group: { _id: 'count', count: { $sum: 1 } } },
     ]);
 
     // 诗词总数
-    const poemCount = await TangPoets.countDocuments();
+    const poemCount = await AllPoets.countDocuments();
 
     // 排名前10的诗人,出现了无名氏和不详，需要去掉
-    const top10Poem = await TangPoets.aggregate([
+    const top10Poem = await AllPoets.aggregate([
       // eslint-disable-next-line no-useless-escape
       { $unwind: '$author' },
       {
@@ -227,13 +227,13 @@ class Poem {
    *  @return: array
   */
   static async getPoemList(page) {
-    const res = await TangPoets
+    const res = await AllPoets
       .find({})
       .skip((page - 1) * 20)
       .limit(20)
       .sort({ _id: -1 })
       .exec();
-    const totalCount = await TangPoets
+    const totalCount = await AllPoets
       .find({ })
       .countDocuments();
     return {
@@ -244,7 +244,7 @@ class Poem {
 
   static async exploreGoodPoemAll() {
     // 排名前20的tags,诗句里
-    const top20Tags = await TangPoets.aggregate([
+    const top20Tags = await AllPoets.aggregate([
       // eslint-disable-next-line no-useless-escape
       { $unwind: '$tags' },
       {
@@ -253,7 +253,7 @@ class Poem {
     ]).sort({ count: -1 })
       .limit(20);
 
-    const top20Authors = await TangPoets.aggregate([
+    const top20Authors = await AllPoets.aggregate([
       // eslint-disable-next-line no-useless-escape
       { $unwind: '$author' },
       {
@@ -275,12 +275,12 @@ class Poem {
         $group: { _id: '$tags', count: { $sum: 1 } },
       },
     ];
-    const AllTags = await TangPoets.aggregate(condition).sort({ count: -1 })
+    const AllTags = await AllPoets.aggregate(condition).sort({ count: -1 })
       .skip((page - 1) * 20)
       .limit(20)
       .exec();
 
-    const totalCountArr = await TangPoets.aggregate(condition);
+    const totalCountArr = await AllPoets.aggregate(condition);
 
     return {
       AllTags,
