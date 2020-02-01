@@ -15,22 +15,22 @@ router.get('/', (req, res, next) => {
  *  function: 搜索接口
 */
 
-router.post('/search', async (req, res, next) => {
-  try {
-    const { keyword } = req.body;
-    const data = await CommonDao.search();
-    res.json({
-      data,
-      code: 200,
-    });
-  } catch (e) {
-    res.json({
-      success: false,
-      errorMessage: e,
-      code: 500,
-    });
-  }
-});
+// router.post('/search', async (req, res, next) => {
+//   try {
+//     const { keyword } = req.body;
+//     const data = await CommonDao.search();
+//     res.json({
+//       data,
+//       code: 200,
+//     });
+//   } catch (e) {
+//     res.json({
+//       success: false,
+//       errorMessage: e,
+//       code: 500,
+//     });
+//   }
+// });
 
 // 测试查询接口
 router.get('/st', async (req, res, next) => {
@@ -183,13 +183,33 @@ router.get('/searcht1', (req, res) => {
     size: 200,
     from: 0,
     query: {
-      match: {
-        paragraphs: req.query.q,
+      multi_match: {
+        query: req.query.q,
+        // type: 'allpoets',
+        fields: ['tags', 'authors', 'paragraphs'],
       },
     },
   };
+  // const body1 = {
+  //   size: 200,
+  //   from: 0,
+  //   query: {
+  //     match: {
+  //       paragraphs: req.query.q,
+  //     },
+  //   },
+  // };
   // 在索引中执行实际的搜索传递，搜索查询和类型
-  client.search({ index: 'tangsongpoems', body, type: 'allpoets' })
+  // client.search({ index: 'tangsongpoemsnew', body, type: 'allpoets' })
+  //   .then((results) => {
+  //     res.send(results.hits.hits);
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //     res.send([]);
+  //   });
+
+  client.search({ index: ['tangsongpoemsnew', 'authors'], body })
     .then((results) => {
       res.send(results.hits.hits);
     })
@@ -197,6 +217,75 @@ router.get('/searcht1', (req, res) => {
       console.log(err);
       res.send([]);
     });
+});
+
+
+// 正式搜索接口
+router.get('/search', async (req, res, next) => {
+  // 声明查询对象以搜索弹性搜索，并从找到的第一个结果中仅返回200个结果。
+  // 还匹配其中名称与发送的查询字符串类似的任何数据
+  const authorBody = {
+    size: 20,
+    from: 0,
+    query: {
+      match: {
+        name: req.query.q,
+      },
+    },
+  };
+  const poemBody = {
+    size: 20,
+    from: (req.query.page - 1) * 20,
+    query: {
+      multi_match: {
+        query: req.query.q,
+        fields: ['tags', 'author', 'paragraphs', 'title'],
+      },
+    },
+  };
+  // const poemBody = {
+  //   size: 20,
+  //   from: (req.query.page - 1) * 20,
+  //   query: {
+  //     bool: {
+  //       should: [
+  //         {
+  //           match: {
+  //             author: {
+  //               query: req.query.q,
+  //               // boost: 2,
+  //             },
+  //           },
+  //         },
+  //         {
+  //           match: {
+  //             paragraphs: req.query.q,
+  //           },
+  //         },
+  //       ],
+  //     },
+  //   },
+  // };
+  try {
+    const authors = await client.search({ index: 'authors', type: 'authors', body: authorBody });
+    const poems = await client.search({ index: 'tangsongpoemsnew', type: 'allpoets', body: poemBody });
+    res.send(poems);
+  } catch (e) {
+    res.json({
+      code: 200,
+      errMassage: e,
+      data: '',
+    });
+  }
+  // // 在索引中执行实际的搜索传递，搜索查询和类型
+  // client.search({ index: ['tangsongpoemsnew', 'authors'], body })
+  //   .then((results) => {
+  //     res.send(results.hits.hits);
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //     res.send([]);
+  //   });
 });
 
 module.exports = router;
