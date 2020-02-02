@@ -42,6 +42,13 @@
 
           </div>
         </div>
+        <el-pagination
+          background
+          layout="prev, pager, next"
+          :total="totalCount"
+          @current-change="changePage"
+          :current-page="currentPage">
+        </el-pagination>
       </div>
     </div>
 
@@ -70,6 +77,8 @@ export default {
       tags: [],
       poems: [],
       url: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
+      totalCount: 1000,
+      currentPage: 1, // 当前页数
     };
   },
   computed: {},
@@ -77,6 +86,18 @@ export default {
     async search(keyword, page) {
       const result = await Http.search(keyword, page);
       return result.data;
+    },
+    changePage(page) {
+      this.currentPage = page;
+      Http.search(this.keyword, page).then((res) => {
+        const temp = res.data.data.poems.hits.reduce((total, curValue, curIndex, arr) => {
+          total.push(curValue._source);
+          return total;
+        }, []);
+        this.poems = temp;
+        // 翻页时直接跳到顶部
+        window.scrollTo(0, 0);
+      });
     },
   },
   created() {
@@ -108,6 +129,7 @@ export default {
             return total;
           }, []);
           this.poems = temp;
+          this.totalCount = res.data.poems.total;
         }
 
         console.log(this.author);
