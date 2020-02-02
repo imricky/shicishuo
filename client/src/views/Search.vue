@@ -27,7 +27,7 @@
       </div>
 <!--      诗词-->
       <div class="poems" >
-        <div class="poem-card" v-for="poem in poems" :key="poem.title">
+        <div class="poem-card" v-for="poem in poems" :key="poem.paragraphs[0]">
           <div class="poem-container">
             <p class="poem-title">{{poem.title}}</p>
             <p class="poem-author">{{poem.author}}</p>
@@ -87,6 +87,43 @@ export default {
       const result = await Http.search(keyword, page);
       return result.data;
     },
+    searchAndRefresh() {
+      const _self = this;
+      this.search(this.keyword).then((res) => {
+        if (res.code === 200) {
+          // 作者
+          if (res.data.authors.total > 0) {
+            // eslint-disable-next-line prefer-destructuring
+            _self.author = res.data.authors.hits[0]._source;
+          }
+
+          // 标签
+          if (res.data.tags.total > 0) {
+            let temp = res.data.tags.hits.reduce((total, curValue, curIndex, arr) => {
+              total.push(...curValue._source.tags);
+              return total;
+            }, []);
+            temp = [...new Set(temp)]; // 去重
+            temp = temp.length > 10 ? temp.slice(0, 10) : temp; // 截取前10个
+            _self.tags = temp;
+          }
+
+          // 诗句
+          if (res.data.poems.total > 0) {
+            const temp = res.data.poems.hits.reduce((total, curValue, curIndex, arr) => {
+              total.push(curValue._source);
+              return total;
+            }, []);
+            this.poems = temp;
+            this.totalCount = res.data.poems.total;
+          }
+
+          // console.log(this.author);
+          // console.log(this.tags);
+          // console.log(this.poems);
+        }
+      });
+    },
     changePage(page) {
       this.currentPage = page;
       Http.search(this.keyword, page).then((res) => {
@@ -102,43 +139,16 @@ export default {
   },
   created() {
     this.keyword = this.$route.query.keyword;
-    const _self = this;
-    this.search(this.keyword).then((res) => {
-      if (res.code === 200) {
-        // 作者
-        if (res.data.authors.total > 0) {
-          // eslint-disable-next-line prefer-destructuring
-          _self.author = res.data.authors.hits[0]._source;
-        }
-
-        // 标签
-        if (res.data.tags.total > 0) {
-          let temp = res.data.tags.hits.reduce((total, curValue, curIndex, arr) => {
-            total.push(...curValue._source.tags);
-            return total;
-          }, []);
-          temp = [...new Set(temp)]; // 去重
-          temp = temp.length > 10 ? temp.slice(0, 10) : temp; // 截取前10个
-          _self.tags = temp;
-        }
-
-        // 诗句
-        if (res.data.poems.total > 0) {
-          const temp = res.data.poems.hits.reduce((total, curValue, curIndex, arr) => {
-            total.push(curValue._source);
-            return total;
-          }, []);
-          this.poems = temp;
-          this.totalCount = res.data.poems.total;
-        }
-
-        console.log(this.author);
-        console.log(this.tags);
-        console.log(this.poems);
-      }
-    });
+    this.searchAndRefresh();
   },
   mounted() {
+  },
+  watch: {
+    $route(route) {
+      console.log(route);
+      this.keyword = route.query.keyword;
+      this.searchAndRefresh();
+    },
   },
 };
 </script>
