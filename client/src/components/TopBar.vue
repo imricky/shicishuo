@@ -45,7 +45,9 @@
                     :fetch-suggestions="querySearchAsync"
                     placeholder="李白"
                     @select="handleSelect"
-                    :select-when-unmatched="true">
+                    :select-when-unmatched="true"
+                    :trigger-on-focus="false"
+                    :popper-append-to-body="false">
                     <i
                       class="el-icon-search"
                       slot="suffix"
@@ -105,6 +107,7 @@
 // 在单独构建的版本中辅助函数为 Vuex.mapState
 import { mapState } from 'vuex';
 import Http from '@/api/http';
+import router from '../router';
 
 export default {
   name: 'TopBar',
@@ -168,15 +171,35 @@ export default {
     // 搜索相关
     async querySearchAsync(queryString, cb) {
       const queryRes = await Http.search(queryString);
-      this.searchList = queryRes.data.data;
-      cb(this.searchList);
-      // const { searchList } = this;
-      // const results = queryString ? searchList.filter(this.createStateFilter(queryString)) : searchList;
-      //
-      // clearTimeout(this.timeout);
-      // this.timeout = setTimeout(() => {
-      //   cb(results);
-      // }, 3000 * Math.random());
+      // 作者信息， 这里不给出标签提示
+      const authorInfo = queryRes.data.data.authors.hits;
+      const authorSuggest = authorInfo.length > 0 ? [authorInfo[0]._source.name] : [];
+      console.log(authorSuggest);
+
+      // 诗词信息
+      const poemsInfo = queryRes.data.data.poems.hits;
+      let poemsSuggest;
+      if (poemsInfo.length > 0) {
+        poemsSuggest = poemsInfo.reduce((total, curValue, curIndex, arr) => {
+          total.push(curValue._source.paragraphs.toString());
+          return total;
+        }, []);
+      }
+      this.searchList = authorSuggest.concat(poemsSuggest);
+      console.log(this.searchList);
+      // 再把最后的数组的每一项变成一个对象[{value:'杜甫'}]
+      this.searchList = this.searchList.reduce((total, curValue, curIndex, arr) => {
+        const obj = {};
+        obj.value = curValue;
+        total.push(obj);
+        return total;
+      }, []);
+
+      console.log(this.searchList);
+      clearTimeout(this.timeout);
+      this.timeout = setTimeout(() => {
+        cb(this.searchList);
+      }, 3000 * Math.random());
     },
     handleSelect(item) {
       console.log(item);
@@ -191,6 +214,14 @@ export default {
 
   },
   mounted() {
+  },
+  watch: {
+    // 监听router，清空输入框
+    $route(route) {
+      if (route.query.keyword) {
+        this.input2 = '';
+      }
+    },
   },
 };
 </script>
