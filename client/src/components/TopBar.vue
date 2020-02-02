@@ -43,7 +43,7 @@
                     popper-class="my-autocomplete"
                     v-model="input2"
                     :fetch-suggestions="querySearchAsync"
-                    placeholder="李白"
+                    placeholder="请输入搜索内容"
                     @select="handleSelect"
                     :select-when-unmatched="true"
                     :trigger-on-focus="false"
