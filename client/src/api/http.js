@@ -90,8 +90,8 @@ class Http {
 
   // 公共方法
   // 搜索接口
-  search(keyword) {
-    return post(Url.searchApi, { keyword });
+  search(keyword, page = 1) {
+    return get(`${Url.searchApi}/?q=${keyword}&page=${page}`);
   }
 }
 

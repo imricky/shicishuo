@@ -180,10 +180,11 @@ export default {
     },
     handleSelect(item) {
       console.log(item);
-      this.$router.push(`/s/${item.value}`);
+      // this.$router.push(`/s?keyword=${item.value}`);
+      this.$router.push({ path: '/s', query: { keyword: item.value } });
     },
     handleIconClick(ev) {
-      this.$router.push(`/s/${this.input2}`);
+      this.$router.push(`/s?keyword=${this.input2}`);
     },
   },
   created() {

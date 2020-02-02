@@ -62,6 +62,7 @@ router.get('/createMapping', (req, res, next) => {
       if (res) {
         console.log('index already exists');
       } else {
+        // eslint-disable-next-line no-shadow
         client.indices.create({ index: 'users' }, (err, res, status) => {
           console.log(err, res, status);
         });
@@ -176,7 +177,7 @@ router.get('/t1', (req, res) => {
 });
 
 // 测试从mongodb导出的数据导入elastic
-router.get('/searcht1', (req, res) => {
+router.get('/queryTest', (req, res) => {
   // 声明查询对象以搜索弹性搜索，并从找到的第一个结果中仅返回200个结果。
   // 还匹配其中名称与发送的查询字符串类似的任何数据
   const body = {
@@ -233,9 +234,18 @@ router.get('/search', async (req, res, next) => {
       },
     },
   };
+  const tagBody = {
+    size: 50,
+    from: 0,
+    query: {
+      match: {
+        tags: req.query.q,
+      },
+    },
+  };
   const poemBody = {
-    size: 20,
-    from: (req.query.page - 1) * 20,
+    size: 10,
+    from: (req.query.page - 1) * 10,
     query: {
       multi_match: {
         query: req.query.q,
@@ -268,8 +278,22 @@ router.get('/search', async (req, res, next) => {
   // };
   try {
     const authors = await client.search({ index: 'authors', type: 'authors', body: authorBody });
+    const tags = await client.search({ index: 'tangsongpoemsnew', type: 'allpoets', body: tagBody });
     const poems = await client.search({ index: 'tangsongpoemsnew', type: 'allpoets', body: poemBody });
-    res.send(poems);
+    // res.send(tags);
+    // 整合数据，一起放出来，做搜索的页面，分别是
+    // authors 一位
+    // tags 5个
+    // 接下来是诗词分页
+    // 上面2个用card，分页用列表
+    const result = Object.create(null);
+    result.authors = authors.hits;
+    result.tags = tags.hits;
+    result.poems = poems.hits;
+    res.json({
+      data: result,
+      code: 200,
+    });
   } catch (e) {
     res.json({
       code: 200,

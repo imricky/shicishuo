@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Home from '../views/Home.vue';
+import Search from '../views/Search.vue';
 
 Vue.use(VueRouter);
 
@@ -65,6 +66,13 @@ const routes = [
     path: '/userProfile',
     name: 'userProfile',
     component: () => import(/* webpackChunkName: "about" */ '@/views/user/Profile.vue'),
+  },
+
+  // 公共页面
+  {
+    path: '/s',
+    name: 'test',
+    component: Search,
   },
 ];
 
