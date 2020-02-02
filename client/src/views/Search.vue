@@ -37,8 +37,9 @@
               </p>
             </div>
             <p class="poem-tag">
-              {{poem.tags}}
+              <TagButton :text="tag" button-type='success' v-for="tag in poem.tags" :key="tag" class="poem-every-tag"></TagButton>
             </p>
+
           </div>
         </div>
       </div>
@@ -221,7 +222,13 @@ export default {
         color: #000000;
         margin-top: 10px;
       }
-
+      .poem-tag{
+        margin-left: -5px;
+      }
+      /*调整tag组件默认的8px边距*/
+      .poem-every-tag{
+        margin-left: 0;
+      }
     }
   }
 </style>
