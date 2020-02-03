@@ -3,6 +3,7 @@ const router = express.Router();
 const CommonDao = require('../dao/commonDao');
 const client = require('../utils/elasticsearch');
 // const allpoets = require('./allpoets.json');
+const { getSinglePoem } = require('../utils/spiderFlyingOrder');
 
 /* GET home page. */
 router.get('/', (req, res, next) => {
@@ -329,6 +330,25 @@ router.post('/flyingOrderSearch', async (req, res, next) => {
     const poems = await client.search({ index: 'tangsongpoemsnew', type: 'allpoets', body });
     res.json({
       data: poems.hits,
+      code: 200,
+    });
+  } catch (e) {
+    res.json({
+      code: 200,
+      errMassage: e,
+      data: '',
+    });
+  }
+});
+
+
+router.get('/spider', async (req, res, next) => {
+  // 声明查询对象以搜索弹性搜索，并从找到的第一个结果中仅返回200个结果。
+  // 还匹配其中名称与发送的查询字符串类似的任何数据
+  try {
+    const poems = await getSinglePoem();
+    res.json({
+      data: poems,
       code: 200,
     });
   } catch (e) {
