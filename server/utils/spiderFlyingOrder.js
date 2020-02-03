@@ -110,16 +110,16 @@ const CommonFlyingOrderSchema = new Schema({
   paragraph: String,
   type: String,
 });
-const CommonFlyingOrder = mongoose.model('commonflyingorder', CommonFlyingOrderSchema);
-
-getSinglePoem().then((res) => {
-  CommonFlyingOrder.insertMany(res).then((r) => {
-    console.log(r);
-    console.log('r');
-  });
-}).catch((e) => {
-  console.log(e);
-});
+// const CommonFlyingOrder = mongoose.model('commonflyingorder', CommonFlyingOrderSchema);
+//
+// getSinglePoem().then((res) => {
+//   CommonFlyingOrder.insertMany(res).then((r) => {
+//     console.log(r);
+//     console.log('r');
+//   });
+// }).catch((e) => {
+//   console.log(e);
+// });
 
 // getSinglePoem();
 

@@ -342,13 +342,14 @@ router.post('/flyingOrderSearch', async (req, res, next) => {
 });
 
 
-router.get('/spider', async (req, res, next) => {
+router.post('/getCommonWord', async (req, res, next) => {
   // 声明查询对象以搜索弹性搜索，并从找到的第一个结果中仅返回200个结果。
   // 还匹配其中名称与发送的查询字符串类似的任何数据
+  const { type } = req.body;
   try {
-    const poems = await getSinglePoem();
+    const commonWordList = await CommonDao.getCommonWord(type);
     res.json({
-      data: poems,
+      data: commonWordList,
       code: 200,
     });
   } catch (e) {

@@ -28,12 +28,12 @@
       <div class="common common-words">
         <el-card shadow="always" >
           <p>常见飞花令：</p>
-          <el-button>花</el-button>
-          <el-button type="primary">月</el-button>
-          <el-button type="success" icon="el-icon-star-off">云</el-button>
-          <el-button type="info">信息按钮</el-button>
-          <el-button type="warning">警告按钮</el-button>
-          <el-button type="danger">危险按钮</el-button>
+          <el-button
+            type="primary"
+            icon="el-icon-goblet-full"
+            v-for="word in commonWord"
+            :key="word"
+            @click="getCommonWordList(word)">{{word}}</el-button>
         </el-card>
       </div>
       <!--    展示列表-->
@@ -80,8 +80,9 @@ export default {
     return {
       input: '',
       paragraphsList: [], // 飞花令搜索结果 10条记录
-      totalCount: 1000,
+      totalCount: '',
       currentPage: 1, // 当前页数
+      commonWord: ['花', '月', '人', '天', '雨', '春', '江'],
     };
   },
   computed: {},
@@ -137,6 +138,12 @@ export default {
         }
         // 翻页时直接跳到顶部
         window.scrollTo(0, 0);
+      });
+    },
+
+    getCommonWordList(type) {
+      Http.getCommonWord(type).then((res) => {
+        this.paragraphsList = res.data.data;
       });
     },
   },

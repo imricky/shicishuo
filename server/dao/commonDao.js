@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const { User, UserCollections } = require('../models/userModel');
 const { ObjectId } = mongoose.Types;
 const client = require('../utils/elasticsearch');
+const { CommonWord } = require('../models/commonModel');
 
 class CommonDao {
   // eslint-disable-next-line no-useless-constructor,no-empty-function
@@ -27,6 +28,11 @@ class CommonDao {
     } catch (e) {
       console.log(e);
     }
+  }
+
+  static async getCommonWord(type) {
+    const commonWordList = await CommonWord.find({ type });
+    return commonWordList;
   }
 }
 

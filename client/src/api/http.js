@@ -97,6 +97,10 @@ class Http {
   flyingOrderSearch(keyword, page = 1) {
     return post(Url.flyingOrderSearchApi, { keyword, page });
   }
+
+  getCommonWord(type) {
+    return post(Url.getCommonWordApi, { type });
+  }
 }
 
 export default new Http();
