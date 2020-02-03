@@ -169,6 +169,7 @@ export default {
     },
 
     // 搜索相关
+    // TODO: 搜索时智能提示显示最关键的词
     async querySearchAsync(queryString, cb) {
       const queryRes = await Http.search(queryString);
       // 作者信息， 这里不给出标签提示

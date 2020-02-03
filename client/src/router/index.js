@@ -74,6 +74,13 @@ const routes = [
     name: 'test',
     component: Search,
   },
+
+  // 酷功能
+  {
+    path: '/flying-order',
+    name: 'flying-order',
+    component: () => import(/* webpackChunkName: "about" */ '@/views/CoolFeature/FlyingOrder.vue'),
+  },
 ];
 
 const router = new VueRouter({
