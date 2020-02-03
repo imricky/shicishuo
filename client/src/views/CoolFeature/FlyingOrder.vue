@@ -104,14 +104,21 @@ export default {
     },
     // 从N句诗里，找到含有关键词的一句诗词，并返回
     findParagraphs(arr, keyword) {
+      let flag = false;
       let res = '';
       for (let i = 0; i < arr.length; i++) {
         if (arr[i].includes(keyword)) {
           res = arr[i].toString();
+          flag = true;
           break;
         }
       }
-      return res;
+      if (flag === true) {
+        return res;
+      }
+      // TODO: 优化查找，如果没有找到，那么就不显示，比如查询【后月亦此月】 这一句，只找到一句，其他的都是相关的，不显示
+      // 如果没有找到关键字，那么就返回诗词的第一句
+      return arr[0];
     },
 
     changePage(page) {
