@@ -312,4 +312,32 @@ router.get('/search', async (req, res, next) => {
   //   });
 });
 
+// 飞花令搜索接口
+router.post('/flyingOrderSearch', async (req, res, next) => {
+  // 声明查询对象以搜索弹性搜索，并从找到的第一个结果中仅返回200个结果。
+  // 还匹配其中名称与发送的查询字符串类似的任何数据
+  const body = {
+    size: 10,
+    from: (req.body.page - 1) * 10,
+    query: {
+      match: {
+        paragraphs: req.body.keyword,
+      },
+    },
+  };
+  try {
+    const poems = await client.search({ index: 'tangsongpoemsnew', type: 'allpoets', body });
+    res.json({
+      data: poems.hits,
+      code: 200,
+    });
+  } catch (e) {
+    res.json({
+      code: 200,
+      errMassage: e,
+      data: '',
+    });
+  }
+});
+
 module.exports = router;

@@ -14,7 +14,12 @@
               prefix-icon="el-icon-reading"
               class="input-box">
             </el-input>
-            <el-button type="primary" icon="el-icon-search">搜索</el-button>
+            <el-button
+             type="primary"
+             icon="el-icon-search"
+             @click="searchWord">
+              搜索
+            </el-button>
           </span>
 
         </el-card>
@@ -35,31 +40,16 @@
       <div class="common all-list">
         <el-divider content-position="left">搜索结果&nbsp;<i class="el-icon-notebook-2"></i></el-divider>
         <el-card shadow="always">
-          <div class="paragraph">
-            <span class="verse">正是江南好风景，落花时节又逢君。</span>
-            <span>
+          <div v-for="p in paragraphsList" :key="p.paragraph">
+            <div class="paragraph" >
+              <span class="verse">{{p.paragraph}}</span>
+              <span>
               <span>——</span>&nbsp;
-              <span class="author">杜甫</span>
-              <span class="from">《江南逢李龟年》</span>
+              <span class="author">{{p.author}}</span>
+              <span class="from">《{{p.title}}》</span>
             </span>
-          </div>
-          <el-divider></el-divider>
-          <div class="paragraph">
-            <span class="verse">正是江南好风景，落花时节又逢君。</span>
-            <span>
-              <span>——</span>&nbsp;
-              <span class="author">杜甫</span>
-              <span class="from">《江南逢李龟年》</span>
-            </span>
-          </div>
-          <el-divider></el-divider>
-          <div class="paragraph">
-            <span class="verse">正是江南好风景，落花时节又逢君。</span>
-            <span>
-              <span>——</span>&nbsp;
-              <span class="author">杜甫</span>
-              <span class="from">《江南逢李龟年》</span>
-            </span>
+            </div>
+            <el-divider></el-divider>
           </div>
         </el-card>
         <el-pagination
@@ -67,7 +57,8 @@
           layout="prev, pager, next"
           :total="totalCount"
           @current-change="changePage"
-          :current-page="currentPage">
+          :current-page="currentPage"
+          class="paging-bar">
         </el-pagination>
       </div>
     </div>
@@ -88,11 +79,60 @@ export default {
   data() {
     return {
       input: '',
-      totalCount: 200,
+      paragraphsList: [], // 飞花令搜索结果 10条记录
+      totalCount: 1000,
+      currentPage: 1, // 当前页数
     };
   },
   computed: {},
-  methods: {},
+  methods: {
+    async searchWord() {
+      const poems = await Http.flyingOrderSearch(this.input);
+      this.totalCount = poems.data.data.total;
+      const _self = this;
+      // 如果查询有记录
+      if (poems.data.data.total > 0) {
+        this.paragraphsList = poems.data.data.hits.reduce((total, curValue, curIndex, arr) => {
+          const obj = Object.create(null);
+          obj.paragraph = this.findParagraphs(curValue._source.paragraphs, _self.input);
+          obj.title = curValue._source.title;
+          obj.author = curValue._source.author;
+          total.push(obj);
+          return total;
+        }, []);
+      }
+    },
+    // 从N句诗里，找到含有关键词的一句诗词，并返回
+    findParagraphs(arr, keyword) {
+      let res = '';
+      for (let i = 0; i < arr.length; i++) {
+        if (arr[i].includes(keyword)) {
+          res = arr[i].toString();
+          break;
+        }
+      }
+      return res;
+    },
+
+    changePage(page) {
+      this.currentPage = page;
+      const _self = this;
+      Http.flyingOrderSearch(this.input, page).then((res) => {
+        if (res.data.data.total > 0) {
+          this.paragraphsList = res.data.data.hits.reduce((total, curValue, curIndex, arr) => {
+            const obj = Object.create(null);
+            obj.paragraph = this.findParagraphs(curValue._source.paragraphs, _self.input);
+            obj.title = curValue._source.title;
+            obj.author = curValue._source.author;
+            total.push(obj);
+            return total;
+          }, []);
+        }
+        // 翻页时直接跳到顶部
+        window.scrollTo(0, 0);
+      });
+    },
+  },
   created() {
 
   },
@@ -139,5 +179,9 @@ export default {
         font-weight: bold;
       }
     }
+  }
+  .paging-bar{
+    margin-top: 10px;
+    margin-bottom: 10px;
   }
 </style>

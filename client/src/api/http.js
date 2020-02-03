@@ -93,6 +93,10 @@ class Http {
   search(keyword, page = 1) {
     return get(`${Url.searchApi}/?q=${keyword}&page=${page}`);
   }
+
+  flyingOrderSearch(keyword, page = 1) {
+    return post(Url.flyingOrderSearchApi, { keyword, page });
+  }
 }
 
 export default new Http();

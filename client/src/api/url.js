@@ -24,5 +24,6 @@ export const Url = {
 
 
   // 公共接口
-  searchApi: `${baseURL}/search`, // 用户收藏
+  searchApi: `${baseURL}/search`, // 搜索接口
+  flyingOrderSearchApi: `${baseURL}/flyingOrderSearch`, // 飞花令搜索接口
 };
