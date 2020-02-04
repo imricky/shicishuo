@@ -52,6 +52,15 @@ export default {
     margin: 0 auto;
     margin-top: 10px;
     border: 1px solid #F56C6C;
+    /*吸底效果的做法*/
+    /*background-color: orange;*/
+    /*position: fixed; bottom: 0;*/
+    /*left: 0;*/
+    /*bottom: 0;*/
+    /*height: 100px;*/
+    /*width: 100%;*/
+    /*overflow: hidden;*/
+    /*吸底结束*/
     /*底部栏的中心偏移量*/
     /*margin-left: 370px;*/
     .copy-right{
