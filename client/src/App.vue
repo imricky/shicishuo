@@ -26,6 +26,11 @@ export default {
   /*color: #2c3e50;*/
   /*margin-top: 60px;*/
 }
+*, *:before, *:after {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
 
 body,html {
   /*color: #000;*/
