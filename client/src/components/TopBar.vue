@@ -1,105 +1,128 @@
 <template>
   <div class="topall">
-  <div class="topbar-center">
-    <el-container>
-      <el-header>
-        <el-row :gutter="10" justify="space-between">
-          <el-col :span="4" :xs="2" :sm="2" :md="4" :lg="4" :xl="4">
-            <router-link id="logo" to="/">
+    <div class="topbar-center">
+      <el-container>
+        <el-header>
+          <el-row :gutter="10" justify="space-between">
+            <el-col :span="4" :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
+              <router-link id="logo" to="/">
+                <div class="grid-content bg-purple">
+                  <i class="el-icon-present"></i>
+                  <!--              TODO:最后换logo和换字体-->
+                  <span class="logo-word hidden-xs-only">诗词说</span>
+                </div>
+              </router-link>
+            </el-col>
+    <!--          中间的标签和搜索栏-->
+            <el-col :span="16"  :xs="16" :sm="16" :md="16" :lg="16" :xl="16">
+              <div class="middle-content bg-purple">
+                <el-menu :default-active="activeIndex" class="top-bar-middle"
+                         mode="horizontal" @select="handleMenuSelect"
+                         text-color="#303133"
+                         active-text-color="#ffd04b"
+                         :router="true">
+    <!--                TODO:换icon-->
+                  <el-menu-item index="DailyPoem" route="DailyPoem"><i class="el-icon-postcard"></i>每日诗词</el-menu-item>
+                  <el-menu-item index="ExploreGoodPoetry" route="ExploreGoodPoetry"><i class="el-icon-search"></i>探索好诗</el-menu-item>
+                  <el-menu-item index="Library" route="Library"><i class="el-icon-files"></i>文库大全</el-menu-item>
+                  <el-menu-item index="CoolExploration" route="CoolExploration"><i class="el-icon-potato-strips"></i>实验楼</el-menu-item>
+                  <el-menu-item>
+    <!--                  <el-input-->
+    <!--                    placeholder="请输入内容"-->
+    <!--                    prefix-icon="el-icon-search"-->
+    <!--                    v-model="input2">-->
+    <!--                  </el-input>-->
+    <!--                  <el-autocomplete-->
+    <!--                    v-model="input2"-->
+    <!--                    :fetch-suggestions="querySearchAsync"-->
+    <!--                    placeholder="李白"-->
+    <!--                    @select="handleSelect"-->
+    <!--                  ></el-autocomplete>-->
+
+                    <el-autocomplete
+                      popper-class="my-autocomplete"
+                      v-model="input2"
+                      :fetch-suggestions="querySearchAsync"
+                      placeholder="请输入搜索内容"
+                      @select="handleSelect"
+                      :select-when-unmatched="true"
+                      :trigger-on-focus="false"
+                      :popper-append-to-body="false">
+                      <i
+                        class="el-icon-search"
+                        slot="suffix"
+                        @click="handleIconClick">
+                      </i>
+                    </el-autocomplete>
+                  </el-menu-item>
+                </el-menu>
+    <!--              <span class="search">-->
+    <!--                <el-input-->
+    <!--                  placeholder="请输入内容"-->
+    <!--                  prefix-icon="el-icon-search"-->
+    <!--                  v-model="input2">-->
+    <!--                </el-input>-->
+    <!--              </span>-->
+              </div>
+
+            </el-col>
+
+            <el-col :span="4" :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
               <div class="grid-content bg-purple">
-                <i class="el-icon-location"></i>
-                <!--              TODO:最后换logo-->
-                <span class="logo-word">SHICISHUO</span>
+                <div v-if="user.token !== '' && user.username !== ''" class="login-container">
+                  <el-dropdown placement="bottom" @command="handleCommand">
+                    <span class="el-dropdown-link">
+                      <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
+                    </span>
+                    <el-dropdown-menu slot="dropdown">
+                      <el-dropdown-item icon="el-icon-s-custom" command="userProfile">个人中心</el-dropdown-item>
+                      <el-dropdown-item icon="el-icon-remove" command="logout">注销</el-dropdown-item>
+                    </el-dropdown-menu>
+                  </el-dropdown>
+                </div>
+                <div v-else class="login-container">
+                  <el-button type="primary" plain @click="goLogin">登录</el-button>
+                  <el-button type="success" plain @click="goRegister">注册</el-button>
+    <!--                <el-dropdown placement="bottom">-->
+    <!--                  <span class="el-dropdown-link">-->
+    <!--                    <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>-->
+    <!--                  </span>-->
+    <!--                  <el-dropdown-menu slot="dropdown">-->
+    <!--                    <el-dropdown-item icon="el-icon-s-custom">signin</el-dropdown-item>-->
+    <!--                    <el-dropdown-item icon="el-icon-remove">signup</el-dropdown-item>-->
+    <!--                  </el-dropdown-menu>-->
+    <!--                </el-dropdown>-->
+                </div>
               </div>
-            </router-link>
-          </el-col>
-<!--          中间的标签和搜索栏-->
-          <el-col :span="16"  :xs="16" :sm="16" :md="16" :lg="16" :xl="16">
-            <div class="middle-content bg-purple">
-              <el-menu :default-active="activeIndex" class="top-bar-middle"
-                       mode="horizontal" @select="handleMenuSelect"
-                       text-color="#303133"
-                       active-text-color="#ffd04b"
-                       :router="true">
-<!--                TODO:换icon-->
-                <el-menu-item index="DailyPoem" route="DailyPoem"><i class="el-icon-postcard"></i>每日诗词</el-menu-item>
-                <el-menu-item index="ExploreGoodPoetry" route="ExploreGoodPoetry"><i class="el-icon-search"></i>探索好诗</el-menu-item>
-                <el-menu-item index="Library" route="Library"><i class="el-icon-files"></i>文库大全</el-menu-item>
-                <el-menu-item index="CoolExploration" route="CoolExploration"><i class="el-icon-potato-strips"></i>实验楼</el-menu-item>
-                <el-menu-item>
-<!--                  <el-input-->
-<!--                    placeholder="请输入内容"-->
-<!--                    prefix-icon="el-icon-search"-->
-<!--                    v-model="input2">-->
-<!--                  </el-input>-->
-<!--                  <el-autocomplete-->
-<!--                    v-model="input2"-->
-<!--                    :fetch-suggestions="querySearchAsync"-->
-<!--                    placeholder="李白"-->
-<!--                    @select="handleSelect"-->
-<!--                  ></el-autocomplete>-->
-
-                  <el-autocomplete
-                    popper-class="my-autocomplete"
-                    v-model="input2"
-                    :fetch-suggestions="querySearchAsync"
-                    placeholder="请输入搜索内容"
-                    @select="handleSelect"
-                    :select-when-unmatched="true"
-                    :trigger-on-focus="false"
-                    :popper-append-to-body="false">
-                    <i
-                      class="el-icon-search"
-                      slot="suffix"
-                      @click="handleIconClick">
-                    </i>
-                  </el-autocomplete>
-                </el-menu-item>
-              </el-menu>
-<!--              <span class="search">-->
-<!--                <el-input-->
-<!--                  placeholder="请输入内容"-->
-<!--                  prefix-icon="el-icon-search"-->
-<!--                  v-model="input2">-->
-<!--                </el-input>-->
-<!--              </span>-->
-            </div>
-
-          </el-col>
-
-          <el-col :span="4" :xs="2" :sm="2" :md="4" :lg="4" :xl="4">
-            <div class="grid-content bg-purple">
-              <div v-if="user.token !== '' && user.username !== ''" class="login-container">
-<!--                <el-avatar icon="el-icon-user-solid" class="user-avatar"></el-avatar>-->
-                <el-dropdown placement="bottom" @command="handleCommand">
-                  <span class="el-dropdown-link">
-                    <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
-                  </span>
-                  <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item icon="el-icon-s-custom" command="userProfile">个人中心</el-dropdown-item>
-                    <el-dropdown-item icon="el-icon-remove" command="logout">注销</el-dropdown-item>
-                  </el-dropdown-menu>
-                </el-dropdown>
-              </div>
-              <div v-else class="login-container">
-                <el-button type="primary" plain @click="goLogin">登录</el-button>
-                <el-button type="success" plain @click="goRegister">注册</el-button>
-<!--                <el-dropdown placement="bottom">-->
-<!--                  <span class="el-dropdown-link">-->
-<!--                    <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>-->
-<!--                  </span>-->
-<!--                  <el-dropdown-menu slot="dropdown">-->
-<!--                    <el-dropdown-item icon="el-icon-s-custom">signin</el-dropdown-item>-->
-<!--                    <el-dropdown-item icon="el-icon-remove">signup</el-dropdown-item>-->
-<!--                  </el-dropdown-menu>-->
-<!--                </el-dropdown>-->
-              </div>
-            </div>
-          </el-col>
-        </el-row>
-      </el-header>
-    </el-container>
-  </div>
+            </el-col>
+          </el-row>
+        </el-header>
+      </el-container>
+    </div>
+    <div class="topbar-center-mobile mobile-all" @click="plusIconClick">
+      <i class="el-icon-arrow-up icon-all" :class="{'btn-mobile-hidden': btnMobileHidden }"></i>
+      <i class="el-icon-price-tag icon-all btn-mobile-close" :class="{'btn-mobile-hidden': !btnMobileHidden }"></i>
+    </div>
+    <div class="navigation-wrapper animated bounceInDown mobile-all" :class="{'visible': !btnMobileHidden }">
+      <div class="navigation-container">
+        <nav class="cover-navigation cover-navigation--primary">
+          <ul class="navigation">
+            <li class="navigation-item">
+              <a href="/DailyPoem" title="dailyPoem" class="blog-button">每日一诗</a>
+            </li>
+            <li class="navigation-item">
+              <a href="/ExploreGoodPoetry" title="explore" class="blog-button">探索好诗</a>
+            </li>
+            <li class="navigation-item">
+              <a href="/Library" title="library" class="blog-button">文库大全</a>
+            </li>
+            <li class="navigation-item">
+              <a href="/CoolExploration" title="cool" class="blog-button">实验楼</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -119,6 +142,8 @@ export default {
       searchList: [],
       state: '',
       timeout: null,
+      // 移动端按钮隐藏
+      btnMobileHidden: true,
     };
   },
   computed: {
@@ -210,6 +235,18 @@ export default {
     handleIconClick(ev) {
       this.$router.push(`/s?keyword=${this.input2}`);
     },
+
+    // 以下是mobile的一些点击事件
+    plusIconClick() {
+      console.log('plue');
+      this.btnMobileHidden = !this.btnMobileHidden;
+    },
+    handleOpen(key, keyPath) {
+      console.log(key, keyPath);
+    },
+    handleClose(key, keyPath) {
+      console.log(key, keyPath);
+    },
   },
   created() {
 
@@ -230,7 +267,8 @@ export default {
 <style scoped lang="scss">
   .topall{
     width: 100%;
-    border-bottom: 1px solid red;
+    border-bottom: 1px solid #81BEFF;
+    box-shadow: 0 1px 5px #888888;
   }
   .topbar-center{
     max-width: 1040px;
@@ -295,6 +333,117 @@ export default {
   }
   .user-avatar{
     /*margin-right: 10px;*/
+  }
+
+  // 移动端:
+  .mobile-all{
+    display: none;
+  }
+
+  /* 平板电脑和小屏电脑之间的分辨率 */
+  @media screen and (min-width: 768px) and (max-width: 979px) {
+    .topall{
+      width: 100%;
+      border-bottom: 1px solid #AA314D;
+      background-color: #AA314D;
+      box-shadow: 0 1px 5px #888888;
+    }
+  }
+
+  /* 横向放置的手机和竖向放置的平板之间的分辨率 */
+  @media screen and (max-width: 767px) {
+
+  }
+
+  /* 横向放置的手机及分辨率更小的设备 */
+  @media screen and (max-width: 480px) {
+    .topbar-center{
+      display: none;
+    }
+    .mobile-all{
+      display: block;
+    }
+
+    /*TopBar的样式*/
+    .topbar-center-mobile{
+      /*border-radius: 4px;*/
+      min-height: 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background-color: rgba(51,51,51,0.98);
+      border-bottom: 1px solid rgba(255,255,255,0.15);
+    }
+    .icon-all{
+      color: #ffffff;
+    }
+    .btn-mobile-hidden{
+      display: none !important;
+    }
+
+    /*媒体查询下拉框css*/
+    .navigation-wrapper{
+      display: none;
+      position: fixed;
+      z-index: 999;
+      top: 30px;
+      right: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(51,51,51,0.98);
+      border-bottom: 1px solid rgba(255,255,255,0.35);
+    }
+    .visible{
+      display: block !important;
+    }
+    .navigation-container{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .cover-navigation{
+      display: block;
+      position: relative;
+      float: left;
+      clear: left;
+      width: 100%;
+      /*margin-top: 22px;*/
+      /*border: 1px solid #ffffff;*/
+    }
+    .navigation{
+      display: block;
+      width: 100%;
+      padding: 0;
+      text-align: center;
+      list-style-type: none;
+      li{
+        width: 80%;
+        margin-bottom: .4em;
+      }
+      .navigation-item{
+        display: inline-block;
+        line-height: 1em;
+        a{
+          display: block;
+          position: relative;
+          color: #ffffff;
+          opacity: .8;
+          padding: 10px 20px;
+          border: 1px solid #ffffff;
+          border-radius: 20px;
+          font-size: .9em;
+          font-weight: bold;
+          letter-spacing: 1px;
+          text-shadow: none;
+          text-decoration: none;
+          cursor: pointer;
+        }
+      }
+    }
+
+
   }
 
 </style>
