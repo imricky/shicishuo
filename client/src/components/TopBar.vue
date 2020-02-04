@@ -367,7 +367,7 @@ export default {
     /*TopBar的样式*/
     .topbar-center-mobile{
       /*border-radius: 4px;*/
-      min-height: 30px;
+      min-height: 60px;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -387,7 +387,7 @@ export default {
       display: none;
       position: fixed;
       z-index: 999;
-      top: 30px;
+      top: 60px;
       right: 0;
       left: 0;
       width: 100%;
