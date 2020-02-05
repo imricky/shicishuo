@@ -105,4 +105,28 @@ export default {
     min-height: 80px;
   }
 
+  /* 平板电脑和小屏电脑之间的分辨率 */
+  @media screen and (min-width: 768px) and (max-width: 979px) {
+  }
+
+  /* 横向放置的手机和竖向放置的平板之间的分辨率 */
+  @media screen and (max-width: 767px) {
+
+  }
+
+  /* 横向放置的手机及分辨率更小的设备 */
+  @media screen and (max-width: 480px) {
+    .footer{
+      /*吸底效果的做法*/
+      background-color: #EDF5FF;
+      border: 1px solid #F56C6C;
+      position: fixed; bottom: 0;
+      left: 0;
+      bottom: 0;
+      height: 100px;
+      width: 100%;
+      overflow: hidden;
+      /*吸底结束*/
+    }
+  }
 </style>
