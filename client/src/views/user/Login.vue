@@ -3,9 +3,9 @@
     <div class="login-wrap">
       <div class="login-main">
         <div class="logo">
-          <p class="logo-word">
+          <h1 class="logo-word">
             SHICISHUO  -  login
-          </p>
+          </h1>
         </div>
         <div class="main">
           <el-form label-position="top" label-width="80px" :model="loginForm" :rules="rules" ref="loginForm">
@@ -18,31 +18,10 @@
           </el-form>
         </div>
         <div class="login-bottom">
-          <el-button type="primary" @click="doLogin('loginForm')">登录</el-button>
+          <el-button type="primary" class="mobile-login-button" @click="doLogin('loginForm')">登录</el-button>
           <el-link href="/t" target="_blank"  class="forgot">我忘记密码了</el-link>
         </div>
       </div>
-      <div class="mobile-all">
-            <div class="mobile-title">
-              <h1 class="mobile-logo-word">
-                SHICISHUO  -  login
-              </h1>
-            </div>
-            <div class="mobile-main">
-              <el-form label-position="top" label-width="80px" :model="loginForm" :rules="rules" ref="loginForm">
-                <el-form-item label="用户名" prop="username">
-                  <el-input v-model="loginForm.username"></el-input>
-                </el-form-item>
-                <el-form-item label="密码" prop="password">
-                  <el-input type="password" v-model="loginForm.password"></el-input>
-                </el-form-item>
-              </el-form>
-            </div>
-            <div class="mobile-bottom">
-              <el-button type="primary" class="mobile-login-button" @click="doLogin('loginForm')">登录</el-button>
-              <el-link href="/t" target="_blank"  class="mobile-forget">我忘记密码了</el-link>
-            </div>
-          </div>
     </div>
 
 </template>
@@ -133,53 +112,48 @@ export default {
     background-size: 100% 100%;
     position: relative;
   }
-  .login-main{
-    width: 500px;
-    /*height: 400px;*/
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    border: 1px solid #606266;
-    transform: translate(-50%,-50%);
-    box-shadow: #666 0 0 30px;
-  }
-  .logo{
-    border: 1px solid #E6A23C;
-    height: 50px;
-    margin: 20px;
-    font-size: 24px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    .logo-word{
-      color: #00B7FF;
+
+
+  /* 手机以外的分辨率 */
+  @media screen and (min-width: 481px) {
+    .login-main{
+      width: 500px;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      border: 1px solid #606266;
+      transform: translate(-50%,-50%);
+      box-shadow: #666 0 0 30px;
     }
-  }
-
-  /*输入框区域*/
-  .main{
-    margin: 20px;
-  }
-
-  /*按钮区域*/
-  .login-bottom{
-    display: flex;
-    flex-direction: column; //垂直对齐
-    justify-content: center;
-    align-items: center;
-    margin: 20px 40px;
-    .forgot{
-      margin-top: 10px;
+    .logo{
+      border: 1px solid #E6A23C;
+      height: 50px;
+      margin: 20px;
+      font-size: 24px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .logo-word{
+        /*color: #00B7FF;*/
+      }
     }
-  }
 
-  /*移动端显示*/
-  .mobile-all{
-    display: none;
-  }
+    /*输入框区域*/
+    .main{
+      margin: 20px;
+    }
 
-  /* 平板电脑和小屏电脑之间的分辨率 */
-  @media screen and (min-width: 768px) and (max-width: 979px) {
+    /*按钮区域*/
+    .login-bottom{
+      display: flex;
+      flex-direction: column; //垂直对齐
+      justify-content: center;
+      align-items: center;
+      margin: 20px 40px;
+      .forgot{
+        margin-top: 10px;
+      }
+    }
   }
 
   /* 横向放置的手机和竖向放置的平板之间的分辨率 */
@@ -189,14 +163,7 @@ export default {
 
   /* 横向放置的手机及分辨率更小的设备 */
   @media screen and (max-width: 480px) {
-    .login-main{
-      display: none;
-    }
-
-    .mobile-all{
-      display: block;
-    }
-    .mobile-title{
+    .logo{
       /*border: 1px solid red;*/
       position: absolute;
       top: 25%;
@@ -208,7 +175,7 @@ export default {
 
     .mobile-logo-word{
     }
-    .mobile-main{
+    .main{
       /*border: 1px solid red;*/
       position: absolute;
       top: 50%;
@@ -217,7 +184,7 @@ export default {
       margin: 0 auto;
       padding: 0 20px;
     }
-    .mobile-bottom{
+    .login-bottom{
       /*border: 1px solid red;*/
       position: absolute;
       top: 70%;
@@ -232,7 +199,7 @@ export default {
       margin: 0 auto;
       margin-bottom: 10px;
     }
-    .mobile-forget{
+    .forgot{
       display: block;
       margin: 0 auto;
       margin-bottom: 10px;
