@@ -187,11 +187,12 @@
         </el-collapse-item>
       </el-collapse>
     </div>
-    <div class="mobile-main">
+    <div class="mobile-main ">
       <el-table
         :data="poemList"
         style="width: 100%"
-        v-if="poemList.length !== 0">
+        v-if="poemList.length !== 0"
+        class="animated bounceInDown">
         <el-table-column type="expand">
           <template slot-scope="props">
             <el-form label-position="left" inline class="demo-table-expand">

@@ -88,6 +88,92 @@
         </el-main>
       </el-container>
     </div>
+
+    <div class="mobile-all">
+      <div class="mobile-top">
+        <el-card class="one-card website-info">
+          <div slot="header">
+            <span>当前选择标签</span>
+          </div>
+          <div class="current-tag">
+            <span class="current-tag-name mobile-current-tag-name">{{currentTag}}</span>
+          </div>
+        </el-card>
+
+        <el-card class="one-card website-info relation-tag">
+          <div slot="header">
+            <span>相关标签</span>
+          </div>
+          <div class="other-tag-container mobile-other-tag-container">
+            <el-tag
+              v-for="(item,index) in tagList"
+              :key="index"
+              size="medium"
+              effect="plain"
+              class="other-tag mobile-other-tag"
+              @click="changeTag(item)">
+              {{ item }}
+            </el-tag>
+          </div>
+          <el-pagination
+            small
+            layout="prev, pager, next"
+            :total="totalTagCount"
+            :page-size = "20"
+            @current-change="changeTagPage"
+            :current-page="currentTagPage">
+          </el-pagination>
+        </el-card>
+      </div>
+      <div class="mobile-main ">
+        <el-table
+          :data="poemList"
+          style="width: 100%"
+          v-if="poemList.length !== 0">
+          <el-table-column type="expand">
+            <template slot-scope="props">
+              <el-form label-position="left" inline class="demo-table-expand">
+                <el-form-item class="paragraph-table">
+                  <!--                  // TODO: 增加样式-->
+                  <div v-for="paragraph in props.row.paragraphs" :key="paragraph" >
+                    {{ paragraph }}
+                  </div>
+                </el-form-item>
+              </el-form>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="标题"
+            prop="title">
+          </el-table-column>
+          <el-table-column
+            label="作者"
+            prop="author">
+          </el-table-column>
+          <el-table-column
+            label="标签🏷"
+            width="180">
+            <template slot-scope="scope">
+              <!--              :type="scope.row.tag === '家' ? 'primary' : 'success'"-->
+              <el-tag type="success" v-for="tag in scope.row.tags" :key="tag" @click="changeTag(tag)" class="list-tag">
+                {{ tag }}
+              </el-tag>
+            </template>
+          </el-table-column>
+        </el-table>
+        <div class="mobile-paging-bar">
+          <el-pagination
+            small
+            background
+            layout="prev, pager, next"
+            :total="totalCount"
+            @current-change="changePage"
+            :current-page="currentPage">
+          </el-pagination>
+        </div>
+      </div>
+
+    </div>
     <div>
       <Footer />
     </div>
@@ -227,5 +313,86 @@ export default {
     &:hover{
       background-color: darken(#BBE3A9,5%);
     }
+  }
+
+  /*移动端显示*/
+  .mobile-all{
+    display: none;
+  }
+
+  @media screen and (min-width: 768px) and (max-width: 979px) {
+  }
+
+  /* 横向放置的手机和竖向放置的平板之间的分辨率 */
+  @media screen and (max-width: 767px) {
+
+  }
+
+  /* 横向放置的手机及分辨率更小的设备 */
+  @media screen and (max-width: 480px) {
+    .all-container{
+      display: none;
+    }
+
+    .mobile-all{
+      display: block;
+      border: 1px solid rebeccapurple;
+      width: 100%;
+      .mobile-top{
+        border: 1px solid #AA314D;
+        margin: 0 auto;
+      }
+      .mobile-tip{
+        margin: 0 auto;
+        text-align: center;
+        margin-top: 5px;
+        margin-bottom: 5px;
+      }
+
+      .mobile-main{
+        border: 1px solid #139250;
+        margin: 0 auto;
+      }
+      .mobile-current-tag-name{
+        padding: 0 10px;
+        border: 1px solid #F56C6C;
+        border-radius: 6px;
+        color: #F56C6C;
+      }
+      .relation-tag{
+        margin-top: 10px;
+      }
+      .mobile-other-tag-container{
+        margin-bottom: 10px;
+      }
+      .mobile-other-tag{
+        margin: 5px 10px;
+      }
+
+
+      .mobile-aside-type{
+        > :nth-child(n){
+          font-size: 14px;
+          width: 80px;
+          padding: 5px 10px;
+          float: left;
+        }
+      }
+
+      .paragraph-table{
+        margin: 0 auto;
+        > :nth-child(n){
+          text-align: center;
+        }
+      }
+
+      .mobile-paging-bar{
+        display: block;
+        margin: 0 auto;
+        width: 100%;
+        margin-top: 10px;
+      }
+    }
+
   }
 </style>
