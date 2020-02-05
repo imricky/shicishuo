@@ -144,7 +144,7 @@ export default {
       /*display:flex;!*Flex布局*!*/
       /*display: -webkit-flex; !* Safari *!*/
       /*align-items:center;!*指定垂直居中*!*/
-      height: 600px;
+      min-height: 630px;
     }
   }
 
