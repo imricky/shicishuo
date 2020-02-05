@@ -125,4 +125,27 @@ export default {
     /*height: 460px;*/
   }
 
+
+  /* 平板电脑和小屏电脑之间的分辨率 */
+  @media screen and (min-width: 768px) and (max-width: 979px) {
+  }
+
+  /* 横向放置的手机和竖向放置的平板之间的分辨率 */
+  @media screen and (max-width: 767px) {
+
+  }
+
+  /* 横向放置的手机及分辨率更小的设备 */
+  @media screen and (max-width: 480px) {
+    .aside-container{
+      display: none;
+    }
+    .all-container{
+      /*display:flex;!*Flex布局*!*/
+      /*display: -webkit-flex; !* Safari *!*/
+      /*align-items:center;!*指定垂直居中*!*/
+      height: 600px;
+    }
+  }
+
 </style>

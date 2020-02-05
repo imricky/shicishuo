@@ -1,37 +1,33 @@
 <template>
-  <div class="poem-card">
-    <el-card class="box-card" shadow="hover">
-      <div slot="header" class="top">
-<!--        {{poemCardData}}-->
-        <span class="title"> {{poemCardData.title}}</span>
-        <span class="author-info">[唐] {{poemCardData.author}}</span>
-      </div>
+  <div>
+    <p class="mobile-title">每日一诗</p>
+    <div class="poem-card">
+      <el-card class="box-card" shadow="hover">
+        <div slot="header" class="top">
+          <!--        {{poemCardData}}-->
+          <span class="title"> {{poemCardData.title}}</span>
+          <span class="author-info">[唐] {{poemCardData.author}}</span>
+        </div>
         <p v-for="o in poemCardData.paragraphs" :key="o" class="text item">
           {{ o }}
         </p>
-      <el-divider></el-divider>
-      <div class="tags-and-button">
-        <div>
-        <span class="tag" v-for="i in poemCardData.tags" :key="i">
-<!--            <el-tag>{{i}}</el-tag>-->
-          <TagButton :text="i"></TagButton>
-          <!--        <el-tag>标签一</el-tag>-->
-          <!--        <el-tag type="success" @click="test">标签二</el-tag>-->
-          <!--        <el-tag type="info">标签三</el-tag>-->
-          <!--        <el-tag type="warning">标签四</el-tag>-->
-          <!--        <el-tag type="danger">标签五</el-tag>-->
-          </span>
-      </div>
+        <el-divider></el-divider>
+        <div class="tags-and-button">
+          <div>
+      <span class="tag" v-for="i in poemCardData.tags" :key="i">
+        <TagButton :text="i"></TagButton>
+      </span>
+          </div>
 
-        <div class="collect-container">
-          <el-button type="success"
-                     icon="el-icon-goods"
-                     size="small"
-                     class="collect-button" @click="collectPoem">收藏</el-button>
+          <div class="collect-container">
+            <el-button type="success"
+                       icon="el-icon-goods"
+                       size="small"
+                       class="collect-button" @click="collectPoem">收藏</el-button>
+          </div>
         </div>
-      </div>
-
-    </el-card>
+      </el-card>
+    </div>
   </div>
 </template>
 
@@ -86,7 +82,8 @@ export default {
     /*TODO: 媒体查询，适配不同分辨率*/
     max-width: 680px;
     min-height: 320px;
-    min-width: 650px;
+    /*是这一行导致了移动端css不出来*/
+    min-width: 550px;
   }
   .top{
     display: flex;
@@ -127,6 +124,47 @@ export default {
   }
   .item {
     margin-bottom: 18px;
+  }
+
+  /*移动端的一些样式*/
+  .mobile-title{
+    display: none;
+  }
+  /* 平板电脑和小屏电脑之间的分辨率 */
+  @media screen and (min-width: 768px) and (max-width: 979px) {
+  }
+
+  /* 横向放置的手机和竖向放置的平板之间的分辨率 */
+  @media screen and (max-width: 767px) {
+
+  }
+
+  /* 横向放置的手机及分辨率更小的设备 */
+  @media screen and (max-width: 480px) {
+    .mobile-title{
+      display: block;
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+    }
+    .poem-card{
+      /*height: 500px;*/
+    }
+    .box-card {
+      max-width: 340px;
+      min-height: 320px;
+      min-width: 320px;
+    }
+    .tags-and-button-mobile{
+      display: block;
+      color: red;
+      width: 100px;
+      height: 100px;
+      border: 1px solid red;
+      z-index: 12312;
+      background: #AA314D;
+    }
+
   }
 
 </style>
