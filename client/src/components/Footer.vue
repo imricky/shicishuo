@@ -118,14 +118,14 @@ export default {
   @media screen and (max-width: 480px) {
     .footer{
       /*吸底效果的做法*/
-      background-color: #EDF5FF;
-      border: 1px solid #F56C6C;
-      position: fixed; bottom: 0;
-      left: 0;
-      bottom: 0;
-      height: 100px;
-      width: 100%;
-      overflow: hidden;
+      /*background-color: #EDF5FF;*/
+      /*border: 1px solid #F56C6C;*/
+      /*position: fixed; bottom: 0;*/
+      /*left: 0;*/
+      /*bottom: 0;*/
+      /*height: 100px;*/
+      /*width: 100%;*/
+      /*overflow: hidden;*/
       /*吸底结束*/
     }
   }
