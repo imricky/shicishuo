@@ -8,7 +8,10 @@
     <el-main class="main">
       <el-row type="flex" class="row-bg" justify="center" :gutter="40">
         <el-col :span="12"><div class="grid-content bg-purple">
-          <CoolExplorationCard />
+          <CoolExplorationCard
+            funcName="飞花令"
+            goFunc="flying-order"
+            funcDesc="飞花令，原本是古人行酒令时的一个文字游戏，源自古人的诗词之趣，得名于唐代诗人韩翃《寒食》中的名句“春城无处不飞花”。"/>
         </div></el-col>
 
         <el-col :span="12"><div class="grid-content bg-purple">

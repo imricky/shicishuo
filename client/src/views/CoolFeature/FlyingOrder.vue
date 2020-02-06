@@ -81,7 +81,7 @@ export default {
     return {
       input: '',
       paragraphsList: [], // 飞花令搜索结果 10条记录
-      totalCount: '',
+      totalCount: 0,
       currentPage: 1, // 当前页数
       commonWord: ['花', '月', '人', '天', '雨', '春', '江'],
     };
