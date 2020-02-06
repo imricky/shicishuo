@@ -37,7 +37,7 @@ export default {
     },
     goFunc: {
       type: String,
-      default: 'flying-order',
+      default: 'test',
     },
   },
   computed: {},
@@ -46,6 +46,14 @@ export default {
       this.cardAnimate = !this.cardAnimate;
     },
     goCoolFunc() {
+      if (this.goFunc === 'test') {
+        this.$message({
+          message: '敬请期待',
+          type: 'success',
+          duration: 1000,
+        });
+        return false;
+      }
       this.$router.push(this.goFunc);
     },
   },

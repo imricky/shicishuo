@@ -25,7 +25,7 @@
                   <el-menu-item index="DailyPoem" route="DailyPoem"><i class="el-icon-postcard"></i>每日诗词</el-menu-item>
                   <el-menu-item index="ExploreGoodPoetry" route="ExploreGoodPoetry"><i class="el-icon-search"></i>探索好诗</el-menu-item>
                   <el-menu-item index="Library" route="Library"><i class="el-icon-files"></i>文库大全</el-menu-item>
-                  <el-menu-item index="CoolExploration" route="CoolExploration"><i class="el-icon-potato-strips"></i>实验楼</el-menu-item>
+                  <el-menu-item index="CoolExploration" route="CoolExploration"><i class="el-icon-potato-strips"></i>酷功能</el-menu-item>
                   <el-menu-item>
     <!--                  <el-input-->
     <!--                    placeholder="请输入内容"-->
@@ -117,7 +117,7 @@
               <a href="/Library" title="library" class="blog-button">文库大全</a>
             </li>
             <li class="navigation-item">
-              <a href="/CoolExploration" title="cool" class="blog-button">实验楼</a>
+              <a href="/CoolExploration" title="cool" class="blog-button">酷功能</a>
             </li>
             <li class="navigation-item" v-if="user.token !== '' && user.username !== ''">
               <a href="/Profile" title="cool" class="blog-button">个人中心</a>
