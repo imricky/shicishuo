@@ -75,7 +75,7 @@
                       <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
                     </span>
                     <el-dropdown-menu slot="dropdown">
-                      <el-dropdown-item icon="el-icon-s-custom" command="userProfile">个人中心</el-dropdown-item>
+                      <el-dropdown-item icon="el-icon-s-custom" command="Profile">个人中心</el-dropdown-item>
                       <el-dropdown-item icon="el-icon-remove" command="logout">注销</el-dropdown-item>
                     </el-dropdown-menu>
                   </el-dropdown>
@@ -186,9 +186,9 @@ export default {
           },
         });
       }
-      if (command === 'userProfile') {
+      if (command === 'Profile') {
         this.$router.push({
-          path: '/userProfile',
+          path: '/Profile',
         });
       }
     },

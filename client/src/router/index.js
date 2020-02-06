@@ -63,8 +63,8 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '@/views/user/Register.vue'),
   },
   {
-    path: '/userProfile',
-    name: 'userProfile',
+    path: '/Profile',
+    name: 'Profile',
     component: () => import(/* webpackChunkName: "about" */ '@/views/user/Profile.vue'),
   },
 
