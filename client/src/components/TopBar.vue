@@ -119,6 +119,19 @@
             <li class="navigation-item">
               <a href="/CoolExploration" title="cool" class="blog-button">实验楼</a>
             </li>
+            <li class="navigation-item" v-if="user.token !== '' && user.username !== ''">
+              <a href="/Profile" title="cool" class="blog-button">个人中心</a>
+            </li>
+            <li class="navigation-item" v-else>
+              <a title="cool" @click="goLogin">登录</a>
+            </li>
+
+            <li class="navigation-item" v-if="user.token !== '' && user.username !== ''">
+              <a title="cool" class="blog-button" @click="handleCommand('logout')">注销</a>
+            </li>
+            <li class="navigation-item" v-else>
+              <a title="cool" class="blog-button" @click="goRegister">注册</a>
+            </li>
           </ul>
         </nav>
       </div>
