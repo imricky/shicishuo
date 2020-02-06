@@ -1,7 +1,7 @@
 <template>
   <div>
     <TopBar />
-    <div class="search-container">
+    <div class="search-container mobile-container">
       <!--    飞花令输入框-->
       <div class="common input">
         <el-card shadow="always" >
@@ -33,6 +33,7 @@
             icon="el-icon-goblet-full"
             v-for="word in commonWord"
             :key="word"
+            class="common-word-button"
             @click="getCommonWordList(word)">{{word}}</el-button>
         </el-card>
       </div>
@@ -40,7 +41,7 @@
       <div class="common all-list">
         <el-divider content-position="left">搜索结果&nbsp;<i class="el-icon-notebook-2"></i></el-divider>
         <el-card shadow="always">
-          <div v-for="p in paragraphsList" :key="p.paragraph">
+          <div v-for="p in paragraphsList" :key="p.paragraph" class="animated bounceInDown">
             <div class="paragraph" >
               <span class="verse">{{p.paragraph}}</span>
               <span>
@@ -162,11 +163,7 @@ export default {
     border: 1px solid #DCDFE6;
     background-color: #E9EEF3;
     color: #333;
-    /*display: flex;*/
-    /*justify-content: center;*/
-    /*align-items: center;*/
     margin: 0 auto;
-    margin-top: 20px;
   }
   .common{
     margin: 0 20px;
@@ -179,9 +176,7 @@ export default {
       margin-right: 20px;
     }
   }
-  .common-words{
-    margin-top: 10px;
-  }
+
   .all-list{
     margin-top: 10px;
     .paragraph{
@@ -198,4 +193,29 @@ export default {
     margin-top: 10px;
     margin-bottom: 10px;
   }
+
+  /* 手机以外的分辨率 */
+  @media screen and (min-width: 481px) {
+    .mobile-container{
+      margin-top: 20px;
+    }
+  }
+
+  /* 横向放置的手机和竖向放置的平板之间的分辨率 */
+  @media screen and (max-width: 767px) {
+
+  }
+
+  /* 横向放置的手机及分辨率更小的设备 */
+  @media screen and (max-width: 480px) {
+    .mobile-container{
+      margin-top: 0px;
+    }
+    .common-word-button{
+      margin: 5px 10px;
+    }
+
+  }
+
+
 </style>
