@@ -1,32 +1,28 @@
 <template>
   <div>
-<!--    <div>-->
-<!--      <TopBar />-->
-<!--    </div>-->
+      <TopBar />
     <div>
-      <div class="user-info">
+      <div class="user-container">
         <div class="user-header">
-          <div class="user-avatar">
-            <img src="../../assets/logo.png" alt="用户头像">
-            用户头像
-          </div>
-          <div class="user-other">
-            <input type="text" v-model="userInfo.username"
-                   :readonly="!isInSetting" ref="username"
-                   class="user-name animated"
-                   :class="{ jello: isInSetting }">
-            <div class="user-desc">{{userInfo.userDescription}}</div>
-            <div class="user-collection">被关注，被收藏，点赞数</div>
-            <div class="user-setting">
-              <span v-if="isInSetting === false">
-                <el-button type="primary" size="mini" @click="userSetting">设置</el-button>
-              </span>
-              <span v-else>
-                <el-button type="primary" size="mini" @click="userSettingSave">保存</el-button>
-                <el-button type="primary" size="mini" @click="userSettingCancel">取消</el-button>
-              </span>
-            </div>
-          </div>
+          <img src="../../assets/logo.png" alt="用户头像">
+        </div>
+        <div class="user-info">
+          <p class="user-name">
+            {{userInfo.username}}
+            <el-button
+              type="primary"
+              icon="el-icon-search"
+              size="mini"
+              style="margin-left: 10px"
+              @click="userSetting">设置</el-button>
+          </p>
+<!--          TODO: 加入用户设置页面-->
+          <span class="user-desc">宝剑锋从磨砺出，梅花香自苦寒来</span>
+          <p class="user-stat">
+            <span>点赞数：<span style="color: #67C23A">213</span></span>
+            <span>收藏数：<span style="color: #409EFF">456</span></span>
+            <span>被收藏数：<span style="color: #F56C6D">789</span></span>
+          </p>
         </div>
       </div>
       <div class="main-container">
@@ -74,20 +70,18 @@
         </div>
       </div>
     </div>
-    <div>
       <Footer />
-    </div>
   </div>
 </template>
 
 <script>
 import Http from '@/api/http';
-// import TopBar from '@/components/TopBar.vue';
+import TopBar from '@/components/TopBar.vue';
 import Footer from '@/components/Footer.vue';
 
 export default {
   components: {
-    // TopBar,
+    TopBar,
     Footer,
   },
   name: 'Profile',
@@ -96,8 +90,6 @@ export default {
       activeName: 'first',
       collectionList: [], // 收藏列表
       collectionTotalCount: 100, // 收藏诗词的数量
-      isInSetting: false, // 是否正在设置，默认为false
-      usernameAnimate: false, // 用户名修改输入框的动效
       userInfo: {
         username: '',
         userDescription: '',
@@ -138,45 +130,11 @@ export default {
     },
     // 点击设置
     userSetting() {
-      this.isInSetting = true;
-      this.$refs.username.focus();
-      // 下面两行代码，解决输入框光标定位问题
-      this.$refs.username.value = '';
-      this.$refs.username.value = this.userInfo.username;
-    },
-    userSettingCancel() {
-      this.isInSetting = false;
-      this.userInfo.username = window.localStorage.getItem('username'); // 取消则从store里去获取真实值
-    },
-    async userSettingSave() {
-      const _self = this;
-      const { username } = this.userInfo;
-      // 原来的username,更新失败了就恢复,必须要从vuex里取，不能直接oldUsername = this.$refs.username.innerHTML;
-      const oldUsername = this.$store.state.user.username;
-      const { _id } = this.$store.state.user;
-      const res = await Http.updateUserInfo(_id, username);
-      // 如果更新成功
-      if (res.data.code === 200) {
-        this.$message({
-          message: '更新成功',
-          type: 'success',
-          duration: 1000,
-          onClose() {
-            window.localStorage.setItem('username', username);
-          },
-        });
-      } else {
-        this.$message({
-          message: res.data.msg,
-          type: 'warning',
-          duration: 1000,
-          onClose() {
-            _self.userInfo.username = oldUsername;
-          },
-        });
-      }
-      // 最后全部设置为false
-      this.isInSetting = false;
+      this.$message({
+        message: '敬请期待',
+        type: 'success',
+        duration: 1000,
+      });
     },
   },
   created() {
@@ -202,59 +160,57 @@ export default {
 </script>
 
 <style scoped lang="scss">
-  .user-info{
-    width: 680px;
-    height: 250px;
-    border: 1px solid #409EFF;
+  .user-container{
+    border: 1px solid red;
+    height: 160px;
+    /*width: 100%;*/
+    max-width: 1000px;
     margin: 0 auto;
-    margin-top: 20px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
     .user-header{
-      display: flex;
-      justify-content: flex-start;
-      align-items: flex-start;
-      .user-avatar{
-        margin-left: 20px;
-        border: 1px solid red;
-        width: 100px;
-        height: 100px;
-        overflow: hidden;
+      width: 120px;
+      height: 120px;
+      border: 1px solid #AA314D;
+      overflow: hidden;
+      img{
+        /*将图片填充满div*/
+        width: 100%;
+        height: 100%;
+        object-fit:cover;
       }
-      .user-other{
-        border: 1px solid darkcyan;
-        text-align: left;
-        margin-left: 20px;
-        // 模拟光标闪动
-        .user-name{
-          font-size: 20px;
-          font-weight: bold;
-          line-height: 45px;
-          border: 1px solid #E6A23C;
-          &[contenteditable=true]{
-            /*TODO: 改变输入框的颜色*/
-            border: 1px solid #409EFF;
-          }
+    }
+    .user-info{
+      height: 120px;
+      /*min-width: 300px;*/
+      border: 1px solid #F56C6C;
+      overflow: hidden;
+      .user-name{
+        font-size: 24px;
+        font-weight: bold;
+        margin: 0;
+        margin-bottom: 10px;
+      }
+      .user-desc{
+        font-size: 12px;
+        color: #909399;
+      }
+      .user-stat{
+        font-size: 16px;
+        > :nth-child(n){
+          margin: 0 10px;
         }
-        .user-desc{
-          margin-top: 20px;
-          font-size: 16px;
-          line-height: 40px;
-          border: 1px solid #42b983;
-        }
-        .user-collection{
-          margin-top: 20px;
-          height: 30px;
-          border: 1px solid #42b983;
-        }
-        .user-setting{
-          margin-top: 20px;
-          border: 1px solid #00B7FF;
+        > :first-child{
+          margin-left: 0px;
         }
       }
     }
   }
 
+
   .main-container{
-    width: 680px;
+    max-width: 1000px;
     min-height: 270px;
     height: 100%;
     border: 1px solid #E6A23C;
@@ -264,5 +220,37 @@ export default {
     .main{
       text-align: left;
     }
+  }
+
+  /* 手机以外的分辨率 */
+  @media screen and (min-width: 481px) {
+    .user-container{
+      margin-top: 20px;
+    }
+    .user-header{
+      margin-left: 40px;
+    }
+    .user-info{
+      margin-left: 40px;
+    }
+  }
+
+  /* 横向放置的手机和竖向放置的平板之间的分辨率 */
+  @media screen and (max-width: 767px) {
+
+  }
+
+  /* 横向放置的手机及分辨率更小的设备 */
+  @media screen and (max-width: 480px) {
+    .user-container{
+      margin-top: 0px;
+    }
+    .user-header{
+      margin-left: 0;
+    }
+    .user-info{
+      margin-left: 20px;
+    }
+
   }
 </style>
