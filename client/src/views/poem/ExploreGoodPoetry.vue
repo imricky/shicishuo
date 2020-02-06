@@ -70,7 +70,7 @@
         </el-collapse>
       </el-aside>
       <el-main class="main-container">
-        <div><i class="el-icon-s-promotion"></i> 点击左侧标签，探索你的爱❤️</div>
+        <div><i class="el-icon-s-promotion"></i> 点击左侧标签，探索你喜爱的诗词❤️</div>
         <el-table
           :data="poemList"
           style="width: 100%"
@@ -121,7 +121,7 @@
 
   <div class="mobile-all">
     <div class="mobile-tip">
-      请点击一个标签，选择你的爱❤️
+      请点击一个标签，探索你喜爱的诗词❤️
     </div>
     <div class="mobile-top">
       <el-collapse accordion v-model="activeNames" :change="changeCollapse">
