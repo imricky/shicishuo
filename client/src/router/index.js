@@ -76,10 +76,27 @@ const routes = [
   },
 
   // 酷功能
+  // 飞花令
   {
     path: '/flying-order',
     name: 'flying-order',
     component: () => import(/* webpackChunkName: "about" */ '@/views/CoolFeature/FlyingOrder.vue'),
+  },
+  // 你画我猜
+  {
+    path: '/you_draw_i_guess',
+    name: 'you_draw_i_guess',
+    // You could also have named views at tho top
+    component: () => import(/* webpackChunkName: "about" */ '@/views/CoolFeature/you_draw_i_guess/YouDrawIGuess.vue'),
+    children: [{
+      path: 'room-list',
+      name: 'room-list',
+      component: () => import(/* webpackChunkName: "about" */ '@/views/CoolFeature/you_draw_i_guess/RoomList.vue'),
+    }, {
+      path: 'room/:id',
+      name: 'room',
+      component: () => import(/* webpackChunkName: "about" */ '@/views/CoolFeature/you_draw_i_guess/Room.vue'),
+    }],
   },
 ];
 
