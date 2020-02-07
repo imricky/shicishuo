@@ -1,7 +1,6 @@
 <template>
   <div>
     <TopBar />
-    <h1>User Settings</h1>
     <router-view/>
     <Footer />
   </div>
