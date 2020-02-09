@@ -19,9 +19,9 @@
 <!--      画笔工具-->
       <div class="paint-tool">
         <div class="top-tool">
-          <el-button size="small" icon="el-icon-edit">画笔</el-button>
-          <el-button size="small" icon="el-icon-takeaway-box">橡皮擦</el-button>
-          <el-button size="small" icon="el-icon-refresh-right">清除画板</el-button>
+          <el-button size="small" icon="el-icon-edit" @click="changePaint">画笔</el-button>
+          <el-button size="small" icon="el-icon-takeaway-box" @click="changeEraser">橡皮擦</el-button>
+          <el-button size="small" icon="el-icon-refresh-right" @click="clearCanvas">清除画板</el-button>
         </div>
         <div class="pen-thickness">
           <p>画笔粗细：</p>
@@ -33,17 +33,10 @@
           <div class="w20" @click="changeWidth(20)"></div>
         </div>
         <div class="pen-color">
-          <p>画笔颜色：</p>
-          <div>
-            <el-select v-model="choosePenColor" placeholder="请选择">
-              <el-option
-                v-for="item in colorOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
-              </el-option>
-            </el-select>
-          </div>
+          <p>
+            画笔颜色：
+          </p>
+          <el-color-picker v-model="penColor"></el-color-picker>
         </div>
         <div class="pen-quick">
           <p>快捷方式：</p>
@@ -73,7 +66,18 @@
       </div>
 <!--      画布-->
       <div class="paint-canvas">
-        456
+        <canvas
+          id="canvas"
+          ref="canvas"
+          width="850"
+          height="580"
+          @mousemove="move($event)"
+          @mousedown="down($event)"
+          @mouseup="up($event)">current stock price: $3.15 +0.15
+        </canvas>
+        <div id="eraser"></div>
+        <div id="cover"></div>
+        <span style="display: none" id="dataURI"> dataURI </span>
       </div>
 <!--      聊天窗口以及额外信息-->
       <div class="paint-talk">
@@ -81,7 +85,18 @@
       </div>
     </div>
     <div class="bottom">
-      789
+      <div class="bottom-inner">
+        <p class="answer-title">提交答案：</p>
+        <div>
+          <el-input
+            placeholder="答案诗句"
+            suffix-icon="el-icon-reading"
+            v-model="answerPoem"
+            class="answer-poem">
+          </el-input>
+        </div>
+        <el-button class="answer-submit">提交</el-button>
+      </div>
     </div>
   </div>
 </template>
@@ -92,6 +107,7 @@ export default {
   data() {
     return {
       questionPoem: '', // 问题诗句
+      answerPoem: '', // 答案诗句
       colorOptions: [{
         value: 'red',
         label: '红色',
@@ -117,22 +133,117 @@ export default {
         value: 'orange',
         label: '橘色',
       }],
-      choosePenColor: 'black', // 画笔的选择颜色
+      penColor: '#409EFF', // 画笔的选择颜色
       typeFill: false, // 快捷方式的是否填充
-      fillColor: '#409EFF',
+      fillColor: '#409EFF', // 快捷方式的填充颜色
+      isAllowPaint: true, // 是否允许绘画
+      isDraw: false, // canvas是否正在绘画
+      eraserFlag: false, // 是否位于橡皮擦模式
+      shape: 'pen', // 画笔模式，默认是pen（即为画笔，还有三角形，矩形等等）
     };
   },
-  computed: {},
+  computed: {
+    // 画板
+    canvas() {
+      return this.$refs.canvas;
+    },
+    // 2d 对象
+    ctx() {
+      return this.$refs.canvas.getContext('2d');
+    },
+    width() {
+      return this.$refs.canvas.width;
+    },
+    height() {
+      return this.$refs.canvas.height;
+    },
+  },
   methods: {
+    // 计算canvas和屏幕的位置关系，方便判断鼠标是否在画板上，以及画板的位置
+    windowToCanvas(canvas, x, y) {
+      const rect = canvas.getBoundingClientRect();
+      return {
+        x: x - rect.left * (canvas.width / rect.width),
+        y: y - rect.top * (canvas.height / rect.height),
+      };
+    },
     // 改变画笔粗细
     changeWidth(width) {
       console.log(width);
     },
+    // 清除画布
+    clearCanvas() {
+      this.ctx.clearRect(0, 0, this.width, this.height);
+      this.ctx.beginPath(); // 清空画布之后需要调用这个方法进行下一次绘制
+    },
+    // 启用橡皮擦
+    changeEraser() {
+      this.eraserFlag = true;
+    },
+    // 启用画笔
+    changePaint() {
+      this.eraserFlag = false;
+    },
+    // // 橡皮擦功能
+    eraserFunc(x, y) {
+      // 保存场景
+      this.ctx.save();
+      this.ctx.beginPath();
+      this.ctx.arc(x, y, 10, 0, Math.PI * 2, false);
+      this.ctx.clip();
+      this.ctx.clearRect(0, 0, this.width, this.height);
+      // 还原场景
+      this.ctx.restore();
+    },
+    // 绘画核心方法
+    draw(e) {
+      const ele = this.windowToCanvas(this.canvas, e.clientX, e.clientY);
+      const { x, y } = ele;
+      if (this.shape === 'pen') {
+        this.ctx.lineTo(x, y);
+        this.ctx.stroke();
+      }
+    },
+    down(e) {
+      this.isDraw = true;
+      const ele = this.windowToCanvas(this.canvas, e.clientX, e.clientY);
+      const { x, y } = ele;
+      // 画笔
+      if (this.shape === 'pen') {
+        this.ctx.beginPath();
+        this.ctx.moveTo(x, y);
+      }
+    },
+    move(e) {
+      const ele = this.windowToCanvas(this.canvas, e.clientX, e.clientY);
+      const { x, y } = ele;
+      if (this.isDraw) {
+        if (this.eraserFlag === true) {
+          this.eraserFunc(x, y);
+        } else {
+          this.draw(e);
+        }
+      }
+    },
+
+    up(e) {
+      this.isDraw = false;
+    },
   },
   created() {
+    // const canvasDom = document.getElementById('canvas');
+    // console.log(canvasDom);
+    // if (canvasDom.getContext) {
+    //   const ctx = canvasDom.getContext('2d');
+    // }
   },
   mounted() {
-
+    // 初始化画笔
+    if (this.ctx !== null) {
+      this.ctx.strokeStyle = '#0C1D34'; // 轮廓颜色
+      this.ctx.fillStyle = '#0C1D34'; // 填充颜色
+      this.ctx.lineWidth = 2; // 画笔粗细
+    }
   },
 };
 </script>
@@ -210,11 +321,10 @@ export default {
           }
         }
         .pen-color{
-          div{
-            width: 80%;
-            margin: 10px auto;
-            cursor: pointer;
-          }
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          margin-top: 5px;
         }
         .pen-quick{
           border: 1px solid red;
@@ -236,8 +346,14 @@ export default {
         }
       }
       .paint-canvas{
+        align-self: flex-start;
         width: 60%;
         border: 1px solid #5CC9F5;
+        #canvas{
+          //max-height: 578px; // 调整canvas的高度
+          //width: 100%;
+          border: 1px solid rgb(199, 198, 198);
+        }
       }
       .paint-talk{
         width: 20%;
@@ -248,6 +364,22 @@ export default {
       width: 100%;
       margin: 0 auto;
       border: 1px solid #409EFF;
+      .bottom-inner{
+        width: 65%;
+        margin: 0 auto;
+        border: 1px solid red;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+      }
+      .answer-poem{
+        width: 30em;
+      }
+      .answer-submit{
+        margin-left: 20px;
+      }
     }
   }
 
