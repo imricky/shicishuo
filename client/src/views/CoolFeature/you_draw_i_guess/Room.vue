@@ -19,8 +19,8 @@
 <!--      画笔工具-->
       <div class="paint-tool">
         <div class="top-tool">
-          <el-button size="small" icon="el-icon-edit" @click="changePaint">画笔</el-button>
-          <el-button size="small" icon="el-icon-takeaway-box" @click="changeEraser">橡皮擦</el-button>
+          <el-button size="small" icon="el-icon-edit" @click="changePaint" :class="{ 'in-eraser': !eraserFlag }">画笔</el-button>
+          <el-button size="small" icon="el-icon-takeaway-box" @click="changeEraser" :class="{ 'in-eraser': eraserFlag }">橡皮擦</el-button>
           <el-button size="small" icon="el-icon-refresh-right" @click="clearCanvas">清除画板</el-button>
         </div>
         <div class="pen-thickness">
@@ -287,6 +287,10 @@ export default {
         border: 1px solid #6638F0;
         .top-tool{
           border: 1px solid #F56C6D;
+        }
+        .in-eraser{
+          /*动态改变颜色*/
+          background-color: #DAECFF;
         }
         .pen-thickness{
           div{
