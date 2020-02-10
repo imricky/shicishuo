@@ -82,7 +82,30 @@
       </div>
 <!--      聊天窗口以及额外信息-->
       <div class="paint-talk">
-        789
+        <div class="room-info">
+          <el-divider content-position="left">房间信息</el-divider>
+          <p>在线人数： <span class="online-people">12</span></p>
+          <p>当前房主： <span class="room-creator">crq</span></p>
+        </div>
+        <div class="chat">
+          <el-divider content-position="left">聊天内容</el-divider>
+          <div class="chat-content">
+            <div class="chat-one-paragraph" v-for="i in 10" :key="i">
+              <p class="chat-talk-common chat-spokesperson">
+                crq2:{{i}}
+              </p>
+              <p class="chat-talk-common chat-word">我猜测是月落乌啼霜满天{{i}}</p>
+            </div>
+          </div>
+          <div class="chat-input">
+            <el-input
+              placeholder="请输入内容"
+              v-model="chatWord">
+              <i slot="prefix" class="el-input__icon el-icon-chat-round"></i>
+            </el-input>
+            <el-button class="chat-send-button">发送</el-button>
+          </div>
+        </div>
       </div>
     </div>
     <div class="bottom">
@@ -120,6 +143,7 @@ export default {
       penY: 0, // 画笔的初始的Y位置
       img: '', // 保存画图的img
       url: '', // 画图的url
+      chatWord: '', // 聊天发送的话
     };
   },
   computed: {
@@ -150,6 +174,8 @@ export default {
     // 清除画布
     clearCanvas() {
       this.ctx.clearRect(0, 0, this.width, this.height);
+      this.url = null;
+      this.img = null;
       this.ctx.beginPath(); // 清空画布之后需要调用这个方法进行下一次绘制
     },
     // 启用橡皮擦
@@ -334,7 +360,7 @@ export default {
       border: 1px solid #AA314D;
       display: flex;
       justify-content: flex-start;
-      align-items: center;
+      align-items: start;
       .paint-tool{
         width: 20%;
         border: 1px solid #6638F0;
@@ -407,14 +433,61 @@ export default {
         width: 60%;
         border: 1px solid #5CC9F5;
         #canvas{
-          //max-height: 578px; // 调整canvas的高度
-          //width: 100%;
+          /*max-height: 578px; // 调整canvas的高度*/
+          /*width: 100%;*/
           border: 1px solid rgb(199, 198, 198);
         }
       }
       .paint-talk{
+        align-items: flex-start;
         width: 20%;
         border: 1px solid #FF2150;
+        .room-info{
+          border: 1px solid #409EFF;
+          margin-bottom: 20px;
+          .online-people{
+            color: #F56C6D;
+            font-size: 20px;
+            font-weight: bold;
+          }
+          .room-creator{
+            color: #5CC9F5;
+            font-size: 20px;
+            font-weight: bold;
+          }
+        }
+        .chat{
+          border: 1px solid #F56C6C;
+          .chat-content{
+            height: 20em;
+            overflow :auto;
+            .chat-one-paragraph{
+              display: flex;
+              justify-content: flex-start;
+              align-items: center;
+              margin: 5px 0;
+              border: 1px solid red;
+              .chat-talk-common{
+                padding: 2px 0;
+              }
+              .chat-spokesperson{
+                color: #F56C6C;
+              }
+              .chat-word{
+                margin-left: 10px;
+              }
+            }
+          }
+          .chat-input{
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            margin-top: 10px;
+            .chat-send-button{
+              margin-left: 10px;
+            }
+          }
+        }
       }
     }
     .bottom{
