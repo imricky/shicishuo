@@ -6,6 +6,7 @@
         <div>
           <el-input
             placeholder="请输入诗句需要猜测的诗句"
+            clearable
             suffix-icon="el-icon-reading"
             v-model="questionPoem"
             class="question-poem">
@@ -100,6 +101,7 @@
           <div class="chat-input">
             <el-input
               placeholder="请输入内容"
+              clearable
               v-model="chatWord">
               <i slot="prefix" class="el-input__icon el-icon-chat-round"></i>
             </el-input>
@@ -114,6 +116,7 @@
         <div>
           <el-input
             placeholder="答案诗句"
+            clearable
             suffix-icon="el-icon-reading"
             v-model="answerPoem"
             class="answer-poem">
