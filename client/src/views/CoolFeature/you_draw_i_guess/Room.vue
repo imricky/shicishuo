@@ -24,33 +24,34 @@
           <el-button size="small" icon="el-icon-refresh-right" @click="clearCanvas">清除画板</el-button>
         </div>
         <div class="pen-thickness">
+<!--          TODO: 怎么选择画笔的高亮-->
           <p>画笔粗细：</p>
-          <div class="w1" @click="changeWidth(1)"></div>
-          <div class="w2" @click="changeWidth(2)"></div>
-          <div class="w5" @click="changeWidth(5)"></div>
-          <div class="w10" @click="changeWidth(10)"></div>
-          <div class="w15" @click="changeWidth(15)"></div>
-          <div class="w20" @click="changeWidth(20)"></div>
+          <div class="w1" @click="changePenWidth(1)"></div>
+          <div class="w2" @click="changePenWidth(2)"></div>
+          <div class="w5" @click="changePenWidth(5)"></div>
+          <div class="w10" @click="changePenWidth(10)"></div>
+          <div class="w15" @click="changePenWidth(15)"></div>
+          <div class="w20" @click="changePenWidth(20)"></div>
         </div>
         <div class="pen-color">
           <p>
             画笔颜色：
           </p>
-          <el-color-picker v-model="penColor"></el-color-picker>
+          <el-color-picker v-model="penColor" @change="changePenColor"></el-color-picker>
         </div>
         <div class="pen-quick">
           <p>快捷方式：</p>
           <div class="pen-type">
-            <el-button size="small" icon="el-icon-edit">直线</el-button>
-            <el-button size="small" icon="el-icon-takeaway-box">矩形</el-button>
-            <el-button size="small" icon="el-icon-refresh-right">圆形</el-button>
-            <el-button size="small" icon="el-icon-refresh-right">三角形</el-button>
+            <el-button size="small" icon="el-icon-edit" @click="changeShape('straight')">直线</el-button>
+            <el-button size="small" icon="el-icon-takeaway-box" @click="changeShape('rectangle')">矩形</el-button>
+            <el-button size="small" icon="el-icon-refresh-right" @click="changeShape('circular')">圆形</el-button>
+            <el-button size="small" icon="el-icon-refresh-right" @click="changeShape('triangle')">三角形</el-button>
           </div>
           <div class="pen-type-fill">
             <div class="pen-fill-color-choose">
               是否填充：
               <el-switch
-                v-model="typeFill"
+                v-model="fillFlag"
                 active-color="#13ce66"
                 inactive-color="#ff4949">
               </el-switch>
@@ -108,38 +109,17 @@ export default {
     return {
       questionPoem: '', // 问题诗句
       answerPoem: '', // 答案诗句
-      colorOptions: [{
-        value: 'red',
-        label: '红色',
-      }, {
-        value: 'green',
-        label: '绿色',
-      }, {
-        value: 'lightblue',
-        label: '浅蓝色',
-      }, {
-        value: 'yellow',
-        label: '黄色',
-      }, {
-        value: 'white',
-        label: '白色',
-      }, {
-        value: 'black',
-        label: '黑色',
-      }, {
-        value: 'blue',
-        label: '蓝色',
-      }, {
-        value: 'orange',
-        label: '橘色',
-      }],
-      penColor: '#409EFF', // 画笔的选择颜色
-      typeFill: false, // 快捷方式的是否填充
+      penColor: '#0C1D34', // 画笔的选择颜色
+      fillFlag: false, // 快捷方式的是否填充
       fillColor: '#409EFF', // 快捷方式的填充颜色
       isAllowPaint: true, // 是否允许绘画
       isDraw: false, // canvas是否正在绘画
       eraserFlag: false, // 是否位于橡皮擦模式
       shape: 'pen', // 画笔模式，默认是pen（即为画笔，还有三角形，矩形等等）
+      penX: 0, // 画笔的初始X位置
+      penY: 0, // 画笔的初始的Y位置
+      img: '', // 保存画图的img
+      url: '', // 画图的url
     };
   },
   computed: {
@@ -167,10 +147,6 @@ export default {
         y: y - rect.top * (canvas.height / rect.height),
       };
     },
-    // 改变画笔粗细
-    changeWidth(width) {
-      console.log(width);
-    },
     // 清除画布
     clearCanvas() {
       this.ctx.clearRect(0, 0, this.width, this.height);
@@ -183,6 +159,20 @@ export default {
     // 启用画笔
     changePaint() {
       this.eraserFlag = false;
+      this.shape = 'pen';
+    },
+    // 改变画笔粗细
+    changePenWidth(width) {
+      this.ctx.lineWidth = width;
+    },
+    // 改变画笔颜色
+    changePenColor(color) {
+      this.ctx.strokeStyle = color;
+      this.ctx.fillStyle = color;
+    },
+    // 改变画笔形状
+    changeShape(shape) {
+      this.shape = shape;
     },
     // // 橡皮擦功能
     eraserFunc(x, y) {
@@ -195,6 +185,7 @@ export default {
       // 还原场景
       this.ctx.restore();
     },
+
     // 绘画核心方法
     draw(e) {
       const ele = this.windowToCanvas(this.canvas, e.clientX, e.clientY);
@@ -202,13 +193,67 @@ export default {
       if (this.shape === 'pen') {
         this.ctx.lineTo(x, y);
         this.ctx.stroke();
+      } else if (this.shape === 'rectangle') {
+        // 矩形
+        this.ctx.beginPath();
+        this.ctx.moveTo(this.penX, this.penY);
+        this.ctx.lineTo(this.penX, y); //
+        this.ctx.lineTo(x, y);
+        this.ctx.lineTo(x, this.penY);
+        this.ctx.closePath();
+        if (this.fillFlag) {
+          this.ctx.fill();
+        } else {
+          this.ctx.stroke();
+        }
+      } else if (this.shape === 'straight') {
+        // 直线
+        this.ctx.beginPath();
+        this.ctx.moveTo(this.penX, this.penY);
+        this.ctx.lineTo(x, y);
+        this.ctx.stroke();
+      } else if (this.shape === 'circular') {
+        // 圆形
+        const disX = x - this.penX;
+        const disY = y - this.penY;
+        const radius = Math.sqrt(disX * disX + disY * disY) / 2;
+        const radiusX = this.penX + (x - this.penX) / 2;
+        const radiusY = this.penY + (y - this.penY) / 2;
+
+        this.ctx.beginPath();
+        this.ctx.arc(radiusX, radiusY, radius, 0, Math.PI * 2, true);
+        if (this.fillFlag) {
+          this.ctx.fill();
+        } else {
+          this.ctx.stroke();
+        }
+      } else if (this.shape === 'triangle') {
+        // 三角形
+        this.ctx.beginPath();
+        this.ctx.moveTo(this.penX, this.penY);
+        this.ctx.lineTo(this.penX, y);
+        this.ctx.lineTo(x, y);
+        this.ctx.closePath();
+        if (this.fillFlag) {
+          this.ctx.fill();
+        } else {
+          this.ctx.stroke();
+        }
       }
     },
     down(e) {
       this.isDraw = true;
       const ele = this.windowToCanvas(this.canvas, e.clientX, e.clientY);
       const { x, y } = ele;
-      // 画笔
+
+      // 鼠标按下的时候记录画笔的位置
+      this.penX = x;
+      this.penY = y;
+      if (this.url) {
+        this.img = new Image();
+        this.img.src = this.url;
+      }
+      // 画笔, 必须要写在down的时候
       if (this.shape === 'pen') {
         this.ctx.beginPath();
         this.ctx.moveTo(x, y);
@@ -217,10 +262,19 @@ export default {
     move(e) {
       const ele = this.windowToCanvas(this.canvas, e.clientX, e.clientY);
       const { x, y } = ele;
+      const nowX = e.offsetX;
+      const nowY = e.offsetY;
       if (this.isDraw) {
         if (this.eraserFlag === true) {
           this.eraserFunc(x, y);
         } else {
+          // 每次画图必须清空区域，再加载最后的一个图片作为背景图
+          this.ctx.clearRect(0, 0, this.width, this.height);
+          // 必须要加上，不然不能保存之前的绘制
+          if (this.url) {
+            this.ctx.drawImage(this.img, 0, 0, this.width, this.height);
+          }
+          // 绘画核心方法
           this.draw(e);
         }
       }
@@ -228,14 +282,10 @@ export default {
 
     up(e) {
       this.isDraw = false;
+      this.url = this.canvas.toDataURL();
     },
   },
   created() {
-    // const canvasDom = document.getElementById('canvas');
-    // console.log(canvasDom);
-    // if (canvasDom.getContext) {
-    //   const ctx = canvasDom.getContext('2d');
-    // }
   },
   mounted() {
     // 初始化画笔
