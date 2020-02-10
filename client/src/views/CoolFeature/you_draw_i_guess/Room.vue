@@ -60,7 +60,7 @@
               <p>
                 填充颜色：
               </p>
-              <el-color-picker v-model="fillColor"></el-color-picker>
+              <el-color-picker v-model="fillColor" @change="changeFillColor"></el-color-picker>
             </div>
           </div>
         </div>
@@ -167,8 +167,11 @@ export default {
     },
     // 改变画笔颜色
     changePenColor(color) {
-      this.ctx.strokeStyle = color;
-      this.ctx.fillStyle = color;
+      this.ctx.strokeStyle = color; // 轮廓颜色
+    },
+    // 改变填充颜色
+    changeFillColor(color) {
+      this.ctx.fillStyle = color; // 填充颜色
     },
     // 改变画笔形状
     changeShape(shape) {
