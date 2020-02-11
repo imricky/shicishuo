@@ -4,6 +4,18 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
+const app = express();
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
+
+io.listen(1234);
+
+io.on('connection', (socket) => {
+  socket.on('chat message', (msg) => {
+    io.emit('test1', msg);
+  });
+});
+
 require('./utils/mongo');
 require('./utils/elasticsearch');
 const { checkToken } = require('./utils/auth');
@@ -14,13 +26,13 @@ const usersRouter = require('./routes/users');
 const poemsRouter = require('./routes/poems');
 const drawRouter = require('./routes/youDrawIGuess');
 
-const app = express();
 
 // allow custom header and CORS
 app.all('*', (req, res, next) => {
   res.header('Access-Control-Allow-Origin', 'http://localhost:8080'); // 跨域请求的域名端口号
   res.header('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
   res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS, PATCH');
+  res.header('Access-Control-Allow-Credentials', 'true');
   if (req.method === 'OPTIONS') {
     // 让options请求快速返回/
     res.send({

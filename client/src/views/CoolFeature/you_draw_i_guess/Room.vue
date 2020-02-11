@@ -129,6 +129,7 @@
 </template>
 
 <script>
+import io from 'socket.io-client';
 export default {
   name: 'Room',
   data() {
@@ -318,6 +319,11 @@ export default {
     },
   },
   created() {
+    const socket = io('http://localhost:1234');
+    socket.emit('chat message', '123');
+    socket.on('test1', (msg) => {
+      console.log(`${msg}123`);
+    });
   },
   mounted() {
     // 初始化画笔
