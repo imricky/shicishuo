@@ -45,6 +45,7 @@
           输入房间号：
           <el-input
             placeholder="房间号：例如123"
+            clearable
             suffix-icon="el-icon-key"
             v-model="inputRoomNo"
             class="room-no">
@@ -105,7 +106,7 @@ export default {
     };
     return {
       inputRoomNo: '', // 手动输入的房间号
-      dialogFormVisible: true,
+      dialogFormVisible: false, // 创建房间的弹框
       createForm: {
         max: '', // 允许最大人数
         isPrivate: false, // 是否私密
@@ -134,11 +135,57 @@ export default {
     },
     // 进入列表的某个房间
     handleOneRoomEnter(index, row) {
-      console.log(index, row);
+      const _self = this;
+      // TODO: 进入的时候，加上一些友好过度
+      this.$message({
+        message: '正在进入房间...',
+        type: 'success',
+        duration: 1000,
+        onClose() {
+          _self.$router.push({
+            path: `/you_draw_i_guess/room/${row.roomNo}`,
+          });
+        },
+      });
     },
     // 进入输入的房间号
-    enterInputRoom() {
-      console.log('进入输入的房间号');
+    async enterInputRoom() {
+      const _self = this;
+      if (this.inputRoomNo !== '') {
+        const res = await Http.findOneRoom(this.inputRoomNo);
+        if (res.data.code === 200) {
+          if (res.data.data.length > 0) {
+            this.$message({
+              message: '正在进入房间...',
+              type: 'success',
+              duration: 1500,
+              onClose() {
+                _self.$router.push({
+                  path: `/you_draw_i_guess/room/${_self.inputRoomNo}`,
+                });
+              },
+            });
+          } else {
+            this.$message({
+              message: `未找到【 ${this.inputRoomNo} 】该房间号`,
+              type: 'warning',
+              duration: 1500,
+            });
+          }
+        } else {
+          this.$message({
+            message: `进入房间失败，失败原因:${res.data.errorMessage}`,
+            type: 'error',
+            duration: 1500,
+          });
+        }
+      } else {
+        this.$message({
+          message: '请先输入房间号',
+          type: 'error',
+          duration: 1500,
+        });
+      }
     },
     // 创建房间
     createRoom() {
@@ -193,8 +240,28 @@ export default {
       this.dialogFormVisible = false;
     },
     // 随机进入房间
-    randomEnterRoom() {
-      console.log('随机进入房间');
+    async randomEnterRoom() {
+      const _self = this;
+      const res = await Http.randomEnterRoom();
+      if (res.data.data.length === 0) {
+        this.$message({
+          message: '目前没有房间呢，你可以自己创建一个啦~',
+          type: 'info',
+          duration: 1500,
+        });
+        return false;
+      }
+      const { roomNo, roomName } = res.data.data[0];
+      this.$message({
+        message: `正在进入【${roomName}】的房间，房间号为【${roomNo}】`,
+        type: 'success',
+        duration: 1500,
+        onClose() {
+          _self.$router.push({
+            path: `/you_draw_i_guess/room/${roomNo}`,
+          });
+        },
+      });
     },
   },
   created() {

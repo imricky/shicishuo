@@ -28,6 +28,24 @@ router.get('/getRoomList', async (req, res, next) => {
   }
 });
 
+// 查找一个房间的信息以及是否存在
+router.post('/findOneRoom', async (req, res, next) => {
+  const { roomNo } = req.body;
+  try {
+    const data = await YouDrawIGuessDao.findOneRoom(roomNo);
+    res.json({
+      data,
+      code: 200,
+    });
+  } catch (e) {
+    res.json({
+      success: false,
+      errorMessage: e.stack,
+      code: 500,
+    });
+  }
+});
+
 // 创建房间
 router.post('/createRoom', async (req, res, next) => {
   const obj = {
@@ -47,6 +65,23 @@ router.post('/createRoom', async (req, res, next) => {
     res.json({
       success: false,
       errorMessage: e.stack,
+      code: 500,
+    });
+  }
+});
+
+// 随机进入房间
+router.get('/randomEnterRoom', async (req, res, next) => {
+  try {
+    const data = await YouDrawIGuessDao.randomEnterRoom();
+    res.json({
+      data,
+      code: 200,
+    });
+  } catch (e) {
+    res.json({
+      success: false,
+      errorMessage: e,
       code: 500,
     });
   }

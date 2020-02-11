@@ -31,4 +31,6 @@ export const Url = {
   // 你画我猜接口
   getRoomListApi: `${baseURL}/draw/getRoomList`, // 获取房间接口
   createRoomApi: `${baseURL}/draw/createRoom`, // 创建房间
+  findOneRoomApi: `${baseURL}/draw/findOneRoom`, // 查找信息房间
+  randomEnterRoomApi: `${baseURL}/draw/randomEnterRoom`, // 查找信息房间
 };

@@ -103,12 +103,20 @@ class Http {
   }
 
   // 你画我猜
-  getRoomList(type) {
+  getRoomList() {
     return get(Url.getRoomListApi);
   }
 
   createRoom(data) {
     return post(Url.createRoomApi, data);
+  }
+
+  findOneRoom(roomNo) {
+    return post(Url.findOneRoomApi, { roomNo });
+  }
+
+  randomEnterRoom() {
+    return get(Url.randomEnterRoomApi);
   }
 }
 

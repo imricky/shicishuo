@@ -13,6 +13,13 @@ class YouDrawIGuessDao {
     return roomListAll;
   }
 
+  // 查找一个房间的信息以及是否存在
+  static async findOneRoom(roomNo) {
+    const roomInfo = await RoomList.find({ roomNo });
+    return roomInfo;
+  }
+
+  // 创建房间
   static async createRoom(obj) {
     const roomNo = new ObjectId();
     const roomName = `${obj.creator}的房间`;
@@ -31,6 +38,14 @@ class YouDrawIGuessDao {
     } catch (e) {
       throw new Error(e);
     }
+  }
+
+  // 随机进入一个房间
+  static async randomEnterRoom() {
+    const res = await RoomList.aggregate([
+      { $sample: { size: 1 } },
+    ]);
+    return res;
   }
 }
 
