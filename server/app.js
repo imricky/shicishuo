@@ -12,6 +12,7 @@ const { checkToken } = require('./utils/auth');
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const poemsRouter = require('./routes/poems');
+const drawRouter = require('./routes/youDrawIGuess');
 
 const app = express();
 
@@ -47,6 +48,7 @@ app.use(checkToken);
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/poems', poemsRouter);
+app.use('/draw', drawRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
