@@ -28,4 +28,28 @@ router.get('/getRoomList', async (req, res, next) => {
   }
 });
 
+// 创建房间
+router.post('/createRoom', async (req, res, next) => {
+  const obj = {
+    max: req.body.max,
+    isPrivate: req.body.isPrivate,
+    creator: req.body.creator,
+  };
+  try {
+    const data = await YouDrawIGuessDao.createRoom(obj);
+    if (data !== null) {
+      res.json({
+        data,
+        code: 200,
+      });
+    }
+  } catch (e) {
+    res.json({
+      success: false,
+      errorMessage: e.stack,
+      code: 500,
+    });
+  }
+});
+
 module.exports = router;

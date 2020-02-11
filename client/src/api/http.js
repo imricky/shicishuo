@@ -101,6 +101,15 @@ class Http {
   getCommonWord(type) {
     return post(Url.getCommonWordApi, { type });
   }
+
+  // 你画我猜
+  getRoomList(type) {
+    return get(Url.getRoomListApi);
+  }
+
+  createRoom(data) {
+    return post(Url.createRoomApi, data);
+  }
 }
 
 export default new Http();

@@ -12,7 +12,7 @@ const RoomListSchema = new Schema({
   }, // 是否私密
   creator: String, // 创建者
   max: { type: Number, default: 12 }, // 最大允许人数
-  online: Number, // 当前人数
+  online: { type: Number, default: 0 }, // 当前人数
   onlinePlayer: Array, // 在线用户列表
   created: { type: Date, default: Date.now() }, // 创建时间
   updated: { type: Date, default: Date.now() }, // 更新时间

@@ -56,11 +56,11 @@
             <el-button type="primary" icon="el-icon-circle-plus" @click="dialogFormVisible = true">创建一个房间</el-button>
             <el-dialog title="创建房间" :visible.sync="dialogFormVisible">
               <el-form :model="createForm" :rules="rules" ref="createForm">
-                <el-form-item label="允许最大人数" prop="max" :label-width="formLabelWidth" required>
+                <el-form-item label="允许最大人数" prop="max" :label-width="formLabelWidth">
                   <el-input v-model.number="createForm.max"></el-input>
                 </el-form-item>
-                <el-form-item label="是否私密" prop="private" :label-width="formLabelWidth" required>
-                  <el-switch v-model="createForm.private"></el-switch>
+                <el-form-item label="是否私密" prop="isPrivate" :label-width="formLabelWidth" required>
+                  <el-switch v-model="createForm.isPrivate"></el-switch>
                 </el-form-item>
                 <el-form-item label="自定义房间号" prop="roomNo" :label-width="formLabelWidth">
                   <el-input
@@ -84,6 +84,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import Http from '@/api/http';
 export default {
   name: 'RoomList',
@@ -107,7 +108,7 @@ export default {
       dialogFormVisible: true,
       createForm: {
         max: '', // 允许最大人数
-        private: false, // 是否私密
+        isPrivate: false, // 是否私密
         roomNo: '', // 创建的房间号
       },
       createRoomButton: '确 定',
@@ -117,21 +118,20 @@ export default {
         ],
       },
       formLabelWidth: '120px',
-      tableData: [{
-        roomNo: 1, // 房间号
-        online: 2, // 在线人数
-        max: 5, // 允许最大人数
-        creator: 'crq', // 创建者
-      }, {
-        roomNo: 2, // 房间号
-        online: 4, // 在线人数
-        max: 8, // 允许最大人数
-        creator: 'crq2', // 创建者
-      }],
+      tableData: [], // 房间列表
     };
   },
-  computed: {},
+  computed: {
+    user() {
+      return this.$store.state.user;
+    },
+  },
   methods: {
+    // 获取房间列表
+    async getRoomList() {
+      const res = await Http.getRoomList();
+      return res;
+    },
     // 进入列表的某个房间
     handleOneRoomEnter(index, row) {
       console.log(index, row);
@@ -142,14 +142,42 @@ export default {
     },
     // 创建房间
     createRoom() {
-      this.$refs.createForm.validate((valid) => {
+      this.$refs.createForm.validate(async (valid) => {
+        const _self = this;
         if (valid) {
-          this.$refs.createRoom.loading = true;
-          setTimeout(() => {
-            this.$refs.createRoom.loading = false;
-            this.dialogFormVisible = false;
-            this.$refs.createForm.resetFields();
-          }, 1000);
+          const { max = 12, isPrivate = false } = this.createForm;
+          const creator = _self.user.username;
+          const createData = {
+            max,
+            isPrivate,
+            creator,
+          };
+          const res = await Http.createRoom(createData);
+          const { code, msg, data = {} } = res.data;
+          const createRoomNo = data.roomNo;
+          if (code === 200) {
+            this.$message({
+              message: '创建成功，正在进入房间...',
+              type: 'success',
+              duration: 1000,
+              onClose() {
+                _self.$router.push({
+                  path: `/you_draw_i_guess/room/${createRoomNo}`,
+                });
+              },
+            });
+          } else {
+            this.$message({
+              message: `创建失败，失败原因：${msg}`,
+              type: 'error',
+              duration: 1000,
+              onClose() {
+                _self.dialogFormVisible = false;
+                _self.$refs.createForm.resetFields();
+              },
+            });
+            return false;
+          }
         } else {
           this.$message({
             message: 'error submit',
@@ -170,7 +198,9 @@ export default {
     },
   },
   created() {
-
+    this.getRoomList().then((res) => {
+      this.tableData = res.data.data;
+    });
   },
   mounted() {
 
