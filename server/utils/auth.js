@@ -16,6 +16,10 @@ function createToken(str) {
 */
 // eslint-disable-next-line consistent-return
 async function checkToken(req, res, next) {
+  // 如果是socket.io，那么不走checkToken，直接next，不然会一直走checkToken，找不到路由报错
+  if (req.originalUrl.includes('/socket.io/')) {
+    return;
+  }
   // TODO: 需要正则匹配URL 例如user/123/userinfo
   const needAuthURL = ['userInfo'];
   // 不需要校验的url直接放行
