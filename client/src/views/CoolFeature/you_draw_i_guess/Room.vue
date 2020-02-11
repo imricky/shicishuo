@@ -363,7 +363,7 @@ export default {
       border: 1px solid #AA314D;
       display: flex;
       justify-content: flex-start;
-      align-items: start;
+      align-items: flex-start;
       .paint-tool{
         width: 20%;
         border: 1px solid #6638F0;
