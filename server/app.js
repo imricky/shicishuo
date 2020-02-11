@@ -5,19 +5,20 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
 const app = express();
-const http = require('http').Server(app);
-const io = require('socket.io')(http);
-
-io.listen(1234);
-
-io.on('connection', (socket) => {
-  socket.on('chat message', (msg) => {
-    io.emit('test1', msg);
-  });
-});
+// const http = require('http').Server(app);
+// const io = require('socket.io')(http);
+//
+// io.listen(1234);
+//
+// io.on('connection', (socket) => {
+//   socket.on('chat message', (msg) => {
+//     io.emit('test1', msg);
+//   });
+// });
 
 require('./utils/mongo');
 require('./utils/elasticsearch');
+require('./utils/socketio');
 const { checkToken } = require('./utils/auth');
 
 
