@@ -116,7 +116,10 @@ export function get(url, params = {}) {
         }
       })
       .catch((error) => {
-        // console.log('网络错误!');
+        store.dispatch('showMassage', {
+          type: 'error',
+          message: error.data.message || error.data.msg || error.data.errMsg,
+        });
         reject(error);
       });
   });
@@ -146,7 +149,10 @@ export function post(url, data = {}) {
         }
       })
       .catch((error) => {
-        // console.log('网络错误!');
+        store.dispatch('showMassage', {
+          type: 'error',
+          message: error.data.message || error.data.msg || error.data.errMsg,
+        });
         reject(error);
       });
   });

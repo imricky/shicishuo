@@ -1,5 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import { Message } from 'element-ui';
+const $message = Message;
 
 Vue.use(Vuex);
 
@@ -42,6 +44,13 @@ export default new Vuex.Store({
       window.localStorage.removeItem('token');
       window.localStorage.removeItem('avatar');
     },
+    showMassage(state, data) {
+      $message({
+        message: data.message,
+        type: data.type,
+        duration: 2000,
+      });
+    },
   },
   actions: {
     updateMenubarActiveIndex({ commit }, data) {
@@ -67,6 +76,11 @@ export default new Vuex.Store({
     removeUserToken({ commit }, data) {
       commit('removeUserToken', data);
     },
+
+    showMassage({ commit }, data) {
+      commit('showMassage', data);
+    },
+
   },
   getters: {
 
