@@ -54,6 +54,18 @@ export default {
         });
         return false;
       }
+      if (this.goFunc === 'you_draw_i_guess/room-list') {
+        if (this.$store.state.user.username === '' || this.$store.state.user.token === '') {
+          this.$message({
+            message: '【你画我猜】需要登录哦~ 请登录后重试',
+            type: 'warning',
+            duration: 2000,
+          });
+          return false;
+        }
+        this.$router.push(this.goFunc);
+        return false;
+      }
       this.$router.push(this.goFunc);
     },
   },

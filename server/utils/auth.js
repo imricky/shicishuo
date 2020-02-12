@@ -21,9 +21,19 @@ async function checkToken(req, res, next) {
     return;
   }
   // TODO: 需要正则匹配URL 例如user/123/userinfo
-  const needAuthURL = ['userInfo'];
-  // 不需要校验的url直接放行
-  if (!needAuthURL.includes(req.originalUrl)) {
+  const needAuthURL = [
+    /userInfo/g,
+    /^(\/draw).*?/g,
+  ];
+  let flag = false;
+
+  for (let i = 0; i < needAuthURL.length; i++) {
+    if (needAuthURL[i].test(req.originalUrl)) {
+      flag = true;
+      break;
+    }
+  }
+  if (!flag) {
     // 一定要return next,不能只写next
     return next();
   }

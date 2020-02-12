@@ -15,7 +15,10 @@
         </div></el-col>
 
         <el-col :span="12"><div class="grid-content bg-purple">
-          <CoolExplorationCard />
+          <CoolExplorationCard
+            funcName="你画我猜"
+            goFunc="you_draw_i_guess/room-list"
+            funcDesc="开始游戏之时，便是你展现灵魂画工之刻！走心作画，趣味猜题，尽情享受一场属于你的画猜之旅！还可以在绘画中交流感情~"/>
         </div></el-col>
       </el-row>
 

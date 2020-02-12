@@ -333,7 +333,7 @@ export default {
       this.url = this.canvas.toDataURL();
     },
     drawInCanvas(src) {
-      console.log(src);
+      // console.log(src);
       const _self = this;
       const img = new window.Image();
       img.onload = () => {
