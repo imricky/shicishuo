@@ -4,7 +4,7 @@ const { secretKey } = require('../config/jwtSecret');
 
 
 function createToken(str) {
-  return jwt.sign({ str }, secretKey, { expiresIn: 600 });
+  return jwt.sign({ str }, secretKey, { expiresIn: 20 });
 }
 
 /*
@@ -47,19 +47,21 @@ async function checkToken(req, res, next) {
     });
   }
   if (auth.indexOf('Bearer ') === -1) {
-    return res.json({
+    return res.status(401).json({
+      // TODO: 状态码需要整理一下
       code: 401,
-      msg: 'no bearer auth!!',
+      msg: 'no bearer auth!!无效Token,请重新登录！',
     });
   }
-  const token = auth.split('Bearer ')[1];
+  const token = auth.split('Bearer  ')[1];
   try {
     const { str = '' } = await jwt.verify(token, secretKey);
     return next();
   } catch (e) {
-    return res.json({
+    return res.status(401).json({
+      // TODO: 状态码需要整理一下
       code: 401,
-      msg: 'token错误',
+      msg: 'token错误，请重新登录',
     });
   }
 }
