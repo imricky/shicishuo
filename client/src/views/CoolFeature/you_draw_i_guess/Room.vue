@@ -149,6 +149,7 @@ export default {
       url: '', // 画图的url
       chatWord: '', // 聊天发送的话
       socket: '', // 前端建立的socket
+      src: '', // img的src，用来监听url
     };
   },
   computed: {
@@ -331,16 +332,15 @@ export default {
       this.isDraw = false;
       this.url = this.canvas.toDataURL();
     },
-
-    drawInCanvas(dataURI) {
-      console.log(dataURI);
+    drawInCanvas(src) {
+      console.log(src);
       const _self = this;
-      this.ctx.clearRect(0, 0, this.width, this.height); // 不要清除，否则会出现画面抖动，但是清除了会有bug
-      this.img = new Image();
-      this.img.src = dataURI;
-      this.img.onload = () => {
-        _self.ctx.drawImage(_self.img, 0, 0, _self.width, _self.height);
+      const img = new window.Image();
+      img.onload = () => {
+        _self.ctx.clearRect(0, 0, this.width, this.height);
+        _self.ctx.drawImage(img, 0, 0);
       };
+      img.src = src;
     },
   },
   created() {
@@ -358,7 +358,16 @@ export default {
       this.ctx.lineWidth = 2; // 画笔粗细
     }
     this.socket.on('dataURI', (dataURI) => {
-      this.drawInCanvas(dataURI);
+      // this.drawInCanvas(dataURI); // 不能一直调用，否则会屏幕一直闪烁
+      this.src = dataURI;
+    });
+    // 监听img 的 src 事件
+    this.$watch('src', (v) => {
+      this.$nextTick((_) => {
+        if (v) {
+          this.drawInCanvas(v);
+        }
+      });
     });
   },
 };
