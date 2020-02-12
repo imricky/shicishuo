@@ -148,6 +148,7 @@ export default {
       img: '', // 保存画图的img
       url: '', // 画图的url
       chatWord: '', // 聊天发送的话
+      socket: '', // 前端建立的socket
     };
   },
   computed: {
@@ -181,6 +182,10 @@ export default {
       this.url = null;
       this.img = null;
       this.ctx.beginPath(); // 清空画布之后需要调用这个方法进行下一次绘制
+      // 触发websocket事件
+      if (this.socket) {
+        this.socket.emit('dataURI', this.canvas.toDataURL());
+      }
     },
     // 启用橡皮擦
     changeEraser() {
@@ -215,6 +220,11 @@ export default {
       this.ctx.arc(x, y, 10, 0, Math.PI * 2, false);
       this.ctx.clip();
       this.ctx.clearRect(0, 0, this.width, this.height);
+      // 触发websocket事件
+      if (this.socket) {
+        console.log(this.canvas.toDataURL());
+        this.socket.emit('dataURI', this.canvas.toDataURL());
+      }
       // 还原场景
       this.ctx.restore();
     },
@@ -273,6 +283,10 @@ export default {
           this.ctx.stroke();
         }
       }
+      // 触发websocket事件
+      if (this.socket) {
+        this.socket.emit('dataURI', this.canvas.toDataURL());
+      }
     },
     down(e) {
       this.isDraw = true;
@@ -317,11 +331,22 @@ export default {
       this.isDraw = false;
       this.url = this.canvas.toDataURL();
     },
+
+    drawInCanvas(dataURI) {
+      console.log(dataURI);
+      const _self = this;
+      this.ctx.clearRect(0, 0, this.width, this.height); // 不要清除，否则会出现画面抖动，但是清除了会有bug
+      this.img = new Image();
+      this.img.src = dataURI;
+      this.img.onload = () => {
+        _self.ctx.drawImage(_self.img, 0, 0, _self.width, _self.height);
+      };
+    },
   },
   created() {
-    const socket = io('http://localhost:1234');
-    socket.emit('chat message', '123');
-    socket.on('test1', (msg) => {
+    this.socket = io('http://localhost:1234', { transports: ['websocket'] });
+    this.socket.emit('chat message', '123');
+    this.socket.on('test1', (msg) => {
       console.log(`${msg}123`);
     });
   },
@@ -332,6 +357,9 @@ export default {
       this.ctx.fillStyle = '#0C1D34'; // 填充颜色
       this.ctx.lineWidth = 2; // 画笔粗细
     }
+    this.socket.on('dataURI', (dataURI) => {
+      this.drawInCanvas(dataURI);
+    });
   },
 };
 </script>
