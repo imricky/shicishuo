@@ -120,6 +120,7 @@ export function get(url, params = {}) {
           type: 'error',
           message: error.data.message || error.data.msg || error.data.errMsg,
         });
+        store.dispatch('removeUserToken');
         reject(error);
       });
   });
@@ -153,6 +154,7 @@ export function post(url, data = {}) {
           type: 'error',
           message: error.data.message || error.data.msg || error.data.errMsg,
         });
+        store.dispatch('removeUserToken');
         reject(error);
       });
   });

@@ -48,7 +48,7 @@ export default new Vuex.Store({
       $message({
         message: data.message,
         type: data.type,
-        duration: 2000,
+        duration: 3000,
       });
     },
   },

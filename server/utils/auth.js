@@ -4,7 +4,7 @@ const { secretKey } = require('../config/jwtSecret');
 
 
 function createToken(str) {
-  return jwt.sign({ str }, secretKey, { expiresIn: 20 });
+  return jwt.sign({ str }, secretKey, { expiresIn: 86400 });
 }
 
 /*
