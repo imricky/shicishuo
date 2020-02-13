@@ -91,11 +91,20 @@
         <div class="chat">
           <el-divider content-position="left">聊天内容</el-divider>
           <div class="chat-content">
-            <div class="chat-one-paragraph" v-for="i in 10" :key="i">
-              <p class="chat-talk-common chat-spokesperson">
-                crq2:{{i}}
-              </p>
-              <p class="chat-talk-common chat-word">我猜测是月落乌啼霜满天{{i}}</p>
+            <div class="chat-one-paragraph" v-for="i in chatList" :key="i">
+              <div class="chat-type-word" v-if="i.type === 'word'">
+                <div class="chat-time">{{i.time}}</div>
+                <div class="chat-message-info">
+                  <p class="chat-talk-common chat-spokesperson">
+                    {{i.talker}}
+                  </p>
+                  <p class="chat-talk-common chat-word">{{i.message}}</p>
+                </div>
+              </div>
+              <div class="chat-type-info" v-if="i.type === 'info'">
+                <div class="chat-info-time">{{i.time}}</div>
+                <div class="chat-info-message">{{i.message}}</div>
+              </div>
             </div>
           </div>
           <div class="chat-input">
@@ -150,6 +159,27 @@ export default {
       chatWord: '', // 聊天发送的话
       socket: '', // 前端建立的socket
       src: '', // img的src，用来监听url
+      chatList: [{
+        type: 'word',
+        talker: 'crq1',
+        message: '我猜测是月落乌啼霜满天我猜测是月落乌啼霜满天',
+        time: '02-13 11:10',
+      }, {
+        type: 'word',
+        talker: 'crq1',
+        message: '我猜测是月落乌啼霜满天我猜测是月落乌啼霜满天',
+        time: '02-13 11:10',
+      }, {
+        type: 'word',
+        talker: 'crq1',
+        message: '我猜测是月落乌啼霜满天我猜测是月落乌啼霜满天',
+        time: '02-13 11:10',
+      }, {
+        type: 'info',
+        // talker: 'crq1',
+        message: 'crq2 加入房间',
+        time: '02-13 11:10',
+      }], // 暂时用来记录右侧聊天信息，人员进入信息，人员答题信息的列表
     };
   },
   computed: {
@@ -508,19 +538,36 @@ export default {
             height: 20em;
             overflow :auto;
             .chat-one-paragraph{
-              display: flex;
-              justify-content: flex-start;
-              align-items: center;
               margin: 5px 0;
               border: 1px solid red;
-              .chat-talk-common{
-                padding: 2px 0;
+              .chat-type-word{
+                .chat-message-info{
+                  display: flex;
+                  justify-content: flex-start;
+                  align-items: flex-start;
+                }
+                .chat-time{
+                  margin-top: 5px;
+                }
+                .chat-talk-common{
+                  /*padding: 2px 0;*/
+                }
+                .chat-spokesperson{
+                  color: #F56C6C;
+                }
+                .chat-word{
+                  margin-left: 10px;
+                }
               }
-              .chat-spokesperson{
-                color: #F56C6C;
-              }
-              .chat-word{
-                margin-left: 10px;
+              .chat-type-info{
+                .chat-info-time{
+                  margin: 5px 0;
+                }
+                .chat-info-message{
+                  margin-top: 10px;
+                  margin-bottom: 10px;
+                  color: #81BEFF;
+                }
               }
             }
           }
