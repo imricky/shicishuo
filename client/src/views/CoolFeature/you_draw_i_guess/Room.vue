@@ -138,6 +138,7 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex';
 import io from 'socket.io-client';
 export default {
   name: 'Room',
@@ -159,27 +160,6 @@ export default {
       chatWord: '', // 聊天发送的话
       socket: '', // 前端建立的socket
       src: '', // img的src，用来监听url
-      chatList: [{
-        type: 'word',
-        talker: 'crq1',
-        message: '我猜测是月落乌啼霜满天我猜测是月落乌啼霜满天',
-        time: '02-13 11:10',
-      }, {
-        type: 'word',
-        talker: 'crq1',
-        message: '我猜测是月落乌啼霜满天我猜测是月落乌啼霜满天',
-        time: '02-13 11:10',
-      }, {
-        type: 'word',
-        talker: 'crq1',
-        message: '我猜测是月落乌啼霜满天我猜测是月落乌啼霜满天',
-        time: '02-13 11:10',
-      }, {
-        type: 'info',
-        // talker: 'crq1',
-        message: 'crq2 加入房间',
-        time: '02-13 11:10',
-      }], // 暂时用来记录右侧聊天信息，人员进入信息，人员答题信息的列表
     };
   },
   computed: {
@@ -197,8 +177,14 @@ export default {
     height() {
       return this.$refs.canvas.height;
     },
+    ...mapGetters([
+      'chatList', // 你画我猜聊天列表
+    ]),
   },
   methods: {
+    ...mapActions([
+      'updateChatList', // 更新聊天列表
+    ]),
     // 计算canvas和屏幕的位置关系，方便判断鼠标是否在画板上，以及画板的位置
     windowToCanvas(canvas, x, y) {
       const rect = canvas.getBoundingClientRect();
@@ -548,6 +534,7 @@ export default {
                 }
                 .chat-time{
                   margin-top: 5px;
+                  color: #909399;
                 }
                 .chat-talk-common{
                   /*padding: 2px 0;*/
@@ -562,6 +549,7 @@ export default {
               .chat-type-info{
                 .chat-info-time{
                   margin: 5px 0;
+                  color: #909399;
                 }
                 .chat-info-message{
                   margin-top: 10px;

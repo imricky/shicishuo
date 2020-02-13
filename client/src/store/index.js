@@ -14,6 +14,34 @@ export default new Vuex.Store({
       token: window.localStorage.getItem('token') || '',
       avatar: window.localStorage.getItem('avatar') || '',
     },
+
+    // 你画我猜 聊天记录
+    chats: [{
+      type: 'word',
+      talker: 'crq1',
+      message: '我猜测是月落乌啼霜满天我猜测是月落乌啼霜满天',
+      time: '02-13 11:10',
+    }, {
+      type: 'word',
+      talker: 'crq1',
+      message: '我猜测是月落乌啼霜满天我猜测是月落乌啼霜满天',
+      time: '02-13 11:10',
+    }, {
+      type: 'word',
+      talker: 'crq1',
+      message: '我猜测是月落乌啼霜满天我猜测是月落乌啼霜满天',
+      time: '02-13 11:10',
+    }, {
+      type: 'info',
+      // talker: 'crq1',
+      message: 'crq2 加入房间',
+      time: '02-13 11:10',
+    }, {
+      type: 'info',
+      // talker: 'crq1',
+      message: 'ricky 加入房间',
+      time: '02-13 13:20',
+    }], // 暂时用来记录右侧聊天信息，人员进入信息，人员答题信息的列表
   },
 
   mutations: {
@@ -51,7 +79,14 @@ export default new Vuex.Store({
         duration: 3000,
       });
     },
+
+    // 你画我猜的方法
+    // 更新聊天列表
+    updateChatList(state, data) {
+      state.chats.push(data);
+    },
   },
+
   actions: {
     updateMenubarActiveIndex({ commit }, data) {
       commit('updateMenubarActiveIndex', data);
@@ -81,8 +116,12 @@ export default new Vuex.Store({
       commit('showMassage', data);
     },
 
+    updateChatList({ commit }, data) {
+      commit('updateChatList', data);
+    },
+
   },
   getters: {
-
+    chatList: state => state.chats,
   },
 });
