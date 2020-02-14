@@ -1,7 +1,10 @@
 import Vue from 'vue';
+import VueSocketIO from 'vue-socket.io';
+import * as io from 'socket.io-client';
 import App from './App.vue';
 import router from './router';
 import store from './store';
+
 // eslint-disable-next-line import/extensions
 import './plugins/element.js';
 // eslint-disable-next-line import/order
@@ -12,6 +15,20 @@ import animated from 'animate.css';
 import PoemMethods from './common/js/poemMethods';
 
 Vue.use(animated);
+// 某个例子是这样使用的：https://github.com/dalailomo/vue-socket-io-example/blob/master/src/main.js
+// Vue.use(VueSocketIO, io('http://localhost:1234'), store);
+// 官网用法：
+// { transports: ['websocket'] }
+Vue.use(new VueSocketIO({
+  debug: true,
+  connection: io('http://localhost:1234'), // options object is Optional
+  vuex: {
+    store,
+    // actionPrefix: 'SOCKET_',
+    // mutationPrefix: 'SOCKET_',
+  },
+}));
+
 Vue.prototype.$collect = PoemMethods.collect; // 诗词收藏函数
 Vue.prototype.$EventBus = new Vue();
 Vue.config.productionTip = false;

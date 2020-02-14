@@ -136,6 +136,11 @@ export default {
     // 进入列表的某个房间
     handleOneRoomEnter(index, row) {
       const _self = this;
+      const obj = {
+        roomNo: row.roomNo,
+        user: this.user,
+      };
+      this.$socket.emit('joined', obj);
       // TODO: 进入的时候，加上一些友好过度
       this.$message({
         message: '正在进入房间...',
@@ -203,6 +208,7 @@ export default {
           const { code, msg, data = {} } = res.data;
           const createRoomNo = data.roomNo;
           if (code === 200) {
+            this.$socket.emit('create', createRoomNo); // socket 传递
             this.$message({
               message: '创建成功，正在进入房间...',
               type: 'success',
@@ -262,6 +268,11 @@ export default {
           });
         },
       });
+    },
+  },
+  sockets: {
+    joined(data) {
+      console.log(data);
     },
   },
   created() {

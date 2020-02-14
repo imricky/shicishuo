@@ -47,6 +47,7 @@ io.on('connection', (socket) => {
 
 
   socket.on('chat', (chatinfo) => {
+    console.log(chatinfo);
     socket.emit('chat', chatinfo);
     socket.broadcast.emit('chat', chatinfo);
   });

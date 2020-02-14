@@ -91,7 +91,7 @@
         <div class="chat">
           <el-divider content-position="left">聊天内容</el-divider>
           <div class="chat-content">
-            <div class="chat-one-paragraph" v-for="i in chatList" :key="i">
+            <div class="chat-one-paragraph" v-for="(i,index) in chatList" :key="index">
               <div class="chat-type-word" v-if="i.type === 'word'">
                 <div class="chat-time">{{i.time}}</div>
                 <div class="chat-message-info">
@@ -158,7 +158,6 @@ export default {
       img: '', // 保存画图的img
       url: '', // 画图的url
       chatWord: '', // 聊天发送的话
-      socket: '', // 前端建立的socket
       src: '', // img的src，用来监听url
     };
   },
@@ -200,9 +199,7 @@ export default {
       this.img = null;
       this.ctx.beginPath(); // 清空画布之后需要调用这个方法进行下一次绘制
       // 触发websocket事件
-      if (this.socket) {
-        this.socket.emit('dataURI', this.canvas.toDataURL());
-      }
+      this.$socket.emit('dataURI', this.canvas.toDataURL());
     },
     // 启用橡皮擦
     changeEraser() {
@@ -238,10 +235,8 @@ export default {
       this.ctx.clip();
       this.ctx.clearRect(0, 0, this.width, this.height);
       // 触发websocket事件
-      if (this.socket) {
-        console.log(this.canvas.toDataURL());
-        this.socket.emit('dataURI', this.canvas.toDataURL());
-      }
+      console.log(this.canvas.toDataURL());
+      this.$socket.emit('dataURI', this.canvas.toDataURL());
       // 还原场景
       this.ctx.restore();
     },
@@ -301,9 +296,7 @@ export default {
         }
       }
       // 触发websocket事件
-      if (this.socket) {
-        this.socket.emit('dataURI', this.canvas.toDataURL());
-      }
+      this.$socket.emit('dataURI', this.canvas.toDataURL());
     },
     down(e) {
       this.isDraw = true;
@@ -359,12 +352,20 @@ export default {
       img.src = src;
     },
   },
+  sockets: {
+    test1(msg) {
+      console.log(`socket connected${msg}`);
+    },
+    dataURI(dataURI) {
+      // this.drawInCanvas(dataURI); // 不能一直调用，否则会屏幕一直闪烁
+      this.src = dataURI;
+    },
+    joined(data) {
+      console.log(data);
+    },
+  },
   created() {
-    this.socket = io('http://localhost:1234', { transports: ['websocket'] });
-    this.socket.emit('chat message', '123');
-    this.socket.on('test1', (msg) => {
-      console.log(`${msg}123`);
-    });
+    this.$socket.emit('chat message', '123');
   },
   mounted() {
     // 初始化画笔
@@ -373,10 +374,6 @@ export default {
       this.ctx.fillStyle = '#0C1D34'; // 填充颜色
       this.ctx.lineWidth = 2; // 画笔粗细
     }
-    this.socket.on('dataURI', (dataURI) => {
-      // this.drawInCanvas(dataURI); // 不能一直调用，否则会屏幕一直闪烁
-      this.src = dataURI;
-    });
     // 监听img 的 src 事件
     this.$watch('src', (v) => {
       this.$nextTick((_) => {
