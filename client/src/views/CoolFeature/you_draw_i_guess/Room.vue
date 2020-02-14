@@ -140,6 +140,22 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import io from 'socket.io-client';
+// eslint-disable-next-line no-extend-native,func-names
+Date.prototype.Format = function (fmt) { // author: meizz
+  const o = {
+    'M+': this.getMonth() + 1, // 月份
+    'd+': this.getDate(), // 日
+    'h+': this.getHours(), // 小时
+    'm+': this.getMinutes(), // 分
+    's+': this.getSeconds(), // 秒
+    'q+': Math.floor((this.getMonth() + 3) / 3), // 季度
+    S: this.getMilliseconds(), // 毫秒
+  };
+  if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (`${this.getFullYear()}`).substr(4 - RegExp.$1.length));
+  // eslint-disable-next-line no-restricted-syntax
+  for (const k in o) if (new RegExp(`(${k})`).test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : ((`00${o[k]}`).substr((`${o[k]}`).length)));
+  return fmt;
+};
 export default {
   name: 'Room',
   data() {
@@ -361,7 +377,12 @@ export default {
       this.src = dataURI;
     },
     joined(data) {
-      console.log(data);
+      const obj = {
+        type: 'info',
+        time: new Date().Format('yyyy-MM-dd hh:mm:ss'),
+        message: `${data.username}  加入房间`,
+      };
+      this.updateChatList(obj);
     },
   },
   created() {
