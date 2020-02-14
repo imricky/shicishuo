@@ -1,6 +1,8 @@
 const app = require('express')();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
+const YouDrawIGuessDao = require('../dao/youDrawIGuessDao');
+
 
 // 切换端口号
 io.listen(1234);
@@ -17,10 +19,16 @@ io.on('connection', (socket) => {
   });
 
   // 创建房间
-  socket.on('create', (roomNo) => {
+  socket.on('create', async (data) => {
     // 创建房间，socket没有创建房间这个选项，只有加入房间
     // 参考：https://stackoverflow.com/questions/19150220/creating-rooms-in-socket-io
-    socket.join(roomNo);
+    socket.join(data.roomNo);
+    // 同时更新数据库这个用户列表，方便别的用户获取
+    const obj = {
+      username: data.username,
+      userId: data.userId,
+    };
+    const res = await YouDrawIGuessDao.updateRoomInfoOnline(data.roomNo, obj);
   });
 
   // 某个用户加入房间
@@ -42,7 +50,8 @@ io.on('connection', (socket) => {
   socket.on('joined', (data) => {
     socket.join(data.roomNo);
     console.log(io.sockets.adapter.rooms);
-    socket.broadcast.to(data.roomNo).emit('joined', data.user);
+    // socket.broadcast.to(data.roomNo).emit('joined', data.user); // 除了自己
+    io.sockets.in(data.roomNo).emit('joined', data.user); // 包括自己
   });
 
 

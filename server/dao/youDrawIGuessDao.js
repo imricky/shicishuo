@@ -47,6 +47,15 @@ class YouDrawIGuessDao {
     ]);
     return res;
   }
+
+  // 更新房间在线人数信息：
+  static async updateRoomInfoOnline(roomNo, data) {
+    const res = await RoomList.updateOne(
+      { roomNo },
+      { $push: { onlinePlayer: data }, $inc: { online: 1 } },
+    );
+    return res;
+  }
 }
 
 module.exports = YouDrawIGuessDao;

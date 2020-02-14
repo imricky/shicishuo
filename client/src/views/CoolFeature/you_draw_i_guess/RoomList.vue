@@ -211,14 +211,14 @@ export default {
           const { code, msg, data = {} } = res.data;
           const createRoomNo = data.roomNo;
           if (code === 200) {
-            this.$socket.emit('create', createRoomNo); // socket 传递
             const obj = {
               roomNo: data.roomNo,
               username: this.user.username,
               userId: this.user._id,
               max: this.createForm.max || 12,
             };
-            this.updateRoomInfoCreator(obj);// 同步数据到vuex
+            this.$socket.emit('create', obj); // socket 传递
+            this.updateRoomInfoCreator(obj);// 创建的时候自己同步数据到vuex
             this.$message({
               message: '创建成功，正在进入房间...',
               type: 'success',

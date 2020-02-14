@@ -87,4 +87,25 @@ router.get('/randomEnterRoom', async (req, res, next) => {
   }
 });
 
+router.post('/updateRoomInfoOnline', async (req, res, next) => {
+  const { roomNo } = req.body;
+  const obj = {
+    username: req.body.username,
+    userId: req.body.userId,
+  };
+  try {
+    const data = await YouDrawIGuessDao.updateRoomInfoOnline(roomNo, obj);
+    res.json({
+      data,
+      code: 200,
+    });
+  } catch (e) {
+    res.json({
+      success: false,
+      errorMessage: e,
+      code: 500,
+    });
+  }
+});
+
 module.exports = router;
