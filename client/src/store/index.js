@@ -22,26 +22,23 @@ export default new Vuex.Store({
       message: '我猜测是月落乌啼霜满天我猜测是月落乌啼霜满天',
       time: '02-13 11:10',
     }, {
-      type: 'word',
-      talker: 'crq1',
-      message: '我猜测是月落乌啼霜满天我猜测是月落乌啼霜满天',
-      time: '02-13 11:10',
-    }, {
-      type: 'word',
-      talker: 'crq1',
-      message: '我猜测是月落乌啼霜满天我猜测是月落乌啼霜满天',
-      time: '02-13 11:10',
-    }, {
       type: 'info',
       // talker: 'crq1',
       message: 'crq2 加入房间',
       time: '02-13 11:10',
-    }, {
-      type: 'info',
-      // talker: 'crq1',
-      message: 'ricky 加入房间',
-      time: '02-13 13:20',
     }], // 暂时用来记录右侧聊天信息，人员进入信息，人员答题信息的列表
+
+    // 你画我猜当前房间信息，需要根据房间去同步画板
+    roomInfo: {
+      roomNo: '', // 房间号
+      username: '', // 房间的创建者
+      userId: '', // 创建者的唯一id
+      max: '', // 最大人数
+      onLineList: [], // 在线列表
+      guessQuestion: '', // 房间猜测的问题
+      guessAnswerPeople: '', // 答对问题的人
+    },
+
   },
 
   mutations: {
@@ -85,6 +82,18 @@ export default new Vuex.Store({
     updateChatList(state, data) {
       state.chats.push(data);
     },
+    // 更新房间创建者信息
+    updateRoomInfoCreator(state, data) {
+      state.roomInfo.roomNo = data.roomNo;
+      state.roomInfo.username = data.username;
+      state.roomInfo.userId = data.userId;
+      state.roomInfo.max = data.max;
+      // 把创建者push进去
+      state.roomInfo.onLineList.push({
+        username: data.username,
+        userId: data.userId,
+      });
+    },
   },
 
   actions: {
@@ -118,6 +127,10 @@ export default new Vuex.Store({
 
     updateChatList({ commit }, data) {
       commit('updateChatList', data);
+    },
+
+    updateRoomInfoCreator({ commit }, data) {
+      commit('updateRoomInfoCreator', data);
     },
 
   },

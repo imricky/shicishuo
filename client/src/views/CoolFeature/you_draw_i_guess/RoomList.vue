@@ -85,7 +85,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapGetters, mapActions } from 'vuex';
 import Http from '@/api/http';
 export default {
   name: 'RoomList',
@@ -128,6 +128,9 @@ export default {
     },
   },
   methods: {
+    ...mapActions([
+      'updateRoomInfoCreator', // 更新房间信息，仅针对创建者
+    ]),
     // 获取房间列表
     async getRoomList() {
       const res = await Http.getRoomList();
@@ -209,6 +212,13 @@ export default {
           const createRoomNo = data.roomNo;
           if (code === 200) {
             this.$socket.emit('create', createRoomNo); // socket 传递
+            const obj = {
+              roomNo: data.roomNo,
+              username: this.user.username,
+              userId: this.user._id,
+              max: this.createForm.max || 12,
+            };
+            this.updateRoomInfoCreator(obj);// 同步数据到vuex
             this.$message({
               message: '创建成功，正在进入房间...',
               type: 'success',
