@@ -65,6 +65,38 @@ io.on('connection', (socket) => {
     socket.emit('chat', chatinfo);
     socket.broadcast.emit('chat', chatinfo);
   });
+
+  // 用户退出的时候
+  socket.on('leave', async (data) => {
+    console.log('触发了leave');
+    console.log(data);
+    socket.broadcast.in(data.roomNo).emit('leave', data); // 包括自己
+
+    // 当有用户离开时，判断是普通用户还是创建者,如果是创建者，那么需要通知其他客户端，并且删除数据库
+    const roomInfo = await YouDrawIGuessDao.findOneRoom(data.roomNo);
+    // 通知其他客户端，房间解散，并且删除房间数据库
+    if (roomInfo[0].creator === data.username) {
+      const deleteRoomRes = await YouDrawIGuessDao.deleteOneRoom(data.roomNo);
+      socket.broadcast.to(data.roomNo).emit('dismissRoom'); // 除了自己
+    } else {
+      // 去数据库里把当前人数删除掉
+      const obj = {
+        username: data.username,
+        userId: data.userId,
+      };
+      const res = await YouDrawIGuessDao.removeRoomInfoOnline(data.roomNo, obj);
+
+      console.log('A user disconnected');
+    }
+  });
+
+  socket.on('creatorLeave', (data) => {
+    console.log(data);
+  });
+  socket.on('disconnect', () => {
+    console.log('一个websocket断掉了');
+  });
+  // socket.emit('connections', Object.keys(io.sockets.connected).length);
 });
 
 module.exports = io;

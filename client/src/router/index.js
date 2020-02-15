@@ -1,8 +1,12 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import { Message, MessageBox } from 'element-ui';
 import Home from '../views/Home.vue';
 import Search from '../views/Search.vue';
+import store from '../store';
 
+
+Vue.use(store);
 Vue.use(VueRouter);
 
 const routes = [
@@ -97,13 +101,54 @@ const routes = [
       name: 'room',
       component: () => import(/* webpackChunkName: "about" */ '@/views/CoolFeature/you_draw_i_guess/Room.vue'),
     }],
+    // beforeEnter: (to, from, next) => {
+    //   // ...
+    //   console.log(to);
+    //   console.log(from);
+    //   next();
+    // },
   },
 ];
+
 
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes,
 });
+
+
+// router.beforeEach((to, from, next) => {
+//   // /you_draw_i_guess/room/123
+//   // 路由离开房间的时候，也要清空处理
+//   const reg = /^(\/you_draw_i_guess\/room\/)/g;
+//   if (reg.test(from.path)) {
+//     MessageBox.confirm('离开该房间页面会导致你离开房间或者解散房间，确定要离开么?', '提示', {
+//       confirmButtonText: '确定',
+//       cancelButtonText: '取消',
+//       type: 'warning',
+//     }).then(() => {
+//       // 刷新vuex 状态
+//       const obj = {
+//         roomNo: store.state.roomInfo.roomNo,
+//         username: store.state.user.username,
+//         userId: store.state.user._id,
+//       };
+//       console.log('store里存储的信息');
+//       console.log(obj);
+//       // store.dispatch('leaveRoom');
+//       next();
+//     }).catch(() => {
+//       Message({
+//         type: 'info',
+//         message: '已取消操作',
+//         duration: 1500,
+//       });
+//       next(false);
+//     });
+//   } else {
+//     next();
+//   }
+// });
 
 export default router;

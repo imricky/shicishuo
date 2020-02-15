@@ -145,6 +145,7 @@ export default {
       };
       this.$socket.emit('joined', obj);
       // TODO: 进入的时候，加上一些友好过度
+
       this.$message({
         message: '正在进入房间...',
         type: 'success',

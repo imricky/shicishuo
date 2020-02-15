@@ -19,6 +19,11 @@ class YouDrawIGuessDao {
     return roomInfo;
   }
 
+  static async deleteOneRoom(roomNo) {
+    const roomInfo = await RoomList.deleteOne({ roomNo });
+    return roomInfo;
+  }
+
   // 创建房间
   static async createRoom(obj) {
     const roomNo = new ObjectId();
@@ -53,6 +58,16 @@ class YouDrawIGuessDao {
     const res = await RoomList.updateOne(
       { roomNo },
       { $push: { onlinePlayer: data }, $inc: { online: 1 } },
+    );
+    return res;
+  }
+
+  // remove 去掉在线人数
+  static async removeRoomInfoOnline(roomNo, data) {
+    console.log(data);
+    const res = await RoomList.updateOne(
+      { roomNo },
+      { $pull: { onlinePlayer: data }, $inc: { online: -1 } },
     );
     return res;
   }

@@ -104,6 +104,29 @@ export default new Vuex.Store({
       state.roomInfo.online += 1;
       state.roomInfo.onLineList.push(data);
     },
+
+    removeRoomOnlineListWithParticipant(state, data) {
+      state.roomInfo.online -= 1;
+      const index = state.roomInfo.onLineList.findIndex(p => p.username === data.username);
+      state.roomInfo.onLineList.splice(index, 1);
+    },
+
+    leaveRoom(state, data) {
+      state.roomInfo = {
+        roomNo: '', // 房间号
+        roomName: '', // 房间名称
+        creator: '', // 房间的创建者
+        creatorId: '', // 创建者的唯一id
+        max: '', // 最大人数
+        online: 0, // 在线人数
+        onLineList: [], // 在线列表
+        isPrivate: false, // 是否为私密
+        created: '', // 房间创建时间
+        guessQuestion: '', // 房间猜测的问题
+        guessAnswerPeople: '', // 答对问题的人
+      };
+      state.chats = [];
+    },
   },
 
   actions: {
@@ -145,6 +168,16 @@ export default new Vuex.Store({
 
     updateRoomOnlineList({ commit }, data) {
       commit('updateRoomOnlineList', data);
+    },
+
+    // 参与人退出的时候，刷新vuex
+    removeRoomOnlineListWithParticipant({ commit }, data) {
+      commit('removeRoomOnlineListWithParticipant', data);
+    },
+
+    // 离开房间时，要重置chats和roomInfo
+    leaveRoom({ commit }, data) {
+      commit('leaveRoom', data);
     },
   },
   getters: {

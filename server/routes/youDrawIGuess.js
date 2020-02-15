@@ -46,6 +46,23 @@ router.post('/findOneRoom', async (req, res, next) => {
   }
 });
 
+router.post('/deleteOneRoom', async (req, res, next) => {
+  const { roomNo } = req.body;
+  try {
+    const data = await YouDrawIGuessDao.deleteOneRoom(roomNo);
+    res.json({
+      data,
+      code: 200,
+    });
+  } catch (e) {
+    res.json({
+      success: false,
+      errorMessage: e,
+      code: 500,
+    });
+  }
+});
+
 // 创建房间
 router.post('/createRoom', async (req, res, next) => {
   const obj = {
@@ -95,6 +112,27 @@ router.post('/updateRoomInfoOnline', async (req, res, next) => {
   };
   try {
     const data = await YouDrawIGuessDao.updateRoomInfoOnline(roomNo, obj);
+    res.json({
+      data,
+      code: 200,
+    });
+  } catch (e) {
+    res.json({
+      success: false,
+      errorMessage: e,
+      code: 500,
+    });
+  }
+});
+
+router.post('/removeRoomInfoOnline', async (req, res, next) => {
+  const { roomNo } = req.body;
+  const obj = {
+    username: req.body.username,
+    userId: req.body.userId,
+  };
+  try {
+    const data = await YouDrawIGuessDao.removeRoomInfoOnline(roomNo, obj);
     res.json({
       data,
       code: 200,

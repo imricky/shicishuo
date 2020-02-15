@@ -202,6 +202,8 @@ export default {
       'updateChatList', // 更新聊天列表
       'updateRoomInfoCreator', // 更新房间信息
       'updateRoomOnlineList', // 更新在线人数
+      'removeRoomOnlineListWithParticipant', // 移除参与者
+      'leaveRoom', // 离开时直接清空vuex里的roomInfo信息和chats信息
     ]),
     // 计算canvas和屏幕的位置关系，方便判断鼠标是否在画板上，以及画板的位置
     windowToCanvas(canvas, x, y) {
@@ -393,6 +395,15 @@ export default {
     joined(data) {
       console.log('Room页面');
       console.log(data);
+      // 添加一条记录到聊天窗口：
+      const chatOneInfo = {
+        type: 'info',
+        talker: data.username,
+        message: `${data.username} 进入了房间`,
+        time: new Date().Format('yyyy:MM:dd  hh:mm:ss'),
+      };
+      this.updateChatList(chatOneInfo);
+
       // 别人加入的时候，去更新自己的vuex
       const obj = {
         username: data.username,
@@ -400,9 +411,48 @@ export default {
       };
       this.updateRoomOnlineList(obj); // 有人加入的时候更新自己的vuex用户列表
     },
+    connections(data) {
+      this.connections = data;
+    },
+    leave(data) {
+      console.log(data);
+      // 添加一条记录到聊天窗口：
+      const chatOneInfo = {
+        type: 'info',
+        talker: data.username,
+        message: `${data.username} 离开了房间`,
+        time: new Date().Format('yyyy:MM:dd  hh:mm:ss'),
+      };
+      this.updateChatList(chatOneInfo);
+      // 接收到有参与者leave事件时，去刷新vuex里的数据
+      this.removeRoomOnlineListWithParticipant(data);
+    },
+    dismissRoom() {
+      const _self = this;
+      this.$message({
+        type: 'warning',
+        message: '房间解散啦，窗口将在3秒后回退到房间列表界面',
+        duration: 3000,
+        onClose() {
+          _self.$router.push({
+            path: '/you_draw_i_guess/room-list',
+          });
+        },
+      });
+    },
   },
   created() {
     this.$socket.emit('chat message', '123');
+    // 监听页面离开或者关闭事件
+    window.onbeforeunload = () => {
+      const obj = {
+        roomNo: this.$store.state.roomInfo.roomNo,
+        username: this.$store.state.user.username,
+        userId: this.$store.state.user._id,
+      };
+      this.$socket.emit('leave', obj);
+      this.leaveRoom();
+    };
 
     Http.findOneRoom(this.$route.params.id).then((res) => {
       const temp = res.data.data[0];
