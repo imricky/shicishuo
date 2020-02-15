@@ -13,9 +13,9 @@ io.on('connection', (socket) => {
   });
 
   // 同步绘画面板图案
-  socket.on('dataURI', (dataURI) => {
-    // socket.emit('dataURI', dataURI);
-    socket.broadcast.emit('dataURI', dataURI);
+  socket.on('dataURI', (data) => {
+    // 向房间内所有人广播
+    socket.broadcast.to(data.roomNo).emit('dataURI', data.dataURL);
   });
 
   // 创建房间
@@ -47,11 +47,16 @@ io.on('connection', (socket) => {
   //     socket.broadcast.to(id).emit('my message', msg);
   //   });
   // });
-  socket.on('joined', (data) => {
+  socket.on('joined', async (data) => {
     socket.join(data.roomNo);
-    console.log(io.sockets.adapter.rooms);
-    // socket.broadcast.to(data.roomNo).emit('joined', data.user); // 除了自己
-    io.sockets.in(data.roomNo).emit('joined', data.user); // 包括自己
+    // console.log(io.sockets.adapter.rooms);
+    socket.broadcast.to(data.roomNo).emit('joined', data.user); // 除了自己
+    // io.sockets.in(data.roomNo).emit('joined', data.user); // 包括自己
+    const obj = {
+      username: data.user.username,
+      userId: data.user.userId,
+    };
+    const res = await YouDrawIGuessDao.updateRoomInfoOnline(data.roomNo, obj);
   });
 
 

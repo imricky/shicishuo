@@ -140,6 +140,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import io from 'socket.io-client';
+import Http from '@/api/http';
 // eslint-disable-next-line no-extend-native,func-names
 Date.prototype.Format = function (fmt) { // author: meizz
   const o = {
@@ -199,6 +200,8 @@ export default {
   methods: {
     ...mapActions([
       'updateChatList', // 更新聊天列表
+      'updateRoomInfoCreator', // 更新房间信息
+      'updateRoomOnlineList', // 更新在线人数
     ]),
     // 计算canvas和屏幕的位置关系，方便判断鼠标是否在画板上，以及画板的位置
     windowToCanvas(canvas, x, y) {
@@ -215,7 +218,11 @@ export default {
       this.img = null;
       this.ctx.beginPath(); // 清空画布之后需要调用这个方法进行下一次绘制
       // 触发websocket事件
-      this.$socket.emit('dataURI', this.canvas.toDataURL());
+      const data = {
+        dataURL: this.canvas.toDataURL(),
+        roomNo: this.$store.state.roomInfo.roomNo,
+      };
+      this.$socket.emit('dataURI', data);
     },
     // 启用橡皮擦
     changeEraser() {
@@ -251,8 +258,11 @@ export default {
       this.ctx.clip();
       this.ctx.clearRect(0, 0, this.width, this.height);
       // 触发websocket事件
-      console.log(this.canvas.toDataURL());
-      this.$socket.emit('dataURI', this.canvas.toDataURL());
+      const data = {
+        dataURL: this.canvas.toDataURL(),
+        roomNo: this.$store.state.roomInfo.roomNo,
+      };
+      this.$socket.emit('dataURI', data);
       // 还原场景
       this.ctx.restore();
     },
@@ -312,7 +322,11 @@ export default {
         }
       }
       // 触发websocket事件
-      this.$socket.emit('dataURI', this.canvas.toDataURL());
+      const data = {
+        dataURL: this.canvas.toDataURL(),
+        roomNo: this.$store.state.roomInfo.roomNo,
+      };
+      this.$socket.emit('dataURI', data);
     },
     down(e) {
       this.isDraw = true;
@@ -377,16 +391,34 @@ export default {
       this.src = dataURI;
     },
     joined(data) {
+      console.log('Room页面');
+      console.log(data);
+      // 别人加入的时候，去更新自己的vuex
       const obj = {
-        type: 'info',
-        time: new Date().Format('yyyy-MM-dd hh:mm:ss'),
-        message: `${data.username}  加入房间`,
+        username: data.username,
+        userId: data._id,
       };
-      this.updateChatList(obj);
+      this.updateRoomOnlineList(obj); // 有人加入的时候更新自己的vuex用户列表
     },
   },
   created() {
     this.$socket.emit('chat message', '123');
+
+    Http.findOneRoom(this.$route.params.id).then((res) => {
+      const temp = res.data.data[0];
+      // 更新当前的vuex
+      const obj = {
+        roomNo: temp.roomNo,
+        creator: temp.creator,
+        roomName: temp.roomName,
+        max: temp.max,
+        online: temp.online,
+        isPrivate: temp.isPrivate,
+        created: temp.created,
+        onLineList: temp.onlinePlayer,
+      };
+      this.updateRoomInfoCreator(obj);
+    });
   },
   mounted() {
     // 初始化画笔

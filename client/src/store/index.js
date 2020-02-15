@@ -31,10 +31,14 @@ export default new Vuex.Store({
     // 你画我猜当前房间信息，需要根据房间去同步画板
     roomInfo: {
       roomNo: '', // 房间号
-      username: '', // 房间的创建者
-      userId: '', // 创建者的唯一id
+      roomName: '', // 房间名称
+      creator: '', // 房间的创建者
+      creatorId: '', // 创建者的唯一id
       max: '', // 最大人数
+      online: 0, // 在线人数
       onLineList: [], // 在线列表
+      isPrivate: false, // 是否为私密
+      created: '', // 房间创建时间
       guessQuestion: '', // 房间猜测的问题
       guessAnswerPeople: '', // 答对问题的人
     },
@@ -85,14 +89,20 @@ export default new Vuex.Store({
     // 更新房间创建者信息
     updateRoomInfoCreator(state, data) {
       state.roomInfo.roomNo = data.roomNo;
-      state.roomInfo.username = data.username;
-      state.roomInfo.userId = data.userId;
+      state.roomInfo.creator = data.creator;
+      state.roomInfo.creatorId = data.userId; // 暂时没有同步，如果要加上，需要先在数据里加入
       state.roomInfo.max = data.max;
+      state.roomInfo.roomName = data.roomName;
+      state.roomInfo.online = data.online;
+      state.roomInfo.isPrivate = data.isPrivate;
+      state.roomInfo.created = data.created;
       // 把创建者push进去
-      state.roomInfo.onLineList.push({
-        username: data.username,
-        userId: data.userId,
-      });
+      state.roomInfo.onLineList = data.onLineList;
+    },
+
+    updateRoomOnlineList(state, data) {
+      state.roomInfo.online += 1;
+      state.roomInfo.onLineList.push(data);
     },
   },
 
@@ -133,6 +143,9 @@ export default new Vuex.Store({
       commit('updateRoomInfoCreator', data);
     },
 
+    updateRoomOnlineList({ commit }, data) {
+      commit('updateRoomOnlineList', data);
+    },
   },
   getters: {
     chatList: state => state.chats,
