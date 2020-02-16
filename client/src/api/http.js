@@ -118,6 +118,10 @@ class Http {
   randomEnterRoom() {
     return get(Url.randomEnterRoomApi);
   }
+
+  updateRoomQuestion(roomNo, question) {
+    return post(Url.updateRoomQuestionApi, { roomNo, question });
+  }
 }
 
 export default new Http();

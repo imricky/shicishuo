@@ -33,4 +33,5 @@ export const Url = {
   createRoomApi: `${baseURL}/draw/createRoom`, // 创建房间
   findOneRoomApi: `${baseURL}/draw/findOneRoom`, // 查找信息房间
   randomEnterRoomApi: `${baseURL}/draw/randomEnterRoom`, // 查找信息房间
+  updateRoomQuestionApi: `${baseURL}/draw/updateRoomQuestion`, // 更新房间的答案
 };
