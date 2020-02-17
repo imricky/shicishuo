@@ -71,6 +71,16 @@ class YouDrawIGuessDao {
     );
     return res;
   }
+
+
+  // 创建问题，同步问题到数据库，方便下一个人进去的时候去数据库获取,（后期改造其实也可以在用户进房间的时候用websocket初始化数据）
+  static async updateRoomQuestion(roomNo, question) {
+    const res = await RoomList.updateOne(
+      { roomNo },
+      { $set: { question } },
+    );
+    return res;
+  }
 }
 
 module.exports = YouDrawIGuessDao;

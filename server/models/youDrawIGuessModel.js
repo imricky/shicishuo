@@ -16,6 +16,7 @@ const RoomListSchema = new Schema({
   onlinePlayer: Array, // 在线用户列表
   created: { type: Date, default: Date.now() }, // 创建时间
   updated: { type: Date, default: Date.now() }, // 更新时间
+  question: String,
 });
 const RoomList = mongoose.model('roomList', RoomListSchema);
 

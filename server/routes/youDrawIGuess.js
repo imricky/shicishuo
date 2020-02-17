@@ -146,4 +146,21 @@ router.post('/removeRoomInfoOnline', async (req, res, next) => {
   }
 });
 
+router.post('/updateRoomQuestion', async (req, res, next) => {
+  const { roomNo, question } = req.body;
+  try {
+    const data = await YouDrawIGuessDao.updateRoomQuestion(roomNo, question);
+    res.json({
+      data,
+      code: 200,
+    });
+  } catch (e) {
+    res.json({
+      success: false,
+      errorMessage: e,
+      code: 500,
+    });
+  }
+});
+
 module.exports = router;
