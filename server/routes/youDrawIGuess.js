@@ -5,6 +5,8 @@ const mongoose = require('mongoose');
 const YouDrawIGuessDao = require('../dao/YouDrawIGuessDao');
 const { ObjectId } = mongoose.Types;
 
+const io = require('../utils/socketio');
+
 /* GET users listing. */
 router.get('/', (req, res, next) => {
   res.send('user respond with a resource');
@@ -158,6 +160,37 @@ router.post('/updateRoomQuestion', async (req, res, next) => {
     res.json({
       success: false,
       errorMessage: e,
+      code: 500,
+    });
+  }
+});
+
+router.post('/submitAnswer', async (req, res, next) => {
+  const { roomNo, answer, username } = req.body;
+  try {
+    const data = await YouDrawIGuessDao.submitAnswer(roomNo, answer);
+    const obj = {
+      username,
+      answer,
+    };
+    // 出错了的话通知所有客户端，提示错误信息
+    if (data.success === false) {
+      io.in(roomNo).emit('errorAnswer', obj); // 包括自己
+    } else {
+      // 向各个客户端推送
+      io.in(roomNo).emit('successAnswer', obj); // 包括自己
+      // 清空数据库里的答案
+      await YouDrawIGuessDao.clearRoomQuestion(roomNo);
+    }
+
+    res.json({
+      data,
+      code: 200,
+    });
+  } catch (e) {
+    res.json({
+      success: false,
+      errorMessage: e.stack,
       code: 500,
     });
   }

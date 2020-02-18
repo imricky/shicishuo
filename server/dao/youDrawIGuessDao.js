@@ -81,6 +81,29 @@ class YouDrawIGuessDao {
     );
     return res;
   }
+
+  // 用户提交问题
+  static async submitAnswer(roomNo, answer) {
+    const res = await RoomList.findOne({ roomNo }, { question: 1 }); // 先查找对应房间问题的答案
+    if (res === null) {
+      throw new Error('房间号错误，未找到答案');
+    }
+    const obj = {
+      success: false,
+      answer,
+    };
+    if (res.question !== answer) {
+      return obj;
+    }
+    obj.success = true;
+    return obj;
+  }
+
+  // 清空该房间的答案
+  static async clearRoomQuestion(roomNo) {
+    const res = await RoomList.updateOne({ roomNo }, { question: '' }); // 先查找对应房间问题的答案
+    return res;
+  }
 }
 
 module.exports = YouDrawIGuessDao;

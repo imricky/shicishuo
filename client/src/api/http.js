@@ -122,6 +122,10 @@ class Http {
   updateRoomQuestion(roomNo, question) {
     return post(Url.updateRoomQuestionApi, { roomNo, question });
   }
+
+  submitAnswer(roomNo, answer, username) {
+    return post(Url.submitAnswerApi, { roomNo, answer, username });
+  }
 }
 
 export default new Http();

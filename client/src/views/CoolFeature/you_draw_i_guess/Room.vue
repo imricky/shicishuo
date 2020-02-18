@@ -131,7 +131,7 @@
             class="answer-poem">
           </el-input>
         </div>
-        <el-button class="answer-submit">提交</el-button>
+        <el-button class="answer-submit" @click="submitAnswer">提交</el-button>
       </div>
     </div>
   </div>
@@ -401,7 +401,7 @@ export default {
         this.$message({
           type: 'warning',
           message: '你进入房间的方式不正确，请从房间列表中进入',
-          duration: 2000,
+          duration: 3000,
         });
         return false;
       }
@@ -414,10 +414,30 @@ export default {
             roomNo,
           };
           this.$socket.emit('questionReady', obj);
+          this.clearCanvas();
+          this.$message({
+            type: 'success',
+            message: '创建问题成功! 可以开始作画了！',
+            duration: 3000,
+          });
         }
       });
     },
-
+    // 回答问题
+    submitAnswer() {
+      if (this.answerPoem === '') {
+        this.$message({
+          type: 'warning',
+          message: '你提交的答案为空哦，请输入答案之后再提交',
+        });
+        return false;
+      }
+      const { roomNo } = this.$store.state.roomInfo;
+      const { username } = this.$store.state.user;
+      Http.submitAnswer(roomNo, this.answerPoem, username).then((res) => {
+        console.log(res);
+      });
+    },
   },
   sockets: {
     test1(msg) {
@@ -481,6 +501,24 @@ export default {
         message: '问题已经创建完毕，随时可以开始答题！',
         duration: 3000,
       });
+    },
+    errorAnswer(data) {
+      this.$message({
+        type: 'error',
+        message: `【 ${data.username} 】的答案是 【 ${data.answer} 】,该答案错误！`,
+        duration: 3000,
+      });
+      return false;
+    },
+
+    successAnswer(data) {
+      this.$message({
+        type: 'success',
+        message: `恭喜【 ${data.username} 】 回答正确 ！！！ 这道题的答案是 【 ${data.answer} 】,请创建下一道题目`,
+        duration: 3000,
+      });
+      this.answerPoem = ''; // 清空输入框
+      return false;
     },
   },
   created() {
