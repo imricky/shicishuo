@@ -12,8 +12,8 @@
             class="question-poem">
           </el-input>
         </div>
-        <el-button class="question-create" @click="questionCreate">创建</el-button>
-        <el-button type="primary">自动生成目标句诗</el-button>
+        <el-button type="primary" class="question-create" @click="questionCreate">创建</el-button>
+        <el-button >自动生成目标句诗</el-button>
       </div>
     </div>
     <div class="main">
@@ -131,7 +131,7 @@
             class="answer-poem">
           </el-input>
         </div>
-        <el-button class="answer-submit" @click="submitAnswer">提交</el-button>
+        <el-button type="primary" class="answer-submit" @click="submitAnswer">提交</el-button>
       </div>
     </div>
   </div>

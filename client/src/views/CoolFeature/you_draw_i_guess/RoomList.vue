@@ -273,6 +273,12 @@ export default {
         return false;
       }
       const { roomNo, roomName } = res.data.data[0];
+      const obj = {
+        roomNo,
+        user: this.user,
+      };
+      this.$socket.emit('joined', obj);
+
       this.$message({
         message: `正在进入【${roomName}】的房间，房间号为【${roomNo}】`,
         type: 'success',
