@@ -90,6 +90,12 @@ io.on('connection', (socket) => {
     }
   });
 
+  // 更新问题
+  socket.on('questionReady', (data) => {
+    console.log(data);
+    socket.broadcast.to(data.roomNo).emit('questionReady'); // 通知其它客户端，问题已创建，可以随时开始答题
+  });
+
   socket.on('creatorLeave', (data) => {
     console.log(data);
   });

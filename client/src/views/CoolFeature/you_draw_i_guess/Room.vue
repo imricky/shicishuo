@@ -12,7 +12,7 @@
             class="question-poem">
           </el-input>
         </div>
-        <el-button class="question-create">创建</el-button>
+        <el-button class="question-create" @click="questionCreate">创建</el-button>
         <el-button type="primary">自动生成目标句诗</el-button>
       </div>
     </div>
@@ -383,6 +383,41 @@ export default {
       };
       img.src = src;
     },
+
+    // 关于答题的方法：
+    // 答题者问题创建：
+    questionCreate() {
+      if (this.questionPoem === '') {
+        // TODO: 优化，问题为空时，弹出提示之后，把光标定位到输入框
+        this.$message({
+          type: 'warning',
+          message: '你的问题诗句为空，请输入在输入框中输入问题诗句之后再点击确定',
+          duration: 2000,
+        });
+        return false;
+      }
+      const { roomNo } = this.$store.state.roomInfo;
+      if (roomNo === '') {
+        this.$message({
+          type: 'warning',
+          message: '你进入房间的方式不正确，请从房间列表中进入',
+          duration: 2000,
+        });
+        return false;
+      }
+      Http.updateRoomQuestion(roomNo, this.questionPoem).then((res) => {
+        if (res.data.data.nModified === 0) {
+          this.$message.error('创建问题失败');
+        } else {
+          // 通知其它客户端，问题已创建，可以随时开始答题
+          const obj = {
+            roomNo,
+          };
+          this.$socket.emit('questionReady', obj);
+        }
+      });
+    },
+
   },
   sockets: {
     test1(msg) {
@@ -438,6 +473,13 @@ export default {
             path: '/you_draw_i_guess/room-list',
           });
         },
+      });
+    },
+    questionReady() {
+      this.$message({
+        type: 'success',
+        message: '问题已经创建完毕，随时可以开始答题！',
+        duration: 3000,
       });
     },
   },
