@@ -90,7 +90,7 @@
         </div>
         <div class="chat">
           <el-divider content-position="left">聊天内容</el-divider>
-          <div class="chat-content">
+          <div class="chat-content" ref="chatContent">
             <div class="chat-one-paragraph" v-for="(i,index) in chatList" :key="index">
               <div class="chat-type-word" v-if="i.type === 'word'">
                 <div class="chat-time">{{i.time}}</div>
@@ -111,10 +111,11 @@
             <el-input
               placeholder="请输入内容"
               clearable
-              v-model="chatWord">
+              v-model="chatWord"
+              @keyup.enter.native="sendMessage">
               <i slot="prefix" class="el-input__icon el-icon-chat-round"></i>
             </el-input>
-            <el-button class="chat-send-button">发送</el-button>
+            <el-button class="chat-send-button" @click="sendMessage">发送</el-button>
           </div>
         </div>
       </div>
@@ -473,6 +474,27 @@ export default {
         console.log(res);
       });
     },
+
+    // 聊天方面的功能
+    sendMessage() {
+      if (this.chatWord === '') {
+        this.$message({
+          type: 'warning',
+          message: '请输入聊天内容~',
+          duration: 2000,
+        });
+        return false;
+      }
+      const { roomNo } = this.$store.state.roomInfo;
+      const { username } = this.$store.state.user;
+      const obj = {
+        username,
+        roomNo,
+        chatWord: this.chatWord,
+      };
+      this.$socket.emit('sendMessage', obj);
+      this.chatWord = ''; // 发送之后置空
+    },
   },
   sockets: {
     test1(msg) {
@@ -554,6 +576,20 @@ export default {
       });
       this.answerPoem = ''; // 清空输入框
       return false;
+    },
+    sendMessage(data) {
+      const chatOneInfo = {
+        type: 'word',
+        talker: data.username,
+        message: data.chatWord,
+        time: new Date().Format('yyyy:MM:dd  hh:mm:ss'),
+      };
+      this.updateChatList(chatOneInfo);
+      // 滚动条滚到底部核心代码
+      this.$nextTick(() => {
+        const chatBox = this.$refs.chatContent; // 获取对象
+        chatBox.scrollTop = chatBox.scrollHeight; // 滚动高度
+      });
     },
   },
   created() {

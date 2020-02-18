@@ -96,6 +96,15 @@ io.on('connection', (socket) => {
     socket.broadcast.to(data.roomNo).emit('questionReady'); // 通知其它客户端，问题已创建，可以随时开始答题
   });
 
+  // 聊天
+  socket.on('sendMessage', (data) => {
+    const obj = {
+      username: data.username,
+      chatWord: data.chatWord,
+    };
+    io.sockets.in(data.roomNo).emit('sendMessage', data); // 包括自己
+  });
+
   socket.on('creatorLeave', (data) => {
     console.log(data);
   });
