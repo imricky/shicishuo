@@ -164,13 +164,18 @@ export default {
         const res = await Http.findOneRoom(this.inputRoomNo);
         if (res.data.code === 200) {
           if (res.data.data.length > 0) {
+            const obj = {
+              roomNo: this.inputRoomNo,
+              user: this.user,
+            };
+            this.$socket.emit('joined', obj);
             this.$message({
               message: '正在进入房间...',
               type: 'success',
-              duration: 1500,
+              duration: 1000,
               onClose() {
                 _self.$router.push({
-                  path: `/you_draw_i_guess/room/${_self.inputRoomNo}`,
+                  path: `/you_draw_i_guess/room/${this.inputRoomNo}`,
                 });
               },
             });
