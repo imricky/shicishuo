@@ -331,6 +331,15 @@ export default {
       this.$socket.emit('dataURI', data);
     },
     down(e) {
+      if (!this.currentUserIsCreator()) {
+        const roomCreator = this.$store.state.roomInfo.creator;
+        this.$message({
+          type: 'error',
+          message: `只有当前房间的创建者 【${roomCreator}】 才能绘画哦~`,
+          duration: 2000,
+        });
+        return false;
+      }
       this.isDraw = true;
       const ele = this.windowToCanvas(this.canvas, e.clientX, e.clientY);
       const { x, y } = ele;
@@ -384,9 +393,27 @@ export default {
       img.src = src;
     },
 
+    // 判断当前登录用户是否为房间的创建者,返回true或者false
+    currentUserIsCreator() {
+      const currentLoginUser = this.$store.state.user.username;
+      const roomCreator = this.$store.state.roomInfo.creator;
+      return currentLoginUser === roomCreator;
+    },
+
     // 关于答题的方法：
     // 答题者问题创建：
     questionCreate() {
+      // 首先判断登录用户是否为房间的创建者，是则可以创建，不然不可以
+      if (!this.currentUserIsCreator()) {
+        const roomCreator = this.$store.state.roomInfo.creator;
+        this.$message({
+          type: 'error',
+          message: `只有当前房间的创建者 【${roomCreator}】 才能创建房间哟~`,
+          duration: 2000,
+        });
+        return false;
+      }
+
       if (this.questionPoem === '') {
         // TODO: 优化，问题为空时，弹出提示之后，把光标定位到输入框
         this.$message({
@@ -425,6 +452,14 @@ export default {
     },
     // 回答问题
     submitAnswer() {
+      if (this.currentUserIsCreator()) {
+        this.$message({
+          type: 'error',
+          message: '创建者不能回答自己回答问题的哦~',
+          duration: 2000,
+        });
+        return false;
+      }
       if (this.answerPoem === '') {
         this.$message({
           type: 'warning',
