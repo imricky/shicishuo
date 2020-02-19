@@ -18,8 +18,7 @@
       <div class="tags">
         <div class="tag-desc">
           相关标签
-          <i class="el-icon-magic-stick"></i>
-          <i class="el-icon-receiving"></i>
+          <i class="el-icon-connection"></i>
         </div>
         <div class="multi-tag">
           <TagButton :text="tag" v-for="tag in tags" :key="tag"></TagButton>
@@ -169,8 +168,8 @@ export default {
   .author{
     width: 100%;
     height: 120px;
-    border: 3px solid #DCDFE6;
-    border-radius: 10px;
+    border: 1px solid #DCDFE6;
+    border-radius: 5px;
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -186,6 +185,7 @@ export default {
         font-size: 30px;
         font-weight: bold;
         margin: 0 0;
+        color: #409EFF;
       }
       .author-desc{
         overflow: hidden;
@@ -199,8 +199,9 @@ export default {
   .tags{
     width: 100%;
     height: 60px;
-    border: 3px solid #DCDFE6;
-    border-radius: 10px;
+    border: 1px solid #DCDFE6;
+    /*background-color: #F4F4F5;*/
+    border-radius: 5px;
     margin-top: 10px;
     display: flex;
     justify-content: flex-start;
@@ -223,12 +224,14 @@ export default {
   .poems{
     width: 100%;
     min-height: 400px;
-    border: 3px solid #DCDFE6;
-    border-radius: 10px;
+    border: 1px solid #DCDFE6;
+    /*background-color: #F4F4F5;*/
+    border-radius: 5px;
     margin-top: 10px;
     .poem-card{
-      border: 2px solid #DCDFE6;
-      background-color: #EDF5FF;
+      /*border: 1px solid #DCDFE6;*/
+      /*background-color: #F4F4F5;*/
+      border-bottom: 1px solid #E4E7ED;
       border-radius: 4px;
       display: flex;
       flex-direction:column;
@@ -246,13 +249,13 @@ export default {
       }
       .poem-author{
         font-size: 12px;
-        color: #606266;
+        color: #909399;
         margin-top: 10px;
         margin-bottom: 10px;
       }
       .poem-paragraphs{
         font-size: 14px;
-        color: #000000;
+        color: #606266;
         margin-top: 10px;
       }
       .poem-tag{

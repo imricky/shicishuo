@@ -70,7 +70,7 @@
         </el-collapse>
       </el-aside>
       <el-main class="main-container">
-        <div><i class="el-icon-s-promotion"></i> 点击左侧标签，探索你喜爱的诗词❤️</div>
+        <div><i class="el-icon-s-promotion"></i> 好雨知时节，当春乃发生❤️</div>
         <el-table
           :data="poemList"
           style="width: 100%"
@@ -363,8 +363,8 @@ export default {
   }
 
   .main-container{
-    border: 1px solid #409EFF;
-    margin-left: 20px;
+    /*border: 1px solid #EBEEF5;*/
+    /*margin-left: 20px;*/
   }
   .paragraph-table{
     display: flex;
@@ -393,10 +393,10 @@ export default {
 
     .mobile-all{
       display: block;
-      border: 1px solid rebeccapurple;
+      /*border: 1px solid rebeccapurple;*/
       width: 100%;
       .mobile-top{
-        border: 1px solid #AA314D;
+        border: 1px solid #FEF0F0;
         margin: 0 auto;
       }
       .mobile-tip{
@@ -407,7 +407,7 @@ export default {
       }
 
       .mobile-main{
-        border: 1px solid #139250;
+        /*border: 1px solid #139250;*/
         margin: 0 auto;
       }
       .mobile-aside-type{

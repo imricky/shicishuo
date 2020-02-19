@@ -42,6 +42,7 @@
           </el-card>
         </el-aside>
         <el-main class="main-container">
+          <div><i class="el-icon-price-tag"></i> 最是江南好风景，落花时节又逢君❤️</div>
           <el-table
             :data="poemList"
             style="width: 100%"
@@ -292,9 +293,9 @@ export default {
       .current-tag-name{
         padding: 0 10px;
         /*background-color: #409EFF;*/
-        border: 1px solid #409EFF;
+        /*border: 1px solid #409EFF;*/
         border-radius: 6px;
-        color: #409EFF;
+        color: #F56C6C;
       }
     }
     .other-tag-container{
@@ -311,8 +312,8 @@ export default {
   }
 
   .main-container{
-    border: 1px solid #409EFF;
-    margin-left: 20px;
+    /*border: 1px solid #409EFF;*/
+    /*margin-left: 20px;*/
   }
   .paragraph-table{
     display: flex;
@@ -348,10 +349,10 @@ export default {
 
     .mobile-all{
       display: block;
-      border: 1px solid rebeccapurple;
+      /*border: 1px solid rebeccapurple;*/
       width: 100%;
       .mobile-top{
-        border: 1px solid #AA314D;
+        /*border: 1px solid #AA314D;*/
         margin: 0 auto;
       }
       .mobile-tip{
@@ -362,12 +363,12 @@ export default {
       }
 
       .mobile-main{
-        border: 1px solid #139250;
+        border: 1px solid #EBEEF5;
         margin: 0 auto;
       }
       .mobile-current-tag-name{
         padding: 0 10px;
-        border: 1px solid #F56C6C;
+        /*border: 1px solid #F56C6C;*/
         border-radius: 6px;
         color: #F56C6C;
       }

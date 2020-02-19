@@ -119,9 +119,9 @@ export default {
 
   }
   .main{
-    border: 1px solid rebeccapurple;
-    background-color: #E9EEF3;
-    color: #333;
+    /*border: 1px solid rebeccapurple;*/
+    /*background-color: #E9EEF3;*/
+    /*color: #333;*/
     margin: 0 20px;
     display: flex;
     justify-content: center;

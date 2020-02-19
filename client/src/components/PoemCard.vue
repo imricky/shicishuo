@@ -68,9 +68,9 @@ export default {
 
 <style scoped lang="scss">
   .poem-card{
-    border: 1px solid rebeccapurple;
-    background-color: #E9EEF3;
-    color: #333;
+    /*border: 1px solid rebeccapurple;*/
+    /*background-color: #E9EEF3;*/
+    /*color: #333;*/
     margin: 10px 0;
     display: flex;
     justify-content: center;
@@ -160,7 +160,7 @@ export default {
       color: red;
       width: 100px;
       height: 100px;
-      border: 1px solid red;
+      /*border: 1px solid red;*/
       z-index: 12312;
       background: #AA314D;
     }

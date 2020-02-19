@@ -45,6 +45,7 @@
         </el-card>
       </el-aside>
       <el-main class="main-container">
+        <div><i class="el-icon-collection"></i> 两岸猨声啼不尽，轻舟已过万重山❤️</div>
         <el-table
           :data="poemList"
           style="width: 100%"
@@ -251,19 +252,18 @@ export default {
     margin-bottom: 10px;
     .poem-count{
       font-weight: bold;
-      color: #AA314D;
+      color: #409EFF;
     }
     /*border-bottom: 1px solid gray;*/
   }
   .author-count{
     font-weight: bold;
-    /*TODO: 各种颜色需要调整*/
-    color: aquamarine;
+    color: #F56C6C;
   }
 
   .main-container{
-    border: 1px solid #409EFF;
-    margin-left: 20px;
+    /*border: 1px solid #409EFF;*/
+    /*margin-left: 20px;*/
   }
 
   /*移动端显示*/
@@ -288,10 +288,10 @@ export default {
 
     .mobile-all{
       display: block;
-      border: 1px solid rebeccapurple;
+      /*border: 1px solid rebeccapurple;*/
       width: 100%;
       .mobile-top{
-        border: 1px solid #AA314D;
+        /*border: 1px solid #AA314D;*/
         margin: 0 auto;
       }
       .mobile-tip{
@@ -302,7 +302,7 @@ export default {
       }
 
       .mobile-main{
-        border: 1px solid #139250;
+        border: 1px solid #EBEEF5;
         margin: 0 auto;
       }
 

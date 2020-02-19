@@ -160,13 +160,14 @@ export default {
 <style scoped lang="scss">
   .search-container{
     max-width: 1000px;
-    border: 1px solid #DCDFE6;
-    background-color: #E9EEF3;
+    /*border: 1px solid #DCDFE6;*/
+    /*background-color: #E9EEF3;*/
     color: #333;
     margin: 0 auto;
   }
   .common{
     margin: 0 20px;
+    margin-bottom: 10px;
   }
   .search{
     display: flex;

@@ -80,7 +80,7 @@ export default {
 
 <style scoped lang="scss">
   .cool-exploration-card{
-    border: 1px solid indianred;
+    border: 1px solid #FDE2E2;
     cursor: pointer;
   }
   .box-card{
