@@ -781,12 +781,12 @@ export default {
           border-radius: 4px;
           margin-bottom: 20px;
           .online-people{
-            color: #F56C6C;
+            color: #67C23A;
             font-size: 20px;
             font-weight: bold;
           }
           .room-creator{
-            color: #409EFF;
+            color: #F56C6C;
             font-size: 20px;
             font-weight: bold;
           }
@@ -861,7 +861,7 @@ export default {
         align-items: center;
       }
       .answer-poem{
-        width: 30em;
+        width: 31em;
       }
       .answer-submit{
         margin-left: 20px;
