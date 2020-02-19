@@ -48,7 +48,8 @@
         <el-table
           :data="poemList"
           style="width: 100%"
-          v-if="poemList.length !== 0">
+          v-if="poemList.length !== 0"
+          ref="poemTable">
           <el-table-column type="expand">
             <template slot-scope="props">
               <el-form label-position="left" inline class="demo-table-expand">
@@ -205,18 +206,30 @@ export default {
       return res;
     },
     changePage(page) {
+      const poemTableEl = this.$refs.poemTable.$el;
+      const loading = this.$loading({
+        target: poemTableEl,
+        lock: true,
+        text: '正在加载中...',
+      });
       Http.getPoemList(page).then(((res) => {
         this.poemList = res.data.data.res;
         this.totalCount = res.data.data.totalCount;
+        loading.close();
       }));
     },
   },
   created() {
+    const loading = this.$loading({
+      lock: true,
+      text: '正在加载中...',
+    });
     this.getDatabaseAllInfo().then((res) => {
       this.authorCount = res.data.data.authorCount[0].count;
       this.poemCount = res.data.data.poemCount;
       this.top10PoemList = res.data.data.top10PoemArr;
       this.top10Tags = res.data.data.top10Tags;
+      loading.close();
     });
     this.getPoemList().then((res) => {
       this.poemList = res.data.data.res;

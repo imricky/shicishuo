@@ -89,9 +89,14 @@ export default {
     },
   },
   created() {
+    const loading = this.$loading({
+      lock: true,
+      text: '正在加载中...',
+    });
     this.getDailyPoem().then((res) => {
       // eslint-disable-next-line prefer-destructuring
       this.poemCardData = res.data.data[0];
+      loading.close();
     });
     this.getHistoryDailyPoem().then((res) => {
       res.data.data.res.map((i) => {

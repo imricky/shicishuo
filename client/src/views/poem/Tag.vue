@@ -45,7 +45,7 @@
           <el-table
             :data="poemList"
             style="width: 100%"
-            v-if="poemList.length !== 0">
+            ref="tagList">
             <el-table-column type="expand">
               <template slot-scope="props">
                 <el-form label-position="left" inline class="demo-table-expand">
@@ -211,12 +211,19 @@ export default {
   methods: {
     // 其他标签的点击事件
     changeTag(id) {
+      const tagListEl = this.$refs.tagList.$el;
+      const loading = this.$loading({
+        target: tagListEl,
+        lock: true,
+        text: '正在加载中...',
+      });
       this.$router.push({ path: `/tag/${id}` }); // -> /user/123
       this.currentTag = id; // 当前选中的tag，用于分页的时候带上
       this.currentPage = 1; // 切换标签的时候，将分页条设置为1
       Http.getPoemsByTags(id).then(((res) => {
         this.poemList = res.data.data.res;
         this.totalCount = res.data.data.totalCount;
+        loading.close();
       }));
     },
     changePage(page) {
@@ -240,6 +247,10 @@ export default {
     },
   },
   created() {
+    const loading = this.$loading({
+      lock: true,
+      text: '正在加载中...',
+    });
     // 当前标签赋值：
     this.currentTag = this.$route.params.tagName;
     // 获取当前标签对应的诗词
@@ -257,6 +268,7 @@ export default {
       }, []);
       this.tagList = tempTagsArr;
       this.totalTagCount = res.data.data.totalTagCount;
+      loading.close();
     });
   },
   mounted() {

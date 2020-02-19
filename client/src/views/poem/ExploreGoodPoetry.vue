@@ -74,7 +74,7 @@
         <el-table
           :data="poemList"
           style="width: 100%"
-          v-if="poemList.length !== 0">
+          ref="mainTable">
           <el-table-column type="expand">
             <template slot-scope="props">
               <el-form label-position="left" inline class="demo-table-expand">
@@ -279,19 +279,33 @@ export default {
       return res;
     },
     searchListByTag(tag) {
+      const mainTableEl = this.$refs.mainTable.$el;
+      const loading = this.$loading({
+        target: mainTableEl,
+        lock: true,
+        text: '正在加载中...',
+      });
       this.currentTag = tag; // 当前选中的tag，用于分页的时候带上
       this.currentPage = 1; // 切换标签的时候，将分页条设置为1
       Http.getPoemsByTags(tag).then(((res) => {
         this.poemList = res.data.data.res;
         this.totalCount = res.data.data.totalCount;
+        loading.close();
       }));
     },
     searchListByAuthor(author) {
+      const mainTableEl = this.$refs.mainTable.$el;
+      const loading = this.$loading({
+        target: mainTableEl,
+        lock: true,
+        text: '正在加载中...',
+      });
       this.currentAuthor = author; // 当前选中的author，用于分页的时候带上
       this.currentPage = 1; // 切换标签的时候，将分页条设置为1
       Http.getPoemsByAuthor(author).then(((res) => {
         this.poemList = res.data.data.res;
         this.totalCount = res.data.data.totalCount;
+        loading.close();
       }));
     },
     changePage(page) {
@@ -314,9 +328,14 @@ export default {
     },
   },
   created() {
+    const loading = this.$loading({
+      lock: true,
+      text: '正在加载中...',
+    });
     this.exploreGoodPoemAll().then((res) => {
       this.top20Tags = res.data.data.top20Tags;
       this.top20Authors = res.data.data.top20Authors;
+      loading.close();
     });
   },
   mounted() {
