@@ -7,7 +7,7 @@
             <el-col :span="4" :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
               <router-link id="logo" to="/">
                 <div class="grid-content bg-purple">
-                  <i class="el-icon-present"></i>
+                  <img src="../assets/mylogo.png" alt="网站图标" style="width: 50px; height: 50px">
                   <!--              TODO:最后换logo和换字体-->
                   <span class="logo-word hidden-xs-only">诗词说</span>
                 </div>
@@ -283,8 +283,17 @@ export default {
   }
   /*顶栏左侧的css*/
   .logo-word{
-    font-size: 20px;
+    font-size: 25px;
     font-weight: bold;
+    text-decoration: none;
+    color: #409EFF;
+  }
+  a {
+    text-decoration: none;
+  }
+
+  .router-link-active {
+    text-decoration: none;
   }
   .grid-content {
     border-radius: 4px;
