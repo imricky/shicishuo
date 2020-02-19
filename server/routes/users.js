@@ -160,7 +160,7 @@ router.post('/collect', async (req, res, next) => {
   } catch (e) {
     res.json({
       success: false,
-      errorMessage: e,
+      errorMessage: e.stack,
       code: 500,
     });
   }
@@ -177,7 +177,7 @@ router.post('/collect', async (req, res, next) => {
 //   } catch (e) {
 //     res.json({
 //       success: false,
-//       errorMessage: e,
+//       errorMessage: e.stack,
 //       code: 500,
 //     });
 //   }
@@ -195,7 +195,7 @@ router.post('/getCollectionsByUserId', async (req, res, next) => {
   } catch (e) {
     res.json({
       success: false,
-      errorMessage: e,
+      errorMessage: e.stack,
       code: 500,
     });
   }

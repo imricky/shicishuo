@@ -19,7 +19,7 @@ router.get('/getDailyPoem', async (req, res, next) => {
   } catch (e) {
     res.json({
       success: false,
-      errorMessage: e,
+      errorMessage: e.stack,
       code: 500,
     });
   }
@@ -40,7 +40,7 @@ router.get('/getHistoryDailyPoem', async (req, res, next) => {
   } catch (e) {
     res.json({
       success: false,
-      errorMessage: e,
+      errorMessage: e.stack,
       code: 500,
     });
   }
@@ -62,7 +62,7 @@ router.post('/getPoemsByTags', async (req, res, next) => {
   } catch (e) {
     res.json({
       success: false,
-      errorMessage: e,
+      errorMessage: e.stack,
       code: 500,
     });
   }
@@ -84,7 +84,7 @@ router.post('/getPoemsByAuthor', async (req, res, next) => {
   } catch (e) {
     res.json({
       success: false,
-      errorMessage: e,
+      errorMessage: e.stack,
       code: 500,
     });
   }
@@ -106,7 +106,7 @@ router.post('/getHotTop50List', async (req, res, next) => {
   } catch (e) {
     res.json({
       success: false,
-      errorMessage: e,
+      errorMessage: e.stack,
       code: 500,
     });
   }
@@ -128,7 +128,7 @@ router.post('/getOneInfo', async (req, res, next) => {
   } catch (e) {
     res.json({
       success: false,
-      errorMessage: e,
+      errorMessage: e.stack,
       code: 500,
     });
   }
@@ -150,7 +150,7 @@ router.get('/getDatabaseAllInfo', async (req, res, next) => {
   } catch (e) {
     res.json({
       success: false,
-      errorMessage: e,
+      errorMessage: e.stack,
       code: 500,
     });
   }
@@ -176,7 +176,7 @@ router.post('/getPoemList', async (req, res, next) => {
   } catch (e) {
     res.json({
       success: false,
-      errorMessage: e,
+      errorMessage: e.stack,
       code: 500,
     });
   }
@@ -193,7 +193,7 @@ router.get('/exploreGoodPoemAll', async (req, res, next) => {
   } catch (e) {
     res.json({
       success: false,
-      errorMessage: e,
+      errorMessage: e.stack,
       code: 500,
     });
   }
@@ -211,7 +211,7 @@ router.post('/getAllTags', async (req, res, next) => {
   } catch (e) {
     res.json({
       success: false,
-      errorMessage: e,
+      errorMessage: e.stack,
       code: 500,
     });
   }

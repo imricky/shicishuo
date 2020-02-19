@@ -24,7 +24,7 @@ router.get('/getRoomList', async (req, res, next) => {
   } catch (e) {
     res.json({
       success: false,
-      errorMessage: e,
+      errorMessage: e.stack,
       code: 500,
     });
   }
@@ -59,7 +59,7 @@ router.post('/deleteOneRoom', async (req, res, next) => {
   } catch (e) {
     res.json({
       success: false,
-      errorMessage: e,
+      errorMessage: e.stack,
       code: 500,
     });
   }
@@ -100,7 +100,7 @@ router.get('/randomEnterRoom', async (req, res, next) => {
   } catch (e) {
     res.json({
       success: false,
-      errorMessage: e,
+      errorMessage: e.stack,
       code: 500,
     });
   }
@@ -121,7 +121,7 @@ router.post('/updateRoomInfoOnline', async (req, res, next) => {
   } catch (e) {
     res.json({
       success: false,
-      errorMessage: e,
+      errorMessage: e.stack,
       code: 500,
     });
   }
@@ -142,7 +142,7 @@ router.post('/removeRoomInfoOnline', async (req, res, next) => {
   } catch (e) {
     res.json({
       success: false,
-      errorMessage: e,
+      errorMessage: e.stack,
       code: 500,
     });
   }
@@ -159,7 +159,7 @@ router.post('/updateRoomQuestion', async (req, res, next) => {
   } catch (e) {
     res.json({
       success: false,
-      errorMessage: e,
+      errorMessage: e.stack,
       code: 500,
     });
   }
