@@ -109,7 +109,7 @@
           </div>
           <div class="chat-input">
             <el-input
-              placeholder="请输入内容"
+              :placeholder="chatPlaceholder"
               clearable
               v-model="chatWord"
               @keyup.enter.native="sendMessage">
@@ -177,6 +177,7 @@ export default {
       url: '', // 画图的url
       chatWord: '', // 聊天发送的话
       src: '', // img的src，用来监听url
+      chatPlaceholder: '请输入内容...',
     };
   },
   computed: {
@@ -591,6 +592,13 @@ export default {
         chatBox.scrollTop = chatBox.scrollHeight; // 滚动高度
       });
     },
+    typing(data) {
+      // TODO: 优化正在输入... 5秒钟之后没有输入那么就还原
+      this.chatPlaceholder = `${data.username} 正在输入...`;
+    },
+    stopTyping() {
+      this.chatPlaceholder = '请输入聊天内容...';
+    },
   },
   created() {
     this.$socket.emit('chat message', '123');
@@ -636,6 +644,16 @@ export default {
         }
       });
     });
+  },
+  watch: {
+    chatWord(value) {
+      const obj = {
+        username: this.$store.state.user.username,
+        roomNo: this.$store.state.roomInfo.roomNo,
+      };
+      // eslint-disable-next-line no-unused-expressions
+      value ? this.$socket.emit('typing', obj) : this.$socket.emit('stopTyping', obj);
+    },
   },
 };
 </script>

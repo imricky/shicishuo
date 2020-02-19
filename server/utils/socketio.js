@@ -105,6 +105,18 @@ io.on('connection', (socket) => {
     io.sockets.in(data.roomNo).emit('sendMessage', data); // 包括自己
   });
 
+  // 聊天打字，正在打字
+  socket.on('typing', (data) => {
+    const obj = {
+      username: data.username,
+    };
+    socket.broadcast.to(data.roomNo).emit('typing', obj); // 除了自己
+  });
+  // 停止打字
+  socket.on('stopTyping', (data) => {
+    socket.broadcast.to(data.roomNo).emit('stopTyping'); // 除了自己
+  });
+
   socket.on('creatorLeave', (data) => {
     console.log(data);
   });
