@@ -11,15 +11,15 @@
         </div>
         <div class="power-by">
           <span class="power-by-word">Power by</span>
-          <el-link icon="el-icon-edit"><span class="vue">Vue</span></el-link>
+          <el-link icon="el-icon-coffee-cup"><span class="vue">Vue</span></el-link>
           <el-divider direction="vertical"></el-divider>
-          <el-link><i class="el-icon-view el-icon--right"></i><span class="express">Express</span> </el-link>
+          <el-link><i class="el-icon-sugar el-icon--right"></i><span class="express">Express</span> </el-link>
           <el-divider direction="vertical"></el-divider>
-          <el-link><i class="el-icon-view el-icon--right"></i><span class="mongodb">MongoDB</span> </el-link>
+          <el-link><i class="el-icon-refrigerator el-icon--right"></i><span class="mongodb">MongoDB</span> </el-link>
           <el-divider direction="vertical"></el-divider>
-          <el-link><i class="el-icon-view el-icon--right"></i><span class="redis">Redis</span> </el-link>
+          <el-link><i class="el-icon-apple el-icon--right"></i><span class="redis">Redis</span> </el-link>
           <el-divider direction="vertical"></el-divider>
-          <el-link><i class="el-icon-view el-icon--right"></i><span class="echarts">Echarts</span> </el-link>
+          <el-link><i class="el-icon-ice-tea el-icon--right"></i><span class="echarts">Echarts</span> </el-link>
         </div>
       </el-footer>
     </el-container>
@@ -51,7 +51,7 @@ export default {
     align-items: center;
     margin: 0 auto;
     margin-top: 10px;
-    border: 1px solid #F56C6C;
+    border: 1px solid #DCDFE6;
     /*吸底效果的做法*/
     /*background-color: orange;*/
     /*position: fixed; bottom: 0;*/
@@ -70,7 +70,7 @@ export default {
       margin: 5px 0;
       .my-footer-authorName{
         padding: 0 10px;
-        color: #409EFF;
+        color: #F56C6C;
       }
     }
 
@@ -78,7 +78,7 @@ export default {
       margin: 5px 0;
       .power-by-word{
         margin-right: 10px;
-        color: #F56C6C;
+        color: #67C23A;
         font-weight: bold;
       }
       .vue:hover{
