@@ -310,18 +310,18 @@ export default {
 <style scoped lang="scss">
   .room-list-container{
     max-width: 1000px;
-    border: 1px solid #DCDFE6;
-    background-color: #E9EEF3;
+    /*border: 1px solid #DCDFE6;*/
+    background-color: #F4F4F5;
     color: #333;
     margin: 0 auto;
     margin-top: 20px;
   }
   .list-all{
-    border: 1px solid red;
+    border: 1px solid #DCDFE6;
     margin-bottom: 20px;
   }
   .option-all{
-    border: 1px solid #D92C21;
+    border: 1px solid #DCDFE6;
     .room-no{
       display: inline-block;
       width: 300px;

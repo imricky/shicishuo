@@ -1,21 +1,5 @@
 <template>
   <div>
-    <div class="top">
-      <div class="top-inner">
-        <p class="question-title">目标诗句：</p>
-        <div>
-          <el-input
-            placeholder="请输入诗句需要猜测的诗句"
-            clearable
-            suffix-icon="el-icon-reading"
-            v-model="questionPoem"
-            class="question-poem">
-          </el-input>
-        </div>
-        <el-button type="primary" class="question-create" @click="questionCreate">创建</el-button>
-        <el-button >自动生成目标句诗</el-button>
-      </div>
-    </div>
     <div class="main">
 <!--      画笔工具-->
       <div class="paint-tool">
@@ -71,8 +55,8 @@
         <canvas
           id="canvas"
           ref="canvas"
-          width="850"
-          height="580"
+          width="850em"
+          height="590rem"
           @mousemove="move($event)"
           @mousedown="down($event)"
           @mouseup="up($event)">current stock price: $3.15 +0.15
@@ -85,8 +69,8 @@
       <div class="paint-talk">
         <div class="room-info">
           <el-divider content-position="left">房间信息</el-divider>
-          <p>在线人数： <span class="online-people">12</span></p>
-          <p>当前房主： <span class="room-creator">crq</span></p>
+          <p style="margin-left: 10px">在线人数： <span class="online-people">12</span></p>
+          <p style="margin-left: 10px">当前房主： <span class="room-creator">crq</span></p>
         </div>
         <div class="chat">
           <el-divider content-position="left">聊天内容</el-divider>
@@ -118,6 +102,22 @@
             <el-button class="chat-send-button" @click="sendMessage">发送</el-button>
           </div>
         </div>
+      </div>
+    </div>
+    <div class="top">
+      <div class="top-inner">
+        <p class="question-title">目标诗句：</p>
+        <div>
+          <el-input
+            placeholder="请输入诗句需要猜测的诗句"
+            clearable
+            suffix-icon="el-icon-reading"
+            v-model="questionPoem"
+            class="question-poem">
+          </el-input>
+        </div>
+        <el-button type="primary" class="question-create" @click="questionCreate">创建</el-button>
+        <el-button >自动生成目标句诗</el-button>
       </div>
     </div>
     <div class="bottom">
@@ -410,7 +410,7 @@ export default {
         const roomCreator = this.$store.state.roomInfo.creator;
         this.$message({
           type: 'error',
-          message: `只有当前房间的创建者 【${roomCreator}】 才能创建房间哟~`,
+          message: `只有当前房间的创建者 【${roomCreator}】 才能创建问题哟~`,
           duration: 2000,
         });
         return false;
@@ -664,11 +664,12 @@ export default {
     .top{
       width: 100%;
       margin: 0 auto;
-      border: 1px solid red;
+      /*border: 1px solid red;*/
       .top-inner{
         width: 65%;
-        margin: 0 auto;
-        border: 1px solid red;
+        /*margin: 0 auto;*/
+        /*border: 1px solid #EBEEF5;*/
+        border-radius: 4px;
         margin-top: 10px;
         margin-bottom: 10px;
         display: flex;
@@ -688,15 +689,16 @@ export default {
     .main{
       width: 100%;
       margin: 0 auto;
-      border: 1px solid #AA314D;
+      margin-top: 20px;
+      /*border: 1px solid #AA314D;*/
       display: flex;
       justify-content: flex-start;
       align-items: flex-start;
       .paint-tool{
         width: 20%;
-        border: 1px solid #6638F0;
+        /*border: 1px solid #6638F0;*/
         .top-tool{
-          border: 1px solid #F56C6D;
+          /*border: 1px solid #F56C6D;*/
         }
         .in-eraser{
           /*动态改变颜色*/
@@ -741,7 +743,7 @@ export default {
           margin-top: 5px;
         }
         .pen-quick{
-          border: 1px solid red;
+          /*border: 1px solid red;*/
           .pen-type{
             width: 80%;
             margin: 10px auto;
@@ -762,39 +764,43 @@ export default {
       .paint-canvas{
         align-self: flex-start;
         width: 60%;
-        border: 1px solid #5CC9F5;
+        /*border: 1px solid #5CC9F5;*/
         #canvas{
           /*max-height: 578px; // 调整canvas的高度*/
           /*width: 100%;*/
+          /*width: 60em;*/
           border: 1px solid rgb(199, 198, 198);
         }
       }
       .paint-talk{
         align-items: flex-start;
         width: 20%;
-        border: 1px solid #FF2150;
+        /*border: 1px solid #FF2150;*/
         .room-info{
-          border: 1px solid #409EFF;
+          border: 1px solid #DCDFE6;
+          border-radius: 4px;
           margin-bottom: 20px;
           .online-people{
-            color: #F56C6D;
+            color: #F56C6C;
             font-size: 20px;
             font-weight: bold;
           }
           .room-creator{
-            color: #5CC9F5;
+            color: #409EFF;
             font-size: 20px;
             font-weight: bold;
           }
         }
         .chat{
-          border: 1px solid #F56C6C;
+          border: 1px solid #DCDFE6;
           .chat-content{
-            height: 20em;
+            height: 21em;
             overflow :auto;
             .chat-one-paragraph{
-              margin: 5px 0;
-              border: 1px solid red;
+              margin: 10px 10px;
+              /*border: 1px solid #DCDFE6;*/
+              border-bottom: 1px solid #DCDFE6;
+              border-radius: 4px;
               .chat-type-word{
                 .chat-message-info{
                   display: flex;
@@ -809,7 +815,7 @@ export default {
                   /*padding: 2px 0;*/
                 }
                 .chat-spokesperson{
-                  color: #F56C6C;
+                  color: #409EFF;
                 }
                 .chat-word{
                   margin-left: 10px;
@@ -823,7 +829,7 @@ export default {
                 .chat-info-message{
                   margin-top: 10px;
                   margin-bottom: 10px;
-                  color: #81BEFF;
+                  color: #E6A23C;
                 }
               }
             }
@@ -843,11 +849,11 @@ export default {
     .bottom{
       width: 100%;
       margin: 0 auto;
-      border: 1px solid #409EFF;
+      /*border: 1px solid #409EFF;*/
       .bottom-inner{
         width: 65%;
-        margin: 0 auto;
-        border: 1px solid red;
+        /*margin: 0 auto;*/
+        /*border: 1px solid #EBEEF5;*/
         margin-top: 10px;
         margin-bottom: 10px;
         display: flex;
