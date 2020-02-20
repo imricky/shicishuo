@@ -5,7 +5,6 @@ import Home from '../views/Home.vue';
 import Search from '../views/Search.vue';
 import store from '../store';
 
-
 Vue.use(store);
 Vue.use(VueRouter);
 
@@ -118,37 +117,38 @@ const router = new VueRouter({
 });
 
 
-// router.beforeEach((to, from, next) => {
-//   // /you_draw_i_guess/room/123
-//   // 路由离开房间的时候，也要清空处理
-//   const reg = /^(\/you_draw_i_guess\/room\/)/g;
-//   if (reg.test(from.path)) {
-//     MessageBox.confirm('离开该房间页面会导致你离开房间或者解散房间，确定要离开么?', '提示', {
-//       confirmButtonText: '确定',
-//       cancelButtonText: '取消',
-//       type: 'warning',
-//     }).then(() => {
-//       // 刷新vuex 状态
-//       const obj = {
-//         roomNo: store.state.roomInfo.roomNo,
-//         username: store.state.user.username,
-//         userId: store.state.user._id,
-//       };
-//       console.log('store里存储的信息');
-//       console.log(obj);
-//       // store.dispatch('leaveRoom');
-//       next();
-//     }).catch(() => {
-//       Message({
-//         type: 'info',
-//         message: '已取消操作',
-//         duration: 1500,
-//       });
-//       next(false);
-//     });
-//   } else {
-//     next();
-//   }
-// });
+router.beforeEach((to, from, next) => {
+  // /you_draw_i_guess/room/123
+  // 路由离开房间的时候，也要清空处理
+  const reg = /^(\/you_draw_i_guess\/room\/)/g;
+  if (reg.test(from.path)) {
+    MessageBox.confirm('离开该房间页面会导致你离开房间或者解散房间，确定要离开么?', '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    }).then(() => {
+      // 刷新vuex 状态
+      const obj = {
+        roomNo: store.state.roomInfo.roomNo,
+        username: store.state.user.username,
+        userId: store.state.user._id,
+      };
+      // 告诉别的客户端信息
+      Vue.prototype.$socket.emit('leave', obj);
+      // 触发leaveRoom事件，清空当前vuex里的房间信息和聊天信息
+      store.dispatch('leaveRoom');
+      next();
+    }).catch((e) => {
+      Message({
+        type: 'info',
+        message: '已取消操作',
+        duration: 1500,
+      });
+      next(false);
+    });
+  } else {
+    next();
+  }
+});
 
 export default router;

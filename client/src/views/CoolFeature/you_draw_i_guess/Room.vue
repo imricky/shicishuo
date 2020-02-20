@@ -516,6 +516,11 @@ export default {
         time: new Date().Format('yyyy:MM:dd  hh:mm:ss'),
       };
       this.updateChatList(chatOneInfo);
+      // 滚动条滚到底部核心代码
+      this.$nextTick(() => {
+        const chatBox = this.$refs.chatContent; // 获取对象
+        chatBox.scrollTop = chatBox.scrollHeight; // 滚动高度
+      });
 
       // 别人加入的时候，去更新自己的vuex
       const obj = {
@@ -537,6 +542,11 @@ export default {
         time: new Date().Format('yyyy:MM:dd  hh:mm:ss'),
       };
       this.updateChatList(chatOneInfo);
+      // 滚动条滚到底部核心代码
+      this.$nextTick(() => {
+        const chatBox = this.$refs.chatContent; // 获取对象
+        chatBox.scrollTop = chatBox.scrollHeight; // 滚动高度
+      });
       // 接收到有参与者leave事件时，去刷新vuex里的数据
       this.removeRoomOnlineListWithParticipant(data);
     },
