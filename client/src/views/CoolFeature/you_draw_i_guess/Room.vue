@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="main">
+    <div class="main" ref="main">
 <!--      画笔工具-->
       <div class="paint-tool">
         <div class="top-tool">
@@ -635,6 +635,11 @@ export default {
       this.ctx.strokeStyle = '#0C1D34'; // 轮廓颜色
       this.ctx.fillStyle = '#0C1D34'; // 填充颜色
       this.ctx.lineWidth = 2; // 画笔粗细
+      // 动态适应屏幕大小,计算main区域的大小，然后乘上一个系数
+      const mainWidth = this.$refs.main.offsetWidth;
+      const mainHeight = this.$refs.main.offsetHeight;
+      this.ctx.canvas.width = mainWidth * 0.58;
+      this.ctx.canvas.height = mainHeight * 0.98;
     }
     // 监听img 的 src 事件
     this.$watch('src', (v) => {
@@ -769,7 +774,7 @@ export default {
           /*max-height: 578px; // 调整canvas的高度*/
           /*width: 100%;*/
           /*width: 60em;*/
-          border: 1px solid rgb(199, 198, 198);
+          border: 2px solid rgb(199, 198, 198);
         }
       }
       .paint-talk{
@@ -794,7 +799,7 @@ export default {
         .chat{
           border: 1px solid #DCDFE6;
           .chat-content{
-            height: 21em;
+            height: 21rem;
             overflow :auto;
             .chat-one-paragraph{
               margin: 10px 10px;
