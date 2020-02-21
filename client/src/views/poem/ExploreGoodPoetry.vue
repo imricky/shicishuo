@@ -10,7 +10,7 @@
           <el-collapse-item name="1">
             <template slot="title">
 <!--              TODO: 更改图标-->
-              <span class="aside-title">标签 Tags</span><i class="header-icon el-icon-info"></i>
+              <span class="aside-title">标签 Tags</span><i class="header-icon el-icon-menu"></i>
             </template>
             <div class="aside-type">
               <el-link
@@ -25,7 +25,7 @@
 
           <el-collapse-item name="2">
             <template slot="title">
-              <span class="aside-title">作者 Author</span><i class="header-icon el-icon-info"></i>
+              <span class="aside-title">作者 Author</span><i class="header-icon el-icon-user"></i>
             </template>
             <div class="aside-type">
               <el-link
@@ -38,7 +38,7 @@
           </el-collapse-item>
           <el-collapse-item name="3">
             <template slot="title">
-              <span class="aside-title">朝代 Efficiency</span><i class="header-icon el-icon-info"></i>
+              <span class="aside-title">朝代 Dynasty</span><i class="header-icon el-icon-collection"></i>
             </template>
             <div class="aside-type">
               <el-link >唐</el-link>
@@ -50,7 +50,7 @@
           </el-collapse-item>
           <el-collapse-item name="4">
             <template slot="title">
-              <span class="aside-title">形式 Controllability</span><i class="header-icon el-icon-info"></i>
+              <span class="aside-title">形式 Forms</span><i class="header-icon el-icon-printer"></i>
             </template>
             <div class="aside-type">
               <el-link href="https://element.eleme.io" target="_blank">test1</el-link>
@@ -121,14 +121,14 @@
 
   <div class="mobile-all">
     <div class="mobile-tip">
-      请点击一个标签，探索你喜爱的诗词❤️
+      <i class="el-icon-s-promotion"></i> 好雨知时节，当春乃发生❤️
     </div>
     <div class="mobile-top">
       <el-collapse accordion v-model="activeNames" :change="changeCollapse">
         <el-collapse-item name="1">
           <template slot="title">
             <!--              TODO: 更改图标-->
-            <span class="aside-title">标签 Tags</span><i class="header-icon el-icon-info"></i>
+            <span class="aside-title">标签 Tags</span><i class="header-icon el-icon-menu"></i>
           </template>
           <div class="mobile-aside-type">
             <el-link
@@ -143,7 +143,7 @@
 
         <el-collapse-item name="2">
           <template slot="title">
-            <span class="aside-title">作者 Author</span><i class="header-icon el-icon-info"></i>
+            <span class="aside-title">作者 Author</span><i class="header-icon el-icon-user"></i>
           </template>
           <div class="mobile-aside-type">
             <el-link
@@ -156,7 +156,7 @@
         </el-collapse-item>
         <el-collapse-item name="3">
           <template slot="title">
-            <span class="aside-title">朝代 Efficiency</span><i class="header-icon el-icon-info"></i>
+            <span class="aside-title">朝代 Dynasty</span><i class="header-icon el-icon-collection"></i>
           </template>
           <div class="mobile-aside-type">
             <el-link >唐</el-link>
@@ -168,7 +168,7 @@
         </el-collapse-item>
         <el-collapse-item name="4">
           <template slot="title">
-            <span class="aside-title">形式 Controllability</span><i class="header-icon el-icon-info"></i>
+            <span class="aside-title">形式 Forms</span><i class="header-icon el-icon-printer"></i>
           </template>
           <div class="mobile-aside-type">
             <el-link href="https://element.eleme.io" target="_blank">test1</el-link>
