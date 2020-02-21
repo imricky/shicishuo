@@ -3,8 +3,9 @@
   <div class="register-wrap">
     <div class="register-main">
       <div class="logo">
+        <img src="../../assets/mylogo.png" alt="网站图标" style="width: 70px; height: 70px">
         <h2 class="logo-word">
-          诗词说  -  注册
+          诗词说
         </h2>
       </div>
       <div class="main">

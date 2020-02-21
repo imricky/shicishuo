@@ -3,9 +3,10 @@
     <div class="login-wrap">
       <div class="login-main">
         <div class="logo">
-          <h1 class="logo-word">
-            SHICISHUO  -  login
-          </h1>
+          <img src="../../assets/mylogo.png" alt="网站图标" style="width: 70px; height: 70px">
+          <h2 class="logo-word">
+            诗词说
+          </h2>
         </div>
         <div class="main">
           <el-form label-position="top" label-width="80px" :model="loginForm" :rules="rules" ref="loginForm">
@@ -19,7 +20,7 @@
         </div>
         <div class="login-bottom">
           <el-button type="primary" class="mobile-login-button" @click="doLogin('loginForm')">登录</el-button>
-          <el-link href="/t" target="_blank"  class="forgot">我忘记密码了</el-link>
+          <el-link class="forgot" @click="forget">我忘记密码了</el-link>
         </div>
       </div>
     </div>
@@ -95,6 +96,12 @@ export default {
         }
       });
     },
+    forget(e) {
+      this.$message({
+        message: '敬请期待',
+        type: 'info',
+      });
+    },
   },
   created() {
 
@@ -134,7 +141,7 @@ export default {
       justify-content: center;
       align-items: center;
       .logo-word{
-        /*color: #00B7FF;*/
+        color: #303133;
       }
     }
 

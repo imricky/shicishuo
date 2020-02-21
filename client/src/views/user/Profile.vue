@@ -161,7 +161,7 @@ export default {
 
 <style scoped lang="scss">
   .user-container{
-    border: 1px solid red;
+    /*border: 1px solid red;*/
     height: 160px;
     /*width: 100%;*/
     max-width: 1000px;
@@ -172,7 +172,7 @@ export default {
     .user-header{
       width: 120px;
       height: 120px;
-      border: 1px solid #AA314D;
+      /*border: 1px solid #AA314D;*/
       overflow: hidden;
       img{
         /*将图片填充满div*/
@@ -184,7 +184,7 @@ export default {
     .user-info{
       height: 120px;
       /*min-width: 300px;*/
-      border: 1px solid #F56C6C;
+      /*border: 1px solid #F56C6C;*/
       overflow: hidden;
       .user-name{
         font-size: 24px;
@@ -213,12 +213,13 @@ export default {
     max-width: 1000px;
     min-height: 270px;
     height: 100%;
-    border: 1px solid #E6A23C;
+    /*border: 1px solid #E6A23C;*/
     margin: 0 auto;
     margin-top: 20px;
     margin-bottom: 20px;
     .main{
       text-align: left;
+      margin-left: 20px;
     }
   }
 
@@ -228,7 +229,7 @@ export default {
       margin-top: 20px;
     }
     .user-header{
-      margin-left: 40px;
+      margin-left: 20px;
     }
     .user-info{
       margin-left: 40px;

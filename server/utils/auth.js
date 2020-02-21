@@ -23,7 +23,8 @@ async function checkToken(req, res, next) {
   // TODO: 需要正则匹配URL 例如user/123/userinfo
   const needAuthURL = [
     /userInfo/g,
-    /^(\/draw).*?/g,
+    /^(\/draw).*?/g, // 你画我猜
+    /getUserInfo/g, // 用户相关
   ];
   let flag = false;
 
