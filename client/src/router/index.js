@@ -107,6 +107,12 @@ const routes = [
     //   next();
     // },
   },
+  // 诗说FM
+  {
+    path: '/shishuoFM',
+    name: 'shishuoFM',
+    component: () => import(/* webpackChunkName: "about" */ '@/views/CoolFeature/shishuo_fm/HomePage.vue'),
+  },
 ];
 
 

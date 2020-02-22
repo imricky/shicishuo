@@ -72,7 +72,7 @@ export default {
               duration: 1000,
               onClose() {
                 _self.$router.push({
-                  path: '/t',
+                  path: '/',
                 });
               },
             });
