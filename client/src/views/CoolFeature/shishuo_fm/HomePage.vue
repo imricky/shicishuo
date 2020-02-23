@@ -9,14 +9,51 @@
     <div>
 <!--      <TopBar />-->
     </div>
-    <div id="vidtop-content">
-      <div class="vid-info">
-        <h1>诗说FM —— 心灵听见诗</h1>
-        <p>一场诗词的盛会</p>
-        <p>用你的笑容，推荐适合你的诗句和音乐</p>
-        <a href="/500/Use-YouTube-Videos-as-Fullscreen-Web-Page-Backgrounds">Full article</a>
+
+    <div class="header">
+      <div id="title">诗说 <span id="fm-info">FM</span> </div>
+      <h4 id="fm-desc">总有一首诗属于现在的你</h4>
+    </div>
+
+    <div class="main">
+      <div>
+        <a herf="javascript:;"
+           class="photo-btn animated flipInX"
+           id="playBtn"
+           @mouseenter="btnMouseenter()" @mouseleave="btnMouseenter()">点拍照</a>
+        <a id="changeSong" href="javascript:;" class="change-btn animated flipInY">换一换</a>
+      </div>
+      <div>
+<!--        笑容指数和推荐诗词部分-->
+        <div class="smile-and-age">
+          <div class="smile">心悦指数：
+            <span class="circle">
+              <span class="number"> 99</span>
+            </span>
+          </div>
+          <el-divider direction="vertical">123</el-divider>
+          <div class="age">猜测年龄：
+            <span class="circle">
+              <span class="number"> 50</span>
+            </span>
+          </div>
+        </div>
+        <div class="recommend-poem">
+          <h4 style="color: #C0C4CC">这一刻诗词：</h4>
+          <h1>蒌蒿满地芦芽短，正是河豚欲上时</h1>
+          <p class="poem-author">——王维《送孟浩然之广陵》</p>
+        </div>
+      </div>
+<!--      音乐播放器部分-->
+      <div class="music">
+        <audio controls="controls" height="100" width="100">
+          <source src="https://raw.githubusercontent.com/himalayasingh/music-player-1/master/music/2.mp3" type="audio/mp3" />
+          <source src="song.ogg" type="audio/ogg" />
+          <embed height="100" width="100" src="https://raw.githubusercontent.com/himalayasingh/music-player-1/master/music/2.mp3" />
+        </audio>
       </div>
     </div>
+
     <div class="fm-footer">
       <Footer />
     </div>
@@ -37,7 +74,8 @@ export default {
     Footer,
   },
   data() {
-    return {};
+    return {
+    };
   },
   computed: {},
   methods: {
@@ -66,7 +104,8 @@ export default {
       // flip_horiz: true,
       fps: 45,
     });
-    Webcam.attach('.video-foreground');
+    // 把相机挂载到dom上
+    // Webcam.attach('.video-foreground');
     console.log(Webcam);
     const video = document.querySelectorAll('video');
 
@@ -125,6 +164,128 @@ export default {
     pointer-events: none;
   }
 
+  /*网站标题*/
+  .header{
+    position: absolute;
+    top: 10%;
+    left: 5%;
+    width: 33%;
+    height: 20%;
+    /*background: rgba(0, 0, 0, 0.2);*/
+    color: #fff;
+    padding: 1rem;
+    font-family: Avenir, Helvetica, sans-serif;
+    #title{
+      font-size: 30px;
+    }
+    #fm-info{
+      color: #f08080;
+    }
+    #fm-desc{
+      color: #ffa07a;
+      letter-spacing: 15px;
+      position: relative;
+      margin-top: 10px;
+    }
+  }
+
+  /*网站主要的页面*/
+  .main{
+    position: absolute;
+    top: 10%;
+    right: 0%;
+    width: 40%;
+    background: rgba(0, 0, 0, 0.2);
+    color: #fff;
+    padding: 1rem;
+    font-family: Avenir, Helvetica, sans-serif;
+  }
+
+  .photo-btn {
+    display: inline-block;
+    margin: 0 10px 10px 0;
+    padding: 10px 20px;
+    border-radius: 3px;
+    background-color: #fff;
+    color: #4b98a9;
+    font-size: 16px;
+    cursor: pointer;
+    width: 102px;
+    text-align:center;
+  }
+  .photo-btn:hover, .photo-btn:focus {
+    background-color: #73d0da;
+    color: #fff;
+    text-decoration: none;
+  }
+  .change-btn,{
+    display: inline-block;
+    padding: 10px 20px;
+    border: 2px solid #fff;
+    border-radius: 3px;
+    color: #fff;
+    font-size: 16px;
+    width: 102px;
+    text-decoration: none;
+    margin-left:15px;
+    text-align:center;
+  }
+  .change-btn:hover, .change-btn:focus, {
+    border-color: #73d0da;
+    color: #73d0da;
+  }
+
+  /*网站主部分*/
+  .smile-and-age{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: row;
+    font-size: 24px;
+    margin-top: 20px;
+    .smile{
+      margin-right: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .age{
+      margin-left: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .circle{
+      border-radius: 50%;
+      height: 40px;
+      width: 40px;
+      display: inline-block;
+      background: #FF958A;
+      vertical-align: top;
+      text-align: center;
+      .number{
+        display: block;
+        color: #FFFFFF;
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+      }
+    }
+  }
+
+  // 推荐诗词
+  .recommend-poem{
+    margin-top: 20px;
+    .poem-author{
+      color: #C0C4CC;
+      float: right;
+    }
+  }
+
+  .music{
+    margin-top: 70px;
+  }
+
   #vidtop-content {
     top: 0;
     color: #fff;
@@ -141,25 +302,6 @@ export default {
     padding: 1rem;
     font-family: Avenir, Helvetica, sans-serif;
   }
-
-  .vid-info h1 {
-    font-size: 2rem;
-    font-weight: 700;
-    margin-top: 0;
-    line-height: 1.2;
-  }
-
-  .vid-info a {
-    display: block;
-    color: #fff;
-    text-decoration: none;
-    background: rgba(0, 0, 0, 0.5);
-    transition: .6s background;
-    border-bottom: none;
-    margin: 1rem auto;
-    text-align: center;
-  }
-
   .fm-footer{
     background-color: rgba(0, 0, 0, 0.1);
     position: fixed;
