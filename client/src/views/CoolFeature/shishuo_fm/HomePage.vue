@@ -46,11 +46,12 @@
       </div>
 <!--      音乐播放器部分-->
       <div class="music">
-        <audio controls="controls" height="100" width="100">
-          <source src="https://raw.githubusercontent.com/himalayasingh/music-player-1/master/music/2.mp3" type="audio/mp3" />
-          <source src="song.ogg" type="audio/ogg" />
-          <embed height="100" width="100" src="https://raw.githubusercontent.com/himalayasingh/music-player-1/master/music/2.mp3" />
-        </audio>
+<!--        <audio controls="controls" height="100" width="100">-->
+<!--          <source src="https://raw.githubusercontent.com/himalayasingh/music-player-1/master/music/2.mp3" type="audio/mp3" />-->
+<!--          <source src="song.ogg" type="audio/ogg" />-->
+<!--          <embed height="100" width="100" src="https://raw.githubusercontent.com/himalayasingh/music-player-1/master/music/2.mp3" />-->
+<!--        </audio>-->
+        <Player />
       </div>
     </div>
 
@@ -67,11 +68,13 @@ import screenfull from 'screenfull';
 // import TopBar from '@/components/TopBar.vue';
 import Footer from '@/components/Footer.vue';
 import Webcam from '../../../common/js/webcam';
+import Player from '@/components/musicPlayer.vue';
 export default {
   name: 'shishuoFMHomePage',
   components: {
     // TopBar,
     Footer,
+    Player,
   },
   data() {
     return {
@@ -194,7 +197,7 @@ export default {
     position: absolute;
     top: 10%;
     right: 0%;
-    width: 40%;
+    width: 35%;
     background: rgba(0, 0, 0, 0.2);
     color: #fff;
     padding: 1rem;
@@ -283,7 +286,7 @@ export default {
   }
 
   .music{
-    margin-top: 70px;
+    margin-top: 150px;
   }
 
   #vidtop-content {
