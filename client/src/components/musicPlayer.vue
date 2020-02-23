@@ -4,22 +4,22 @@
   <div id="app-cover">
     <div id="player">
 <!--      向上弹出的部分-->
-      <div id="player-track">
-        <div id="album-name"></div>
-        <div id="track-name"></div>
-        <div id="track-time">
-          <div id="current-time"></div>
-          <div id="track-length"></div>
+      <div id="player-track" ref="playerTrack" :class="[isPlay ? 'active' : 'test']">
+        <div id="album-name" ref="albumName" v-text="albumNameText"></div>
+        <div id="track-name" ref="trackName" v-text="trackNameText"></div>
+        <div id="track-time" ref="trackTime" :class="[trackTimeStatus?'active':'']">
+          <div id="current-time" ref="tProgress" v-text="tProgressText"></div>
+          <div id="track-length" ref="tTime" v-text="tTimeText"></div>
         </div>
-        <div id="s-area">
-          <div id="ins-time"></div>
-          <div id="s-hover"></div>
-          <div id="seek-bar"></div>
+        <div id="s-area" ref="sArea">
+          <div id="ins-time" ref="insTime"></div>
+          <div id="s-hover" ref="sHover"></div>
+          <div id="seek-bar" ref="seekBar" :style="{width: seekBarWidth}"></div>
         </div>
       </div>
 <!--      一开始展示的部分-->
       <div id="player-content">
-        <div id="album-art">
+        <div id="album-art" ref="albumArt" :class="[isPlay ? 'active' : '', isBuffering? 'buffering':'']">
           <img src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg" class="active" id="_1">
           <img src="https://raw.githubusercontent.com/himalayasingh/music-player-1/master/img/_2.jpg" id="_2">
           <img src="https://raw.githubusercontent.com/himalayasingh/music-player-1/master/img/_3.jpg" id="_3">
@@ -29,17 +29,18 @@
         </div>
         <div id="player-controls">
           <div class="control">
-            <div class="button" id="play-previous">
+            <div class="button" id="play-previous" ref="playPreviousTrackButton">
               <i class="el-icon-d-arrow-left"></i>
             </div>
           </div>
           <div class="control">
-            <div class="button" id="play-pause-button">
-              <i class="el-icon-video-pause"></i>
+            <div class="button" id="play-pause-button" ref="playPauseButton" @click="playPause">
+<!--              <i class="el-icon-video-pause"></i>-->
+              <i :class="[isPlay ? 'el-icon-video-pause' : 'el-icon-video-play']"></i>
             </div>
           </div>
           <div class="control">
-            <div class="button" id="play-next">
+            <div class="button" id="play-next" ref="playNextTrackButton">
               <i class="el-icon-d-arrow-right"></i>
             </div>
           </div>
@@ -53,17 +54,285 @@
 export default {
   name: 'musicPlayer',
   data() {
-    return {};
-  },
-  computed: {},
-  methods: {
+    return {
+      audio: new Audio(),
+      seekT: '',
+      seekLoc: '',
+      seekBarPos: '',
+      cM: '',
+      ctMinutes: '',
+      ctSeconds: '',
+      curMinutes: '',
+      curSeconds: '',
+      durMinutes: '',
+      durSeconds: '',
+      playProgress: '',
+      bTime: '',
+      nTime: 0,
+      buffInterval: null,
+      tFlag: false,
+      albums: ['Dawn', 'Me & You', 'Electro Boy', 'Home', 'Proxy (Original Mix)'],
+      trackNames: ['Skylike - Dawn', 'Alex Skrindo - Me & You', 'Kaaze - Electro Boy', 'Jordan Schor - Home', 'Martin Garrix - Proxy'],
+      albumArtworks: ['_1', '_2', '_3', '_4', '_5'],
+      // eslint-disable-next-line max-len
+      trackUrl: ['https://raw.githubusercontent.com/himalayasingh/music-player-1/master/music/2.mp3', 'https://raw.githubusercontent.com/himalayasingh/music-player-1/master/music/1.mp3', 'https://raw.githubusercontent.com/himalayasingh/music-player-1/master/music/3.mp3', 'https://raw.githubusercontent.com/himalayasingh/music-player-1/master/music/4.mp3', 'https://raw.githubusercontent.com/himalayasingh/music-player-1/master/music/5.mp3'],
+      currIndex: -1,
 
+      // 自己加的状态 切换active
+      isPlay: false, // 是否正在播放
+      isBuffering: false, // 是否在缓冲
+      trackTimeStatus: false,
+      tProgressText: '',
+      tTimeText: '',
+      seekBarWidth: 0,
+      albumNameText: '',
+      trackNameText: '',
+    };
+  },
+  computed: {
+    playerTrack() {
+      return this.$refs.playerTrack;
+    },
+    albumName() {
+      return this.$refs.albumName;
+    },
+    trackName() {
+      return this.$refs.trackName;
+    },
+    albumArt() {
+      return this.$refs.albumArt;
+    },
+    sArea() {
+      return this.$refs.sArea;
+    },
+    seekBar() {
+      return this.$refs.seekBar;
+    },
+    trackTime() {
+      return this.$refs.trackTime;
+    },
+    insTime() {
+      return this.$refs.insTime;
+    },
+    sHover() {
+      return this.$refs.sHover;
+    },
+    playPauseButton() {
+      return this.$refs.playPauseButton;
+    },
+    i() {
+      return this.$refs.playPauseButton.find('i');
+    },
+    tProgress() {
+      return this.$refs.tProgress;
+    },
+    tTime() {
+      return this.$refs.tTime;
+    },
+    playPreviousTrackButton() {
+      return this.$refs.playPreviousTrackButton;
+    },
+    playNextTrackButton() {
+      return this.$refs.playNextTrackButton;
+    },
+  },
+  methods: {
+    initPlayer() {
+      // const audio = new Audio();
+      console.log('init');
+
+      this.selectTrack(0);
+
+      this.audio.loop = false;
+
+      // this.playPauseButton.on('click', this.playPause());
+
+      this.sArea.mousemove((event) => { this.showHover(event); });
+
+      this.sArea.mouseout(this.hideHover());
+
+      this.sArea.on('click', this.playFromClickedPos());
+
+      // $(audio).on('timeupdate', updateCurrTime);
+      this.audio.on('timeupdate', this.updateCurrTime());
+
+      this.playPreviousTrackButton.on('click', () => { this.selectTrack(-1); });
+      this.playNextTrackButton.on('click', () => { this.selectTrack(1); });
+    },
+    selectTrack(flag) {
+      if (flag === 0 || flag === 1) ++this.currIndex;
+      else --this.currIndex;
+
+      if ((this.currIndex > -1) && (this.currIndex < this.albumArtworks.length)) {
+        if (flag === 0) this.isPlay = false;
+        else {
+          this.isBuffering = false;
+          this.isPlay = false;
+          // this.albumArt.removeClass('buffering');
+          // this.i.attr('class', 'el-icon-video-pause');
+        }
+
+        // this.seekBar.width(0);
+        this.seekBarWidth = 0;
+        // this.trackTime.removeClass('active');
+        this.trackTimeStatus = false;
+
+        // this.tProgress.text('00:00');
+        this.tProgressText = '00:00';
+        // this.tTime.text('00:00');
+        this.tTimeText = '00:00';
+
+        const currAlbum = this.albums[this.currIndex];
+        const currTrackName = this.trackNames[this.currIndex];
+        const currArtwork = this.albumArtworks[this.currIndex];
+
+        this.audio.src = this.trackUrl[this.currIndex];
+
+        this.nTime = 0;
+        this.bTime = new Date();
+        this.bTime = this.bTime.getTime();
+
+        if (flag !== 0) {
+          this.audio.play();
+          // this.playerTrack.addClass('active');
+          // this.albumArt.addClass('active');
+
+          this.isPlay = true;
+
+
+          clearInterval(this.buffInterval);
+          this.checkBuffering();
+        }
+
+        // this.albumName.text(currAlbum);
+        // this.trackName.text(currTrackName);
+        // this.albumArt.find('img.active').removeClass('active'); // 这个暂时不处理
+        // document.querySelector(`#${currArtwork}`).addClass('active');
+      } else if (flag === 0 || flag === 1) --this.currIndex;
+      else ++this.currIndex;
+    },
+    checkBuffering() {
+      const _self = this;
+      clearInterval(this.buffInterval);
+      _self.buffInterval = setInterval(() => {
+        if ((_self.nTime === 0) || (_self.bTime - _self.nTime) > 1000) _self.isBuffering = true;
+        else _self.isBuffering = false;
+
+        _self.bTime = new Date();
+        _self.bTime = _self.bTime.getTime();
+      }, 100);
+    },
+    playPause() {
+      const _self = this;
+      console.log(_self.audio.paused);
+      setTimeout(() => {
+        if (_self.audio.paused) {
+          // _self.playerTrack.addClass('active');
+          _self.isPlay = true;
+          // _self.albumArt.addClass('active');
+
+          _self.checkBuffering();
+          // _self.i.attr('class', 'el-icon-video-pause');
+          _self.audio.play();
+        } else {
+          // _self.playerTrack.removeClass('active');
+          // _self.albumArt.removeClass('active');
+          // clearInterval(_self.buffInterval);
+          _self.isPlay = false;
+          _self.isBuffering = false;
+          // _self.albumArt.removeClass('buffering');
+          // _self.i.attr('class', 'el-icon-video-play');
+          _self.audio.pause();
+        }
+      }, 300);
+    },
+    showHover(event) {
+      this.seekBarPos = this.sArea.offset();
+      this.seekT = event.clientX - this.seekBarPos.left;
+      this.seekLoc = this.audio.duration * (this.seekT / this.sArea.outerWidth());
+
+      this.sHover.width(this.seekT);
+
+      this.cM = this.seekLoc / 60;
+
+      this.ctMinutes = Math.floor(this.cM);
+      this.ctSeconds = Math.floor(this.seekLoc - this.ctMinutes * 60);
+
+      if ((this.ctMinutes < 0) || (this.ctSeconds < 0)) return;
+
+      if ((this.ctMinutes < 0) || (this.ctSeconds < 0)) return;
+
+      if (this.ctMinutes < 10) this.ctMinutes = `0${this.ctMinutes}`;
+      if (this.ctSeconds < 10) this.ctSeconds = `0${this.ctSeconds}`;
+
+      // eslint-disable-next-line no-restricted-globals
+      if (isNaN(this.ctMinutes) || isNaN(this.ctSeconds)) this.insTime.text('--:--');
+      else this.insTime.text(`${this.ctMinutes}:${this.ctSeconds}`);
+
+      this.insTime.css({ left: this.seekT, 'margin-left': '-21px' }).fadeIn(0);
+    },
+    hideHover() {
+      this.sHover.width(0);
+      this.insTime.text('00:00').css({ left: '0px', 'margin-left': '0px' }).fadeOut(0);
+    },
+    playFromClickedPos() {
+      this.audio.currentTime = this.seekLoc;
+      this.seekBar.width(this.seekT);
+      this.hideHover();
+    },
+    updateCurrTime() {
+      this.nTime = new Date();
+      this.nTime = this.nTime.getTime();
+
+      if (!this.tFlag) {
+        this.tFlag = true;
+        this.trackTime.addClass('active');
+      }
+
+      this.curMinutes = Math.floor(this.audio.currentTime / 60);
+      this.curSeconds = Math.floor(this.audio.currentTime - this.curMinutes * 60);
+
+      this.durMinutes = Math.floor(this.audio.duration / 60);
+      this.durSeconds = Math.floor(this.audio.duration - this.durMinutes * 60);
+
+      this.playProgress = (this.audio.currentTime / this.audio.duration) * 100;
+
+      if (this.curMinutes < 10) this.curMinutes = `0${this.curMinutes}`;
+      if (this.curSeconds < 10) this.curSeconds = `0${this.curSeconds}`;
+
+      if (this.durMinutes < 10) this.durMinutes = `0${this.durMinutes}`;
+      if (this.durSeconds < 10) this.durSeconds = `0${this.durSeconds}`;
+
+      // eslint-disable-next-line no-restricted-globals
+      if (isNaN(this.curMinutes) || isNaN(this.curSeconds)) this.tProgress.text('00:00');
+      else this.tProgress.text(`${this.curMinutes}:${this.curSeconds}`);
+
+      // eslint-disable-next-line no-restricted-globals
+      if (isNaN(this.durMinutes) || isNaN(this.durSeconds)) this.tTime.text('00:00');
+      else this.tTime.text(`${this.durMinutes}:${this.durSeconds}`);
+
+      // eslint-disable-next-line no-restricted-globals
+      if (isNaN(this.curMinutes) || isNaN(this.curSeconds) || isNaN(this.durMinutes) || isNaN(this.durSeconds)) this.trackTime.removeClass('active');
+      else this.trackTime.addClass('active');
+
+
+      this.seekBar.width(`${this.playProgress}%`);
+
+      if (this.playProgress === 100) {
+        this.i.attr('class', 'el-icon-video-play');
+        this.seekBar.width(0);
+        this.tProgress.text('00:00');
+        this.albumArt.removeClass('buffering').removeClass('active');
+        clearInterval(this.buffInterval);
+      }
+    },
   },
   created() {
 
   },
   mounted() {
-
+    // 初始化音乐播放器
+    this.initPlayer();
   },
 };
 </script>
