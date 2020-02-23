@@ -3,6 +3,7 @@
   <!--  design by: https://codepen.io/himalayasingh/pen/QZKqOX-->
   <div id="app-cover">
     <div id="player">
+<!--      向上弹出的部分-->
       <div id="player-track">
         <div id="album-name"></div>
         <div id="track-name"></div>
@@ -16,9 +17,10 @@
           <div id="seek-bar"></div>
         </div>
       </div>
+<!--      一开始展示的部分-->
       <div id="player-content">
         <div id="album-art">
-          <img src="https://raw.githubusercontent.com/himalayasingh/music-player-1/master/img/_1.jpg" class="active" id="_1">
+          <img src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg" class="active" id="_1">
           <img src="https://raw.githubusercontent.com/himalayasingh/music-player-1/master/img/_2.jpg" id="_2">
           <img src="https://raw.githubusercontent.com/himalayasingh/music-player-1/master/img/_3.jpg" id="_3">
           <img src="https://raw.githubusercontent.com/himalayasingh/music-player-1/master/img/_4.jpg" id="_4">
@@ -28,17 +30,17 @@
         <div id="player-controls">
           <div class="control">
             <div class="button" id="play-previous">
-              <i class="fas fa-backward"></i>
+              <i class="el-icon-d-arrow-left"></i>
             </div>
           </div>
           <div class="control">
             <div class="button" id="play-pause-button">
-              <i class="fas fa-play"></i>
+              <i class="el-icon-video-pause"></i>
             </div>
           </div>
           <div class="control">
             <div class="button" id="play-next">
-              <i class="fas fa-forward"></i>
+              <i class="el-icon-d-arrow-right"></i>
             </div>
           </div>
         </div>
@@ -54,7 +56,9 @@ export default {
     return {};
   },
   computed: {},
-  methods: {},
+  methods: {
+
+  },
   created() {
 
   },
@@ -382,6 +386,10 @@ export default {
     background-color: #fff;
     border-radius: 6px;
     cursor: pointer;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   .button i
