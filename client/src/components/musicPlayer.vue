@@ -253,19 +253,13 @@ export default {
       if (isNaN(this.curMinutes) || isNaN(this.curSeconds) || isNaN(this.durMinutes) || isNaN(this.durSeconds)) this.trackTimeStatus = false;
       else this.trackTimeStatus = true;
 
-
-      // this.seekBar.width(`${this.playProgress}%`);
       this.seekBarWidth = `${this.playProgress}%`;
 
-      if (this.playProgress === 100) {
-        // this.i.attr('class', 'el-icon-video-play');
-        this.isPlay = false;
-        // this.seekBar.width(0);
-        this.seekBarWidth = 0;
 
-        // this.tProgress.text('00:00');
+      if (this.playProgress === 100) {
+        this.isPlay = false;
+        this.seekBarWidth = 0;
         this.tProgressText = '00:00';
-        // this.albumArt.removeClass('buffering').removeClass('active');
         this.isBuffering = false;
         clearInterval(this.buffInterval);
       }
