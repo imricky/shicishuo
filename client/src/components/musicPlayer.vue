@@ -197,12 +197,25 @@ export default {
       }, 300);
     },
     showHover(event) {
-      this.seekBarPos = this.sArea.getBoundingClientRect().left + window.pageXOffset - document.documentElement.clientLeft;
+      // console.log('==================开始==========================================================================================');
+      // console.log(`this.sArea.getBoundingClientRect().left:${this.sArea.getBoundingClientRect().left}`);
+      // console.log(`this.sArea.getBoundingClientRect().right:${this.sArea.getBoundingClientRect().right}`);
+      // console.log(`window.pageXOffset长度${window.pageXOffset}`);
+      // console.log(`document.documentElement.clientLeft长度${this.sArea.clientLeft}`);
+      // console.log(`this.seekBarPos长度${this.seekBarPos}`);
+      // console.log(`clientWidth长度${this.sArea.clientWidth}`);
+      // console.log(`offsetLeft长度${this.sArea.offsetLeft}`);
+      // console.log(`eventevent.clientX偏移量${event.clientX}`);
+      // console.log(`this.seekT长度${this.seekT}`);
+      // console.log(`this.audioPlayer.duration歌曲长度${this.audioPlayer.duration}`);
+      // console.log(`this.seekLoc所占比例${this.seekLoc}`);
+      // console.log('==================结束==========================================================================================');
 
-      this.seekT = event.clientX - this.seekBarPos;
+      this.seekBarPos = this.sArea.clientWidth; // 当前进度条的总宽度
+
+      this.seekT = event.clientX - this.sArea.getBoundingClientRect().left;
 
       this.seekLoc = this.audioPlayer.duration * (this.seekT / this.seekBarPos);
-
 
       this.sHoverWidth = this.seekT;
 
@@ -315,10 +328,10 @@ export default {
   #app-cover
   {
     // 正式环境需要注释这四行
-    position: absolute;
-    top: 50%;
-    right: 0;
-    left: 0;
+    /*position: absolute;*/
+    /*top: 50%;*/
+    /*right: 0;*/
+    /*left: 0;*/
     /*注释结束*/
     width: 430px;
     height: 100px;
@@ -366,7 +379,7 @@ export default {
     top: 0;
     right: 15px;
     left: 15px;
-    padding: 13px 22px 10px 184px;
+    padding: 13px 22px 12px 184px;
     background-color: #fff7f7;
     border-radius: 15px 15px 0 0;
     transition: 0.3s ease top;
