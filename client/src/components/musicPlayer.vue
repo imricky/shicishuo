@@ -12,22 +12,21 @@
           <div id="track-length" >{{tTimeText}}</div>
         </div>
         <div id="s-area"
+             ref="sArea"
              @mousemove="showHover($event)"
              @mouseout="hideHover"
              @click="playFromClickedPos">
-          <div id="ins-time" >{{insTimeText}}</div>
-          <div id="s-hover" :style="{width: seekBarWidth}"></div>
-          <div id="seek-bar"  :style="{width: sHoverWidth}"></div>
+          <div id="ins-time" ref="insTime" :style="hoverStyle">{{insTimeText}}</div>
+          <div id="s-hover" :style="{width: sHoverWidth + 'px'}"></div>
+          <div id="seek-bar"  :style="{width: seekBarWidth}"></div>
         </div>
       </div>
 <!--      一开始展示的部分-->
       <div id="player-content">
         <div id="album-art" ref="albumArt" :class="[isPlay ? 'active' : '', isBuffering? 'buffering':'']">
-          <img src="https://raw.githubusercontent.com/himalayasingh/music-player-1/master/img/_1.jpg" class="active" id="_1">
-          <img src="https://raw.githubusercontent.com/himalayasingh/music-player-1/master/img/_2.jpg" id="_2">
-          <img src="https://raw.githubusercontent.com/himalayasingh/music-player-1/master/img/_3.jpg" id="_3">
-          <img src="https://raw.githubusercontent.com/himalayasingh/music-player-1/master/img/_4.jpg" id="_4">
-          <img src="https://raw.githubusercontent.com/himalayasingh/music-player-1/master/img/_5.jpg" id="_5">
+          <img src="../common/mp3/1.jpeg" class="active" id="_1">
+          <img src="../common/mp3/2.jpeg" id="_2">
+          <img src="../common/mp3/3.jpeg" id="_3">
           <div id="buffer-box">Buffering ...</div>
         </div>
         <audio
@@ -65,7 +64,7 @@ export default {
   data() {
     return {
       src: '', // 播放器的src
-      audio: new Audio(),
+      // audio: new Audio(), // 直接建立一个audio标签，不用new 对象
       seekT: '',
       seekLoc: '',
       seekBarPos: '',
@@ -81,24 +80,30 @@ export default {
       nTime: 0,
       buffInterval: null,
       tFlag: false,
-      albums: ['Dawn', 'Me & You', 'Electro Boy', 'Home', 'Proxy (Original Mix)'],
-      trackNames: ['Skylike - Dawn', 'Alex Skrindo - Me & You', 'Kaaze - Electro Boy', 'Jordan Schor - Home', 'Martin Garrix - Proxy'],
-      albumArtworks: ['_1', '_2', '_3', '_4', '_5'],
+      albums: ['People Will Say', 'The Circus Day Parade', 'Wedding March'],
+      trackNames: ['101 Strings', 'Percy Faith', 'Kleiber,Public Domain'],
+      albumArtworks: ['_1', '_2', '_3'],
       // eslint-disable-next-line max-len
-      trackUrl: ['https://raw.githubusercontent.com/himalayasingh/music-player-1/master/music/2.mp3', 'https://raw.githubusercontent.com/himalayasingh/music-player-1/master/music/1.mp3', 'https://raw.githubusercontent.com/himalayasingh/music-player-1/master/music/3.mp3', 'https://raw.githubusercontent.com/himalayasingh/music-player-1/master/music/4.mp3', 'https://raw.githubusercontent.com/himalayasingh/music-player-1/master/music/5.mp3'],
+      trackUrl: ['https://music-1251732387.cos.ap-shanghai.myqcloud.com/mp3/1.mp3', 'https://music-1251732387.cos.ap-shanghai.myqcloud.com/mp3/2.mp3', 'https://music-1251732387.cos.ap-shanghai.myqcloud.com/mp3/3.mp3'],
       currIndex: -1,
 
       // 自己加的状态 切换active
       isPlay: false, // 是否正在播放
       isBuffering: false, // 是否在缓冲
       trackTimeStatus: false,
-      tProgressText: '00:00',
-      tTimeText: '00:00',
-      seekBarWidth: 0,
+      tProgressText: '00:00', // 总时间
+      tTimeText: '00:00', // 当前时间
+      seekBarWidth: 0, // 进度条
       albumNameText: '',
       trackNameText: '',
       insTimeText: '',
-      sHoverWidth: 0,
+      sHoverWidth: 0, // 鼠标悬浮上去的条
+
+      // hover的动效的style
+      hoverLeft: 0,
+      hoverMarginLeft: 0,
+      hoverOpacity: '0',
+      hoverDisplay: 'none',
     };
   },
   computed: {
@@ -106,11 +111,22 @@ export default {
     audioPlayer() {
       return this.$refs.audioElement;
     },
+    sArea() {
+      return this.$refs.sArea;
+    },
+    insTime() {
+      return this.$refs.insTime;
+    },
+    hoverStyle() {
+      return {
+        left: `${this.hoverLeft}px`,
+        marginLeft: `${this.hoverMarginLeft}px`,
+        opacity: this.hoverOpacity,
+        display: this.hoverDisplay,
+      };
+    },
   },
   watch: {
-    // audio() {
-    //   timeupdate
-    // },
   },
   methods: {
     initPlayer() {
@@ -164,7 +180,6 @@ export default {
     },
     playPause() {
       const _self = this;
-      console.log(_self.audio.paused);
       setTimeout(() => {
         if (_self.audioPlayer.paused) {
           _self.isPlay = true;
@@ -182,9 +197,12 @@ export default {
       }, 300);
     },
     showHover(event) {
-      this.seekBarPos = this.sArea.offset();
-      this.seekT = event.clientX - this.seekBarPos.left;
-      this.seekLoc = this.audio.duration * (this.seekT / this.sArea.outerWidth());
+      this.seekBarPos = this.sArea.getBoundingClientRect().left + window.pageXOffset - document.documentElement.clientLeft;
+
+      this.seekT = event.clientX - this.seekBarPos;
+
+      this.seekLoc = this.audioPlayer.duration * (this.seekT / this.seekBarPos);
+
 
       this.sHoverWidth = this.seekT;
 
@@ -204,16 +222,22 @@ export default {
       if (isNaN(this.ctMinutes) || isNaN(this.ctSeconds)) this.insTimeText = '--:--';
       else this.insTimeText = `${this.ctMinutes}:${this.ctSeconds}`;
 
-      this.insTime.css({ left: this.seekT, 'margin-left': '-21px' }).fadeIn(0);
+      // this.insTime.css({ left: this.seekT, 'margin-left': '-21px' }).fadeIn(0);
+      this.hoverLeft = this.seekT;
+      this.hoverMarginLeft = -21;
+      this.hoverOpacity = '1';
+      this.hoverDisplay = 'block';
     },
     hideHover() {
-      // this.sHover.width(0);
-
-      this.insTime.text('00:00').css({ left: '0px', 'margin-left': '0px' }).fadeOut(0);
+      this.sHoverWidth = 0;
+      this.hoverLeft = 0;
+      this.hoverMarginLeft = 0;
+      this.hoverOpacity = '0';
+      this.hoverDisplay = 'none';
     },
     playFromClickedPos() {
-      this.audio.currentTime = this.seekLoc;
-      // this.seekBar.width(this.seekT);
+      console.log('触发点击事件');
+      this.audioPlayer.currentTime = this.seekLoc;
       this.seekBarWidth = this.seekT;
       this.hideHover();
     },
