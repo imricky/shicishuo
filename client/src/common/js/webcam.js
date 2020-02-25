@@ -866,7 +866,7 @@ const Webcam = {
       context.drawImage(this.video, 0, 0, this.params.dest_width, this.params.dest_height);
 
       // fire callback right away
-      func();
+      func.call(this);
     } else if (this.iOS) {
       const div = document.getElementById(`${this.container.id}-ios_div`);
       const img = document.getElementById(`${this.container.id}-ios_img`);
