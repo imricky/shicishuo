@@ -113,6 +113,11 @@ const routes = [
     name: 'shishuoFM',
     component: () => import(/* webpackChunkName: "about" */ '@/views/CoolFeature/shishuo_fm/HomePage.vue'),
   },
+  {
+    path: '/m',
+    name: 'musicPlayer',
+    component: () => import(/* webpackChunkName: "about" */ '@/components/musicPlayer.vue'),
+  },
 ];
 
 
