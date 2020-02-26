@@ -82,7 +82,6 @@ export default {
       nTime: 0,
       buffInterval: null,
       tFlag: false,
-      albums: ['People Will Say', 'The Circus Day Parade', 'Wedding March'],
       trackNames: ['101 Strings', 'Percy Faith', 'Kleiber,Public Domain'],
       albumArtworks: ['_1', '_2', '_3'],
       // eslint-disable-next-line max-len
@@ -111,6 +110,7 @@ export default {
       hoverMarginLeft: 0,
       hoverOpacity: '0',
       hoverDisplay: 'none',
+      songInfoNew: this.songInfo, // 保存传过来的props
     };
   },
   computed: {
@@ -138,6 +138,15 @@ export default {
   },
   watch: {
     songInfo: {
+      deep: true,
+      handler(nv, ov) {
+        this.src = nv.src;
+        this.songTitle = nv.title;
+        this.songAuthor = nv.author;
+        this.songPic = nv.pic;
+      },
+    },
+    songInfoNew: {
       deep: true,
       handler(nv, ov) {
         this.src = nv.src;
@@ -188,7 +197,18 @@ export default {
       const _self = this;
       Http.getOneSongById(songId).then((res) => {
         if (res.data.code === 200) {
-          _self.songInfo = res.data.songInfo;
+          _self.songInfoNew = res.data.songInfo;
+
+          // 播放歌曲
+          _self.nTime = 0;
+          _self.bTime = new Date();
+          _self.bTime = _self.bTime.getTime();
+          _self.isPlay = true;
+          _self.isBuffering = false;
+          _self.audioPlayer.play();
+          clearInterval(_self.buffInterval);
+          _self.checkBuffering();
+          // 操作结束
           // 去更新vuex里的currentPlaySongId
           _self.updateCurrentPlaySongId(songId);
         } else {
@@ -211,7 +231,6 @@ export default {
           this.isPlay = false;
         }
 
-        const currAlbum = this.albums[this.currIndex];
         const currTrackName = this.trackNames[this.currIndex];
         const currArtwork = this.albumArtworks[this.currIndex];
 
@@ -228,7 +247,6 @@ export default {
           this.checkBuffering();
         }
 
-        this.songTitle = currAlbum;
         this.songAuthor = currTrackName;
         // this.albumArt.find('img.active').removeClass('active'); // 这个暂时不处理
         // document.querySelector(`#${currArtwork}`).addClass('active');
