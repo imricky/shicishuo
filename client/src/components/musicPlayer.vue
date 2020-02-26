@@ -5,7 +5,9 @@
     <div id="player">
 <!--      向上弹出的部分-->
       <div id="player-track" :class="[isPlay ? 'active' : '']">
-        <div id="album-name" >{{songTitle}}</div>
+        <el-tooltip class="item" effect="light" :content="songTitle" placement="left">
+          <div id="album-name" >{{songShowTitle}}</div>
+        </el-tooltip>
         <div id="track-name" >{{songAuthor}}</div>
         <div id="track-time"  :class="[trackTimeStatus ? 'active' : '']">
           <div id="current-time" >{{tProgressText}}</div>
@@ -82,12 +84,8 @@ export default {
       nTime: 0,
       buffInterval: null,
       tFlag: false,
-      trackNames: ['101 Strings', 'Percy Faith', 'Kleiber,Public Domain'],
-      albumArtworks: ['_1', '_2', '_3'],
       // eslint-disable-next-line max-len
-      trackUrl: ['https://music-1251732387.cos.ap-shanghai.myqcloud.com/mp3/1.mp3', 'https://music-1251732387.cos.ap-shanghai.myqcloud.com/mp3/2.mp3', 'https://music-1251732387.cos.ap-shanghai.myqcloud.com/mp3/3.mp3'],
-      currIndex: -1,
-
+      // trackUrl: ['https://music-1251732387.cos.ap-shanghai.myqcloud.com/mp3/1.mp3', 'https://music-1251732387.cos.ap-shanghai.myqcloud.com/mp3/2.mp3', 'https://music-1251732387.cos.ap-shanghai.myqcloud.com/mp3/3.mp3'],
 
       // 自己加的状态 切换active
       isPlay: false, // 是否正在播放
@@ -101,16 +99,17 @@ export default {
 
       // 歌曲状态
       src: './beyond.mp3', // 播放器的srcUrl
-      songTitle: '海阔天空', // 歌曲名字
+      // songTitle: '光辉岁月外网开发环境12312光辉岁月哈哈收到货后', // 歌曲名字太长
+      songTitle: '光辉岁月', // 歌曲名字（真实的歌曲名字）
       songAuthor: 'Beyond', // 歌曲演唱者
       songPic: './beyond.jpg', // 初始化为beyond 光辉岁月
+      songInfoNew: this.songInfo, // 保存传过来的props
 
       // hover的动效的style
       hoverLeft: 0,
       hoverMarginLeft: 0,
       hoverOpacity: '0',
       hoverDisplay: 'none',
-      songInfoNew: this.songInfo, // 保存传过来的props
     };
   },
   computed: {
@@ -131,6 +130,13 @@ export default {
         opacity: this.hoverOpacity,
         display: this.hoverDisplay,
       };
+    },
+    // 用来展示的Title
+    songShowTitle() {
+      if (this.songTitle.length > 9) {
+        return `${this.songTitle.substring(0, 8)}...`;
+      }
+      return this.songTitle;
     },
     ...mapGetters([
       'currentSongIndex', // 当前播放的音乐位于列表的位置
@@ -153,6 +159,7 @@ export default {
         this.songTitle = nv.title;
         this.songAuthor = nv.author;
         this.songPic = nv.pic;
+        this.audioPlayer.play();
       },
     },
   },
@@ -220,39 +227,6 @@ export default {
       });
     },
 
-    selectTrack(flag) {
-      if (flag === 0 || flag === 1) ++this.currIndex;
-      else --this.currIndex;
-
-      if ((this.currIndex > -1) && (this.currIndex < this.albumArtworks.length)) {
-        if (flag === 0) this.isPlay = false;
-        else {
-          this.isBuffering = false;
-          this.isPlay = false;
-        }
-
-        const currTrackName = this.trackNames[this.currIndex];
-        const currArtwork = this.albumArtworks[this.currIndex];
-
-        this.src = this.trackUrl[this.currIndex];
-
-        this.nTime = 0;
-        this.bTime = new Date();
-        this.bTime = this.bTime.getTime();
-
-        if (flag !== 0) {
-          this.isPlay = true;
-          this.audioPlayer.play();
-          clearInterval(this.buffInterval);
-          this.checkBuffering();
-        }
-
-        this.songAuthor = currTrackName;
-        // this.albumArt.find('img.active').removeClass('active'); // 这个暂时不处理
-        // document.querySelector(`#${currArtwork}`).addClass('active');
-      } else if (flag === 0 || flag === 1) --this.currIndex;
-      else ++this.currIndex;
-    },
     checkBuffering() {
       const _self = this;
       clearInterval(this.buffInterval);
@@ -470,12 +444,14 @@ export default {
     border-radius: 15px 15px 0 0;
     transition: 0.3s ease top;
     z-index: 1;
+    /*opacity: 0;*/
     top: -92px;
   }
 
   #player-track.active
   {
     top: -92px;
+    /*opacity: 1;*/
   }
 
   #album-name
