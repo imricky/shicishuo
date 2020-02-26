@@ -5,8 +5,8 @@
     <div id="player">
 <!--      向上弹出的部分-->
       <div id="player-track" :class="[isPlay ? 'active' : '']">
-        <div id="album-name" >{{albumNameText}}</div>
-        <div id="track-name" >{{trackNameText}}</div>
+        <div id="album-name" >{{songTitle}}</div>
+        <div id="track-name" >{{songAuthor}}</div>
         <div id="track-time"  :class="[trackTimeStatus ? 'active' : '']">
           <div id="current-time" >{{tProgressText}}</div>
           <div id="track-length" >{{tTimeText}}</div>
@@ -24,9 +24,7 @@
 <!--      一开始展示的部分-->
       <div id="player-content">
         <div id="album-art" ref="albumArt" :class="[isPlay ? 'active' : '', isBuffering? 'buffering':'']">
-          <img src="../common/mp3/1.jpeg" class="active" id="_1">
-          <img src="../common/mp3/2.jpeg" id="_2">
-          <img src="../common/mp3/3.jpeg" id="_3">
+          <img :src="songPic" class="active" id="_1">
           <div id="buffer-box">Buffering ...</div>
         </div>
         <audio
@@ -37,7 +35,7 @@
         </audio>
         <div id="player-controls">
           <div class="control">
-            <div class="button" id="play-previous" @click="selectTrack(-1)">
+            <div class="button" id="play-previous" @click="playPre">
               <i class="el-icon-d-arrow-left"></i>
             </div>
           </div>
@@ -48,7 +46,7 @@
             </div>
           </div>
           <div class="control">
-            <div class="button" id="play-next" @click="selectTrack(1)">
+            <div class="button" id="play-next" @click="playNext">
               <i class="el-icon-d-arrow-right"></i>
             </div>
           </div>
@@ -59,11 +57,15 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex';
+import Http from '@/api/http';
+
+
 export default {
   name: 'musicPlayer',
+  props: ['songInfo'],
   data() {
     return {
-      src: '', // 播放器的src
       // audio: new Audio(), // 直接建立一个audio标签，不用new 对象
       seekT: '',
       seekLoc: '',
@@ -87,6 +89,7 @@ export default {
       trackUrl: ['https://music-1251732387.cos.ap-shanghai.myqcloud.com/mp3/1.mp3', 'https://music-1251732387.cos.ap-shanghai.myqcloud.com/mp3/2.mp3', 'https://music-1251732387.cos.ap-shanghai.myqcloud.com/mp3/3.mp3'],
       currIndex: -1,
 
+
       // 自己加的状态 切换active
       isPlay: false, // 是否正在播放
       isBuffering: false, // 是否在缓冲
@@ -94,10 +97,14 @@ export default {
       tProgressText: '00:00', // 总时间
       tTimeText: '00:00', // 当前时间
       seekBarWidth: 0, // 进度条
-      albumNameText: '',
-      trackNameText: '',
       insTimeText: '',
       sHoverWidth: 0, // 鼠标悬浮上去的条
+
+      // 歌曲状态
+      src: './beyond.mp3', // 播放器的srcUrl
+      songTitle: '海阔天空', // 歌曲名字
+      songAuthor: 'Beyond', // 歌曲演唱者
+      songPic: './beyond.jpg', // 初始化为beyond 光辉岁月
 
       // hover的动效的style
       hoverLeft: 0,
@@ -125,13 +132,74 @@ export default {
         display: this.hoverDisplay,
       };
     },
+    ...mapGetters([
+      'currentSongIndex', // 当前播放的音乐位于列表的位置
+    ]),
   },
   watch: {
+    songInfo: {
+      deep: true,
+      handler(nv, ov) {
+        this.src = nv.src;
+        this.songTitle = nv.title;
+        this.songAuthor = nv.author;
+        this.songPic = nv.pic;
+      },
+    },
   },
   methods: {
+    ...mapActions([
+      'updateCurrentPlaySongId', // 点击上一首下一首的时候，更新vuex中当前的songId
+    ]),
     initPlayer() {
-      this.selectTrack(0);
+      // this.selectTrack(0);
     },
+    // 判断用户是否拍过照片了，播放上一首 下一首的时候需要判断
+    isPhoto() {
+      if (this.$store.state.faceMusic.trackIds.length === 0) {
+        this.$message({
+          type: 'warning',
+          message: '当前还没有拍照哦，只能播放一首默认歌曲呢。请点击拍照之后才能播放歌曲列表哦',
+        });
+        return false;
+      }
+      return true;
+    },
+    // 上一首音乐
+    playPre() {
+      if (!this.isPhoto()) {
+        return false;
+      }
+      const idx = this.currentSongIndex - 1;
+      console.log(idx);
+      const querySongId = this.$store.state.faceMusic.trackIds[idx].id;
+      this.getOneSongById(querySongId);
+    },
+    // 下一首音乐
+    playNext() {
+      if (!this.isPhoto()) {
+        return false;
+      }
+      const idx = this.currentSongIndex + 1;
+      const querySongId = this.$store.state.faceMusic.trackIds[idx].id;
+      this.getOneSongById(querySongId);
+    },
+    getOneSongById(songId) {
+      const _self = this;
+      Http.getOneSongById(songId).then((res) => {
+        if (res.data.code === 200) {
+          _self.songInfo = res.data.songInfo;
+          // 去更新vuex里的currentPlaySongId
+          _self.updateCurrentPlaySongId(songId);
+        } else {
+          _self.$message({
+            type: 'warning',
+            message: res.data.errorMessage,
+          });
+        }
+      });
+    },
+
     selectTrack(flag) {
       if (flag === 0 || flag === 1) ++this.currIndex;
       else --this.currIndex;
@@ -160,8 +228,8 @@ export default {
           this.checkBuffering();
         }
 
-        this.albumNameText = currAlbum;
-        this.trackNameText = currTrackName;
+        this.songTitle = currAlbum;
+        this.songAuthor = currTrackName;
         // this.albumArt.find('img.active').removeClass('active'); // 这个暂时不处理
         // document.querySelector(`#${currArtwork}`).addClass('active');
       } else if (flag === 0 || flag === 1) --this.currIndex;
@@ -328,10 +396,10 @@ export default {
   #app-cover
   {
     // 正式环境需要注释这四行
-    /*position: absolute;*/
-    /*top: 50%;*/
-    /*right: 0;*/
-    /*left: 0;*/
+    position: absolute;
+    top: 50%;
+    right: 0;
+    left: 0;
     /*注释结束*/
     width: 430px;
     height: 100px;

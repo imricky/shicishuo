@@ -43,6 +43,11 @@ export default new Vuex.Store({
       guessAnswerPeople: '', // 答对问题的人
     },
 
+    // 诗说FM 拍照之后的推荐音乐tracks列表，用于播放上一首 下一首
+    faceMusic: {
+      trackIds: [],
+      currentPlaySongId: '', // 当前播放的音乐名称，用于上一首和下一首
+    },
   },
 
   mutations: {
@@ -127,6 +132,14 @@ export default new Vuex.Store({
       };
       state.chats = [];
     },
+
+    updateMusicTrackIds(state, data) {
+      state.faceMusic.trackIds = data.trackIds;
+      state.faceMusic.currentPlaySongId = data.songId;
+    },
+    updateCurrentPlaySongId(state, data) {
+      state.faceMusic.currentPlaySongId = data;
+    },
   },
 
   actions: {
@@ -179,8 +192,30 @@ export default new Vuex.Store({
     leaveRoom({ commit }, data) {
       commit('leaveRoom', data);
     },
+
+
+    // 诗说FM 更新音乐列表的方法
+    updateMusicTrackIds({ commit }, data) {
+      commit('updateMusicTrackIds', data);
+    },
+
+    updateCurrentPlaySongId({ commit }, data) {
+      commit('updateCurrentPlaySongId', data);
+    },
   },
   getters: {
+    // 聊天列表
     chatList: state => state.chats,
+    // 当前播放歌曲位于歌单的哪个位置
+    currentSongIndex: (state) => {
+      let index = 0;
+      for (let i = 0; i < state.faceMusic.trackIds.length; i++) {
+        if (state.faceMusic.currentPlaySongId === state.faceMusic.trackIds[i].id) {
+          index = i;
+          break;
+        }
+      }
+      return index;
+    },
   },
 });

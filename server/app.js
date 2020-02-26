@@ -5,6 +5,10 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
 const app = express();
+// face++前端传图片过来的时候，需要加上这三行，不然会请求体太大了
+const bodyParser = require('body-parser');
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 // const http = require('http').Server(app);
 // const io = require('socket.io')(http);
 //
@@ -26,6 +30,7 @@ const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const poemsRouter = require('./routes/poems');
 const drawRouter = require('./routes/youDrawIGuess');
+const faceMusicRouter = require('./routes/faceMusic');
 
 
 // allow custom header and CORS
@@ -62,6 +67,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/poems', poemsRouter);
 app.use('/draw', drawRouter);
+app.use('/faceMusic', faceMusicRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

@@ -17,10 +17,9 @@
 
     <div class="main">
       <div>
-        <a herf="javascript:;"
-           class="photo-btn animated flipInX"
+        <a class="photo-btn animated flipInX"
            id="playBtn"
-           @mouseenter="btnMouseenter()" @mouseleave="btnMouseenter()">点拍照</a>
+            @click="takePhoto()">点拍照</a>
         <a id="changeSong" href="javascript:;" class="change-btn animated flipInY">换一换</a>
       </div>
       <div>
@@ -28,20 +27,20 @@
         <div class="smile-and-age">
           <div class="smile">心悦指数：
             <span class="circle">
-              <span class="number"> 99</span>
+              <span class="number">{{smileNo}}</span>
             </span>
           </div>
-          <el-divider direction="vertical">123</el-divider>
+          <el-divider direction="vertical"></el-divider>
           <div class="age">猜测年龄：
             <span class="circle">
-              <span class="number"> 50</span>
+              <span class="number">{{age}}</span>
             </span>
           </div>
         </div>
         <div class="recommend-poem">
           <h4 style="color: #C0C4CC">这一刻诗词：</h4>
-          <h1>蒌蒿满地芦芽短，正是河豚欲上时</h1>
-          <p class="poem-author">——王维《送孟浩然之广陵》</p>
+          <h1>{{poemParagraph}}</h1>
+          <p class="poem-author">——{{poemAuthor}}《{{poemTitle}}》</p>
         </div>
       </div>
 <!--      音乐播放器部分-->
@@ -51,7 +50,7 @@
 <!--          <source src="song.ogg" type="audio/ogg" />-->
 <!--          <embed height="100" width="100" src="https://raw.githubusercontent.com/himalayasingh/music-player-1/master/music/2.mp3" />-->
 <!--        </audio>-->
-        <Player />
+        <Player :songInfo="songInfo"/>
       </div>
     </div>
 
@@ -65,10 +64,13 @@
 
 <script>
 import screenfull from 'screenfull';
+import { mapGetters, mapActions } from 'vuex';
+import Http from '@/api/http';
 // import TopBar from '@/components/TopBar.vue';
 import Footer from '@/components/Footer.vue';
 import Webcam from '../../../common/js/webcam';
 import Player from '@/components/musicPlayer.vue';
+
 export default {
   name: 'shishuoFMHomePage',
   components: {
@@ -78,15 +80,87 @@ export default {
   },
   data() {
     return {
+      poemParagraph: '蒌蒿满地芦芽短，正是河豚欲上时', // 推荐诗词
+      poemTitle: '送孟浩然之广陵', // 标题
+      poemAuthor: '杜甫', // 作者
+      smileNo: 99, // 笑容指数
+      age: 24, // 猜测年龄
+      songInfo: {
+        title: '',
+        author: '',
+        src: '',
+        pic: '',
+        songId: '',
+      },
     };
   },
   computed: {},
   methods: {
+    ...mapActions([
+      'updateMusicTrackIds', // 更新音乐列表，用于上一首和下一首
+    ]),
     // 全屏方法
     toggle() {
       const video = document.querySelectorAll('#camera');
       console.log(video);
       screenfull.request(video[0]);
+    },
+
+    takePhoto() {
+      const loading = this.$loading({
+        lock: true,
+        text: '正在分析中,请稍后...',
+      });
+      const _self = this;
+      Webcam.freeze();
+      Webcam.snap((dataUri) => {
+        // snap complete, image data is in 'data_uri'
+        Http.analyzeFace(dataUri).then((res) => {
+          console.log('人脸识别返回的结果啊');
+          console.log(res);
+          if (res.data.code === 200) {
+            // 更新诗词信息
+            const poemInfo = res.data.poemResult[0];
+            _self.poemAuthor = poemInfo.author;
+            _self.poemTitle = poemInfo.title;
+            _self.poemParagraph = `${poemInfo.paragraphs[0]}`;
+
+            // 人脸识别信息
+            const faceInfo = res.data.faceAnalyzeResult;
+            if (faceInfo.faces !== 0) {
+              _self.smileNo = Math.ceil(faceInfo.faces[0].attributes.smile.value);
+              _self.age = faceInfo.faces[0].attributes.age.value;
+            }
+
+            // 更新音乐信息
+            const { songInfo } = res.data;
+            _self.songInfo.title = songInfo.title;
+            _self.songInfo.author = songInfo.author;
+            _self.songInfo.src = songInfo.src;
+            _self.songInfo.pic = songInfo.pic;
+            _self.songInfo.songId = songInfo.songId;
+            const obj = {
+              trackIds: songInfo.trackIds,
+              songId: songInfo.songId,
+            };
+            _self.updateMusicTrackIds(obj);
+
+            loading.close();
+          } else if (res.data.code === 599) {
+            loading.close();
+            _self.$message({
+              type: 'error',
+              message: '没有检测到人脸哦,请重新拍摄',
+            });
+          } else {
+            loading.close();
+            _self.$message({
+              type: 'error',
+              message: res.data.errorMessage,
+            });
+          }
+        });
+      });
     },
   },
   created() {
@@ -101,15 +175,16 @@ export default {
       height: mainY, // 元素的宽度
       dest_width: 1280, // 相机的宽度，也就是摄像头的像素，我的Mac Book Pro的摄像头是720万的，所有填写这个数值
       dest_height: 720, // 相机的宽度，也就是摄像头的像素
-      image_format: 'jpeg',
+      image_format: 'png',
       jpeg_quality: 100,
-      force_flash: false,
+      // force_flash: false,
       // flip_horiz: true,
       fps: 45,
     });
     // 把相机挂载到dom上
-    // Webcam.attach('.video-foreground');
+    Webcam.attach('.video-foreground');
     console.log(Webcam);
+
     const video = document.querySelectorAll('video');
 
     Webcam.on('error', (err) => {
@@ -280,7 +355,7 @@ export default {
   .recommend-poem{
     margin-top: 20px;
     .poem-author{
-      color: #C0C4CC;
+      color: #EDF5FF;
       float: right;
     }
   }

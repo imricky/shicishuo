@@ -126,6 +126,15 @@ class Http {
   submitAnswer(roomNo, answer, username) {
     return post(Url.submitAnswerApi, { roomNo, answer, username });
   }
+
+  // 诗说FM-faceMusic
+  analyzeFace(dataUri) {
+    return post(Url.analyzeFaceApi, { dataUri });
+  }
+
+  getOneSongById(songId) {
+    return post(Url.getOneSongByIdApi, { songId });
+  }
 }
 
 export default new Http();

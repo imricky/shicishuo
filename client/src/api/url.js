@@ -35,4 +35,8 @@ export const Url = {
   randomEnterRoomApi: `${baseURL}/draw/randomEnterRoom`, // 查找信息房间
   updateRoomQuestionApi: `${baseURL}/draw/updateRoomQuestion`, // 更新房间的答案
   submitAnswerApi: `${baseURL}/draw/submitAnswer`, // 提交答案
+
+  // 诗说FM接口
+  analyzeFaceApi: `${baseURL}/faceMusic/analyzeFace`, // 提交答案
+  getOneSongByIdApi: `${baseURL}/faceMusic/getOneSongById`, // 根据songId获取歌曲信息
 };
