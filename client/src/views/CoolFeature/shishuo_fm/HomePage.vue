@@ -20,7 +20,7 @@
         <a class="photo-btn animated flipInX"
            id="playBtn"
             @click="takePhoto()">点拍照</a>
-        <a id="changeSong" href="javascript:;" class="change-btn animated flipInY">换一换</a>
+        <a id="changeSong" class="change-btn animated flipInY" @click="randomListen">随便听听</a>
       </div>
       <div>
 <!--        笑容指数和推荐诗词部分-->
@@ -165,6 +165,31 @@ export default {
         });
       });
     },
+
+    randomListen() {
+      const _self = this;
+      Http.randomListen().then((res) => {
+        if (res.data.code === 200) {
+          // 更新诗词信息
+          const poemInfo = res.data.poemResult[0];
+          _self.poemAuthor = poemInfo.author;
+          _self.poemTitle = poemInfo.title;
+          _self.poemParagraph = `${poemInfo.paragraphs[0]}`;
+          // 更新音乐信息
+          const { songInfo } = res.data;
+          _self.songInfo.title = songInfo.title;
+          _self.songInfo.author = songInfo.author;
+          _self.songInfo.src = songInfo.src;
+          _self.songInfo.pic = songInfo.pic;
+          _self.songInfo.songId = songInfo.songId;
+        } else {
+          _self.$message({
+            type: 'error',
+            message: res.data.errorMessage,
+          });
+        }
+      });
+    },
   },
   created() {
 
@@ -195,6 +220,12 @@ export default {
         type: 'error',
         message: `调用摄像头失败，${err.name || err.message}`,
       });
+      // 关闭loading
+      const loading = this.$loading({
+        lock: true,
+        text: '正在分析中,请稍后...',
+      });
+      loading.close();
     });
     // 一些测试性代码
     // video[0].style.width = '320px';
@@ -302,11 +333,11 @@ export default {
   .change-btn,{
     display: inline-block;
     padding: 10px 20px;
-    border: 2px solid #fff;
+    border: 1px solid #fff;
     border-radius: 3px;
     color: #fff;
     font-size: 16px;
-    width: 102px;
+    width: 109px;
     text-decoration: none;
     margin-left:15px;
     text-align:center;
@@ -314,6 +345,7 @@ export default {
   .change-btn:hover, .change-btn:focus, {
     border-color: #73d0da;
     color: #73d0da;
+    cursor: pointer;
   }
 
   /*网站主部分*/

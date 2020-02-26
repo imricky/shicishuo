@@ -71,6 +71,26 @@ router.post('/getOneSongById', async (req, res, next) => {
   }
 });
 
+// 随便听听
+router.get('/randomListen', async (req, res, next) => {
+  try {
+    const poemResult = await FaceMusicDao.generateOneSuggestPoem();
+    const songInfo = await FaceMusicDao.getNeteaseOneSongBySmileNumber(65);
+    res.json({
+      poemResult,
+      songInfo,
+      success: true,
+      code: 200,
+    });
+  } catch (e) {
+    res.json({
+      success: false,
+      errorMessage: e.stack,
+      code: 500,
+    });
+  }
+});
+
 
 // 服务端base64转成图片
 router.post('/base64ToImg', (req, res, next) => {

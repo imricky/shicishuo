@@ -135,6 +135,10 @@ class Http {
   getOneSongById(songId) {
     return post(Url.getOneSongByIdApi, { songId });
   }
+
+  randomListen() {
+    return get(Url.randomListenApi);
+  }
 }
 
 export default new Http();

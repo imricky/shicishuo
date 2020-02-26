@@ -39,4 +39,5 @@ export const Url = {
   // 诗说FM接口
   analyzeFaceApi: `${baseURL}/faceMusic/analyzeFace`, // 提交答案
   getOneSongByIdApi: `${baseURL}/faceMusic/getOneSongById`, // 根据songId获取歌曲信息
+  randomListenApi: `${baseURL}/faceMusic/randomListen`, // 随机获取歌曲
 };
