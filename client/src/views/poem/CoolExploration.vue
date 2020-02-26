@@ -24,7 +24,10 @@
 
       <el-row type="flex" class="row-bg" justify="center" :gutter="40">
         <el-col :span="12"><div class="grid-content bg-purple">
-          <CoolExplorationCard />
+          <CoolExplorationCard
+            funcName="诗说FM"
+            goFunc="shishuoFM"
+            funcDesc="基于Face++和网易云音乐提供的接口，根据实时图像为您推荐此刻专属的歌曲和诗词。该功能不会保存您的图片信息，请放心使用。不放心的可以参看源代码"/>
         </div></el-col>
 
         <el-col :span="12"><div class="grid-content bg-purple">
