@@ -65,7 +65,7 @@ import Http from '@/api/http';
 
 export default {
   name: 'musicPlayer',
-  props: ['songInfo'],
+  props: ['songInfo', 'isPhotoing'],
   data() {
     return {
       // audio: new Audio(), // 直接建立一个audio标签，不用new 对象
@@ -143,6 +143,19 @@ export default {
     ]),
   },
   watch: {
+    isPhotoing: {
+      handler(nv, ov) {
+        if (nv === true) {
+          this.$nextTick(() => {
+            this.audioPlayer.pause();
+          });
+        } else {
+          this.$nextTick(() => {
+            this.audioPlayer.play();
+          });
+        }
+      },
+    },
     // 拍照之后传入的props
     songInfo: {
       deep: true,

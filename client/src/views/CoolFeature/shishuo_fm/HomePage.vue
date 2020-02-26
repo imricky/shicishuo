@@ -50,7 +50,7 @@
 <!--          <source src="song.ogg" type="audio/ogg" />-->
 <!--          <embed height="100" width="100" src="https://raw.githubusercontent.com/himalayasingh/music-player-1/master/music/2.mp3" />-->
 <!--        </audio>-->
-        <Player :songInfo="songInfo"/>
+        <Player :songInfo="songInfo" :isPhotoing="isPhotoing"/>
       </div>
     </div>
 
@@ -92,6 +92,7 @@ export default {
         pic: '',
         songId: '',
       },
+      isPhotoing: false, // 是否正在拍照
     };
   },
   computed: {},
@@ -111,8 +112,9 @@ export default {
         lock: true,
         text: '正在分析中,请稍后...',
       });
+      this.isPhotoing = true;
       const _self = this;
-      Webcam.freeze();
+      // Webcam.freeze();
       Webcam.snap((dataUri) => {
         // snap complete, image data is in 'data_uri'
         Http.analyzeFace(dataUri).then((res) => {
@@ -144,7 +146,8 @@ export default {
               songId: songInfo.songId,
             };
             _self.updateMusicTrackIds(obj);
-
+            // Webcam.unfreeze();
+            _self.isPhotoing = false;
             loading.close();
           } else if (res.data.code === 599) {
             loading.close();
