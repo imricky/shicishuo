@@ -80,8 +80,8 @@ export default {
   },
   data() {
     return {
-      poemParagraph: '蒌蒿满地芦芽短，正是河豚欲上时', // 推荐诗词
-      poemTitle: '送孟浩然之广陵', // 标题
+      poemParagraph: '会当凌绝顶，一览众山小。', // 推荐诗词
+      poemTitle: '望岳', // 标题
       poemAuthor: '杜甫', // 作者
       smileNo: 99, // 笑容指数
       age: 24, // 猜测年龄

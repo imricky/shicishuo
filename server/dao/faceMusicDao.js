@@ -21,6 +21,7 @@ class faceMusicDao {
   static async generateOneSuggestPoem() {
     // mongodb随机查询一条
     const res = await AllPoets.aggregate([
+      { $match: { tags: /年级/ } },
       { $sample: { size: 1 } },
     ]);
     return res;

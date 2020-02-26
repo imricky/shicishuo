@@ -425,10 +425,10 @@ export default {
   #app-cover
   {
     // 正式环境需要注释这四行
-    position: absolute;
-    top: 50%;
-    right: 0;
-    left: 0;
+    /*position: absolute;*/
+    /*top: 50%;*/
+    /*right: 0;*/
+    /*left: 0;*/
     /*注释结束*/
     width: 430px;
     height: 100px;
