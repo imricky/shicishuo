@@ -143,6 +143,7 @@ export default {
     ]),
   },
   watch: {
+    // 拍照之后传入的props
     songInfo: {
       deep: true,
       handler(nv, ov) {
@@ -150,8 +151,13 @@ export default {
         this.songTitle = nv.title;
         this.songAuthor = nv.author;
         this.songPic = nv.pic;
+        this.$nextTick(() => {
+          this.audioPlayer.play();
+          this.isPlay = true;
+        });
       },
     },
+    // 用来播放上一首和下一首
     songInfoNew: {
       deep: true,
       handler(nv, ov) {
@@ -168,6 +174,7 @@ export default {
       'updateCurrentPlaySongId', // 点击上一首下一首的时候，更新vuex中当前的songId
     ]),
     initPlayer() {
+      // 完全不用初始化，vue已经帮我们做掉了
       // this.selectTrack(0);
     },
     // 判断用户是否拍过照片了，播放上一首 下一首的时候需要判断
@@ -187,7 +194,13 @@ export default {
         return false;
       }
       const idx = this.currentSongIndex - 1;
-      console.log(idx);
+      if (idx <= -1) {
+        this.$message({
+          type: 'warning',
+          message: '当前音乐是该歌单第一首哦，没有上一首了呢~',
+        });
+        return false;
+      }
       const querySongId = this.$store.state.faceMusic.trackIds[idx].id;
       this.getOneSongById(querySongId);
     },
@@ -197,6 +210,13 @@ export default {
         return false;
       }
       const idx = this.currentSongIndex + 1;
+      if (idx > this.$store.state.faceMusic.trackIds.length) {
+        this.$message({
+          type: 'warning',
+          message: '当前音乐是该歌单最后一首了哦，没有下一首了呢~',
+        });
+        return false;
+      }
       const querySongId = this.$store.state.faceMusic.trackIds[idx].id;
       this.getOneSongById(querySongId);
     },
@@ -205,19 +225,23 @@ export default {
       Http.getOneSongById(songId).then((res) => {
         if (res.data.code === 200) {
           _self.songInfoNew = res.data.songInfo;
-
           // 播放歌曲
-          _self.nTime = 0;
-          _self.bTime = new Date();
-          _self.bTime = _self.bTime.getTime();
-          _self.isPlay = true;
-          _self.isBuffering = false;
-          _self.audioPlayer.play();
-          clearInterval(_self.buffInterval);
-          _self.checkBuffering();
+          _self.$nextTick(() => {
+            _self.seekBarWidth = 0;
+            _self.trackTimeStatus = false;
+            _self.tProgressText = '00:00';
+            _self.tTimeText = '00:00';
+            _self.nTime = 0;
+            _self.bTime = new Date();
+            _self.bTime = _self.bTime.getTime();
+            _self.audioPlayer.play();
+            _self.isPlay = true;
+            clearInterval(_self.buffInterval);
+            _self.checkBuffering();
+            // 去更新vuex里的currentPlaySongId
+            _self.updateCurrentPlaySongId(songId);
+          });
           // 操作结束
-          // 去更新vuex里的currentPlaySongId
-          _self.updateCurrentPlaySongId(songId);
         } else {
           _self.$message({
             type: 'warning',
@@ -445,7 +469,7 @@ export default {
     transition: 0.3s ease top;
     z-index: 1;
     /*opacity: 0;*/
-    top: -92px;
+    //top: -92px;
   }
 
   #player-track.active
