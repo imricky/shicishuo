@@ -26,3 +26,9 @@ $--font-path: '~element-ui/lib/theme-chalk/fonts';
 .el-table__row{
   cursor: pointer;
 }
+
+// badge的样式：
+.el-badge__content.is-fixed{
+  top: 14px;
+  right: 24px;
+}

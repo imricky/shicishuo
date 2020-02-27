@@ -25,7 +25,13 @@
                   <el-menu-item index="DailyPoem" route="/DailyPoem"><i class="el-icon-postcard"></i>每日诗词</el-menu-item>
                   <el-menu-item index="ExploreGoodPoetry" route="/ExploreGoodPoetry"><i class="el-icon-search"></i>探索好诗</el-menu-item>
                   <el-menu-item index="Library" route="/Library"><i class="el-icon-files"></i>文库大全</el-menu-item>
-                  <el-menu-item index="CoolExploration" route="/CoolExploration"><i class="el-icon-potato-strips"></i>酷功能</el-menu-item>
+
+                    <el-menu-item index="CoolExploration" route="/CoolExploration">
+                      <i class="el-icon-potato-strips"></i>
+                      <el-badge value="new" class="cool-badge">
+                      酷功能
+                      </el-badge>
+                    </el-menu-item>
                   <el-menu-item>
 
                     <el-autocomplete
@@ -337,6 +343,12 @@ export default {
   }
   .user-avatar{
     /*margin-right: 10px;*/
+  }
+
+  .cool-badge{
+    /*top: 10px;*/
+    /*right: 40px;*/
+    /*position: absolute;*/
   }
 
   // 移动端:
