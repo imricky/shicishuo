@@ -157,7 +157,7 @@ export default {
 <style scoped lang="scss">
   .register-wrap{
     height: 100%;
-    background: url('../../assets/bg2.jpg');
+    background: url('https://shicishuo-1251732387.file.myqcloud.com/assets/bg2.jpg');
     background-size: 100% 100%;
     position: relative;
   }
@@ -170,12 +170,12 @@ export default {
       position: absolute;
       left: 50%;
       top: 50%;
-      border: 1px solid #606266;
+      /*border: 1px solid #606266;*/
       transform: translate(-50%,-50%);
       box-shadow: #666 0 0 30px;
     }
     .logo{
-      border: 1px solid #E6A23C;
+      /*border: 1px solid #E6A23C;*/
       height: 50px;
       margin: 20px;
       font-size: 24px;

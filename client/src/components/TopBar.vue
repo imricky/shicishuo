@@ -7,7 +7,7 @@
             <el-col :span="4" :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
               <router-link id="logo" to="/">
                 <div class="grid-content bg-purple">
-                  <img src="../assets/mylogo.png" alt="网站图标" style="width: 50px; height: 50px">
+                  <img src="https://shicishuo-1251732387.file.myqcloud.com/assets/mylogo.png" alt="网站图标" style="width: 50px; height: 50px">
                   <!--              TODO:最后换logo和换字体-->
                   <span class="logo-word hidden-xs-only">诗词说</span>
                 </div>
