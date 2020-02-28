@@ -46,6 +46,7 @@ export default {
       this.cardAnimate = !this.cardAnimate;
     },
     goCoolFunc() {
+      const _self = this;
       if (this.goFunc === 'test') {
         this.$message({
           message: '敬请期待',
@@ -65,6 +66,17 @@ export default {
         }
         this.$router.push(this.goFunc);
         return false;
+      }
+      if (this.goFunc === 'shishuoFM') {
+        this.$message({
+          message: '该功能会调用您的摄像头进行人脸识别，但是完全不会存储您的图像,请放心使用哦',
+          type: 'warning',
+          duration: 4000,
+          // onClose() {
+          //   _self.$router.push(_self.goFunc);
+          //   return false;
+          // },
+        });
       }
       this.$router.push(this.goFunc);
     },

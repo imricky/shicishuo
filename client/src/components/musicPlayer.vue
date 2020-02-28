@@ -102,7 +102,7 @@ export default {
       // songTitle: '光辉岁月外网开发环境12312光辉岁月哈哈收到货后', // 歌曲名字太长
       songTitle: '光辉岁月', // 歌曲名字（真实的歌曲名字）
       songAuthor: 'Beyond', // 歌曲演唱者
-      songPic: './beyond.jpg', // 初始化为beyond 光辉岁月
+      songPic: 'https://shicishuo-1251732387.file.myqcloud.com/assets/beyond.jpg', // 初始化为beyond 光辉岁月
       songInfoNew: this.songInfo, // 保存传过来的props
 
       // hover的动效的style

@@ -4,6 +4,7 @@ import { Message, MessageBox } from 'element-ui';
 import Home from '../views/Home.vue';
 import Search from '../views/Search.vue';
 import store from '../store';
+import Webcam from '../common/js/webcam';
 
 Vue.use(store);
 Vue.use(VueRouter);
@@ -132,6 +133,7 @@ router.beforeEach((to, from, next) => {
   // /you_draw_i_guess/room/123
   // 路由离开房间的时候，也要清空处理
   const reg = /^(\/you_draw_i_guess\/room\/)/g;
+  const faceMusicReg = /\/shishuoFM/g;
   if (reg.test(from.path)) {
     MessageBox.confirm('离开该房间页面会导致你离开房间或者解散房间，确定要离开么?', '提示', {
       confirmButtonText: '确定',
@@ -157,6 +159,10 @@ router.beforeEach((to, from, next) => {
       });
       next(false);
     });
+  } else if (faceMusicReg.test(from.path)) {
+    // 回退的时候关闭相机
+    Webcam.reset();
+    next();
   } else {
     next();
   }
