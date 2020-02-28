@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const mongoose = require('mongoose');
-const YouDrawIGuessDao = require('../dao/YouDrawIGuessDao');
+const YouDrawIGuessDao = require('../dao/youDrawIGuessDao');
 const { ObjectId } = mongoose.Types;
 
 const io = require('../utils/socketio');
