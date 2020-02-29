@@ -1,5 +1,5 @@
-import { elasticUrl } from '../config/jwtSecret';
 const elasticsearch = require('elasticsearch');
+const { elasticUrl } = require('../config/jwtSecret');
 const client = new elasticsearch.Client({
   host: elasticUrl,
   log: 'trace',
