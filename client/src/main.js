@@ -4,7 +4,7 @@ import * as io from 'socket.io-client';
 import App from './App.vue';
 import router from './router';
 import store from './store';
-
+import websiteConfig from './utils/websiteConfig';
 // eslint-disable-next-line import/extensions
 import './plugins/element.js';
 // eslint-disable-next-line import/order
@@ -21,7 +21,8 @@ Vue.use(animated);
 // { transports: ['websocket'] }
 Vue.use(new VueSocketIO({
   debug: true,
-  connection: io('http://localhost:1234'), // options object is Optional
+  // connection: io('https://wss.rqcao.com'), // options object is Optional
+  connection: io(websiteConfig.websocketUrl), // options object is Optional
   vuex: {
     store,
     // actionPrefix: 'SOCKET_',

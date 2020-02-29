@@ -1,4 +1,7 @@
-const baseURL = 'http://localhost:3000';
+import websiteConfig from '../utils/websiteConfig';
+const baseURL = websiteConfig.apiUrl;
+// const baseURL = 'https://api.rqcao.com';
+// const baseURL = 'http://localhost:3000'; // 这个地方要改成服务器的ip地址
 
 // eslint-disable-next-line import/prefer-default-export
 export const Url = {

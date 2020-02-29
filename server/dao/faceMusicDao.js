@@ -4,7 +4,7 @@ const rp = require('request-promise');
 const { AllPoets, DailyPoems } = require('../models/poemsModel');
 const { jiebaSeparateVerse, compare } = require('../utils/tools');
 const { logger } = require('../utils/logger');
-const { faceApiSecretKey } = require('../config/jwtSecret');
+const { faceApiSecretKey, neteaseUrl } = require('../config/jwtSecret');
 
 class faceMusicDao {
   // eslint-disable-next-line no-empty-function,no-useless-constructor
@@ -98,7 +98,7 @@ class faceMusicDao {
     }
 
     const options = {
-      uri: 'http://localhost:5000/top/playlist',
+      uri: `${neteaseUrl}/top/playlist`,
       qs: {
         cat,
         limit: 10,
@@ -125,7 +125,7 @@ class faceMusicDao {
   */
   static async getPlayListDetailById(id) {
     const options = {
-      uri: 'http://localhost:5000/playlist/detail',
+      uri: `${neteaseUrl}/playlist/detail`,
       qs: {
         id,
       },
@@ -165,7 +165,7 @@ class faceMusicDao {
       songId,
     };
     const mainOptions = {
-      uri: 'http://localhost:5000/song/detail',
+      uri: `${neteaseUrl}/song/detail`,
       qs: {
         ids: songId,
       },
@@ -181,7 +181,7 @@ class faceMusicDao {
     songInfo.title = mainRes.songs[0].name;
 
     const urlOptions = {
-      uri: 'http://localhost:5000/song/url',
+      uri: `${neteaseUrl}/song/url`,
       qs: {
         id: songId,
       },
