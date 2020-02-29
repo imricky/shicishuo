@@ -1,6 +1,7 @@
+import { elasticUrl } from '../config/jwtSecret';
 const elasticsearch = require('elasticsearch');
 const client = new elasticsearch.Client({
-  host: 'localhost:9200',
+  host: elasticUrl,
   log: 'trace',
   apiVersion: '7.2', // use the same version of your Elasticsearch instance
 });
