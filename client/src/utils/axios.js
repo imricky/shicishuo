@@ -29,7 +29,7 @@ axios.interceptors.request.use(
 
 // response拦截器，每次发送请求的时候拦截下来
 axios.interceptors.response.use((response) => {
-  console.log(response);
+  // console.log(response);
   if (response.data.code) {
     return Promise.resolve(response);
   }
