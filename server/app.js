@@ -4,6 +4,8 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
+const history = require('connect-history-api-fallback');
+
 const app = express();
 // face++前端传图片过来的时候，需要加上这三行，不然会请求体太大了
 const bodyParser = require('body-parser');
@@ -60,6 +62,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(history());
 
 // 后端添加token校验
 app.use(checkToken);
