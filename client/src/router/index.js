@@ -5,6 +5,7 @@ import Home from '../views/Home.vue';
 import Search from '../views/Search.vue';
 import store from '../store';
 import Webcam from '../common/js/webcam';
+import NotFound from '../views/NotFound.vue';
 
 Vue.use(store);
 Vue.use(VueRouter);
@@ -119,11 +120,14 @@ const routes = [
     name: 'musicPlayer',
     component: () => import(/* webpackChunkName: "about" */ '@/components/musicPlayer.vue'),
   },
+  { path: '/404', component: NotFound },
+  { path: '*', redirect: '/404' },
 ];
 
 
 const router = new VueRouter({
   mode: 'history',
+  // mode: 'hash',
   base: process.env.BASE_URL,
   routes,
 });
