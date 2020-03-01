@@ -110,7 +110,7 @@ export default {
     takePhoto() {
       const loading = this.$loading({
         lock: true,
-        text: '正在分析中,请稍后...',
+        text: '正在分析中,可能需要3-5秒,请稍后...',
       });
       this.isPhotoing = true;
       const _self = this;

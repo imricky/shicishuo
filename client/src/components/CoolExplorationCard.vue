@@ -56,6 +56,15 @@ export default {
         return false;
       }
       if (this.goFunc === 'you_draw_i_guess/room-list') {
+        // 如果是移动端，那么提示请用电脑打开
+        if (this.$isMobile()) {
+          this.$message({
+            message: '【你画我猜】暂时没有适配移动端哦，请在PC端打开',
+            type: 'warning',
+            duration: 2000,
+          });
+          return false;
+        }
         if (this.$store.state.user.username === '' || this.$store.state.user.token === '') {
           this.$message({
             message: '【你画我猜】需要登录哦~ 请登录后重试',
@@ -68,6 +77,16 @@ export default {
         return false;
       }
       if (this.goFunc === 'shishuoFM') {
+        // 如果是移动端，那么提示请用电脑打开
+        debugger;
+        if (this.$isMobile()) {
+          this.$message({
+            message: '【诗说FM】暂时没有适配移动端哦，请在PC端打开',
+            type: 'warning',
+            duration: 2000,
+          });
+          return false;
+        }
         this.$message({
           message: '该功能会调用您的摄像头进行人脸识别，但是完全不会存储您的图像,请放心使用哦',
           type: 'warning',

@@ -31,6 +31,7 @@ Vue.use(new VueSocketIO({
 }));
 
 Vue.prototype.$collect = PoemMethods.collect; // 诗词收藏函数
+Vue.prototype.$isMobile = PoemMethods._isMobile; // 判断是不是移动端
 Vue.prototype.$EventBus = new Vue();
 Vue.config.productionTip = false;
 
