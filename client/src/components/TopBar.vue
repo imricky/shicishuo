@@ -222,11 +222,11 @@ export default {
         return total;
       }, []);
 
-      console.log(this.searchList);
+      // console.log(this.searchList);
       clearTimeout(this.timeout);
       this.timeout = setTimeout(() => {
         cb(this.searchList);
-      }, 3000 * Math.random());
+      }, 0);
     },
     handleSelect(item) {
       console.log(item);
