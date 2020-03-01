@@ -4,10 +4,12 @@
       <el-footer>
         <div class="copy-right">
           <span style="margin-right: 10px;">© 2019 </span>
-          <el-link type="primary">诗词说</el-link>
+          <el-link type="primary" target="_blank" href="https://github.com/imricky/shicishuo">诗词说</el-link>
           <el-divider direction="vertical"></el-divider>
           <span class="my-footer-avatar"> <el-avatar size="small" src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar> </span>
           <el-link class="my-footer-authorName" href="https://github.com/imricky" target="_blank">Ricky</el-link>
+          <el-divider direction="vertical"></el-divider>
+          <el-link class="my-footer-beian" disabled >浙ICP备15040135号-2</el-link>
         </div>
         <div class="power-by">
           <span class="power-by-word">Power by</span>
@@ -19,7 +21,7 @@
           <el-divider direction="vertical"></el-divider>
           <el-link><i class="el-icon-apple el-icon--right"></i><span class="redis">Redis</span> </el-link>
           <el-divider direction="vertical"></el-divider>
-          <el-link><i class="el-icon-ice-tea el-icon--right"></i><span class="echarts">Echarts</span> </el-link>
+          <el-link><i class="el-icon-ice-tea el-icon--right"></i><span class="echarts">Elastic</span> </el-link>
         </div>
       </el-footer>
     </el-container>
@@ -69,8 +71,12 @@ export default {
       align-items: center;
       margin: 5px 0;
       .my-footer-authorName{
-        padding: 0 10px;
+        padding: 0 8px;
         color: #F56C6C;
+      }
+      .my-footer-beian{
+        padding: 0 8px;
+        color: #909399;
       }
     }
 
