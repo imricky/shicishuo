@@ -10,7 +10,7 @@
 
 ### 🏠 [Demo](https://shicishuo.rqcao.com)
 
-### 🏠 [中文文档](https://github.com/imricky/shicishuo/blob/master/README_zh.md)
+### 🚀 [中文文档](https://github.com/imricky/shicishuo/blob/master/README_zh.md)
 
 
 ## Client
@@ -313,5 +313,5 @@ Give a ⭐️ if this project helped you!
 
 
 ***
-If you have any questions, please email me！
+🔔 If you have any questions, please email me！
 
