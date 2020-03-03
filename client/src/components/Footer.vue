@@ -9,7 +9,7 @@
           <span class="my-footer-avatar"> <el-avatar size="small" src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar> </span>
           <el-link class="my-footer-authorName" href="https://github.com/imricky" target="_blank">Ricky</el-link>
           <el-divider direction="vertical"></el-divider>
-          <el-link class="my-footer-beian" disabled >浙ICP备15040135号-2</el-link>
+          <el-link class="my-footer-beian" href="http://beian.miit.gov.cn/" >浙ICP备15040135号-2</el-link>
         </div>
         <div class="power-by">
           <span class="power-by-word">Power by</span>
