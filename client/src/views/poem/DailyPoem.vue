@@ -36,6 +36,7 @@
     </el-aside>
     <el-main class="main">
       <PoemCard :poemCardData="poemCardData"/>
+      <ParagraphCard />
     </el-main>
   </el-container>
   </div>
@@ -48,12 +49,14 @@
 <script>
 // eslint-disable-next-line import/extensions
 import PoemCard from '@/components/PoemCard';
+import ParagraphCard from '@/components/ParagraphCard.vue';
 import TopBar from '@/components/TopBar.vue';
 import Footer from '@/components/Footer.vue';
 import Http from '@/api/http';
 export default {
   components: {
     PoemCard,
+    ParagraphCard,
     TopBar,
     Footer,
   },
@@ -124,7 +127,8 @@ export default {
     /*color: #333;*/
     margin: 0 20px;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
+    flex-direction: column;
     align-items: center;
     /*TODO: 需要媒体查询,先去掉高度,不然会出现滚动条，不好看*/
     /*height: 460px;*/
