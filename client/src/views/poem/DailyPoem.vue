@@ -36,7 +36,7 @@
     </el-aside>
     <el-main class="main">
       <PoemCard :poemCardData="poemCardData"/>
-      <ParagraphCard :paragraphCardData="paragraphCardData"/>
+      <ParagraphCard v-if="JSON.stringify(this.paragraphCardData) !== '{}'" :paragraphCardData="paragraphCardData"/>
     </el-main>
   </el-container>
   </div>
@@ -84,6 +84,11 @@ export default {
         const res = await Http.getOneInfo(row._id);
         // eslint-disable-next-line prefer-destructuring
         this.poemCardData = res.data.data.res[0];
+        if (row.dailyParagraph !== void 0) {
+          this.paragraphCardData = row.dailyParagraph;
+        } else {
+          this.paragraphCardData = {};
+        }
       } catch (e) {
         this.$message({
           message: '获取诗词信息失败',
@@ -118,7 +123,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
-
+  .aside-container{
+    /*background-color: #ffffff;*/
+  }
   .one-card{
     /*margin: 20px 0;*/
 

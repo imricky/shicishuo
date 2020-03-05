@@ -113,6 +113,7 @@ export default {
   }
 
   .author-info{
+    margin-top: 5px;
     margin-left: 150px;
   }
   .title{
