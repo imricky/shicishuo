@@ -8,7 +8,7 @@
       <div class="main-card">
         <el-image
           class="header-image"
-          src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
+          :src="paragraphCardData.src"
           fit="cover"></el-image>
         <div class="paragraph-info">
           <div class="one-paragraph">

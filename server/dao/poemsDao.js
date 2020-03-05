@@ -1,8 +1,11 @@
 const moment = require('moment');
 const _ = require('lodash');
+const path = require('path');
+const fsPromises = require('fs').promises;
 const { AllPoets, DailyPoems, MingjuPoets } = require('../models/poemsModel');
 const { jiebaSeparateVerse, compare } = require('../utils/tools');
 const { logger } = require('../utils/logger');
+
 
 class Poem {
   // eslint-disable-next-line no-empty-function,no-useless-constructor
@@ -70,6 +73,23 @@ class Poem {
       { $match: { poetName: { $exists: true } } },
       { $sample: { size: 1 } },
     ]);
+    // 从每日名句里找到诗人的头像
+    const authorId = dailyParagraph[0].poetId;
+    let src = 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg';
+    const baseImageUrl = 'http://localhost:3000/image/';
+    // 读image里的文件，要是没有,就默认
+    // app.use(express.static(path.join(__dirname, 'public')));
+    const filePath = path.resolve(__dirname, '../public/image');
+    const dir = await fsPromises.readdir(filePath);
+    // eslint-disable-next-line no-restricted-syntax
+    for (const item of dir) {
+      if (item.includes(authorId)) {
+        src = `${baseImageUrl}/${item}`;
+        break;
+      }
+    }
+    dailyParagraph[0].src = src;
+
 
     // 向每日一诗中存入得到的诗词
     // eslint-disable-next-line prefer-destructuring
