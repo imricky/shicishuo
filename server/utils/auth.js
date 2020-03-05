@@ -18,7 +18,7 @@ function createToken(str) {
 async function checkToken(req, res, next) {
   // 如果是socket.io，那么不走checkToken，直接next，不然会一直走checkToken，找不到路由报错
   if (req.originalUrl.includes('/socket.io/')) {
-    return;
+    return next();
   }
   // TODO: 需要正则匹配URL 例如user/123/userinfo
   const needAuthURL = [
