@@ -84,7 +84,7 @@ class Poem {
     // eslint-disable-next-line no-restricted-syntax
     for (const item of dir) {
       if (item.includes(authorId)) {
-        src = `${baseImageUrl}/${item}`;
+        src = `https://api.rqcao.com/image/${item}`;
         break;
       }
     }
