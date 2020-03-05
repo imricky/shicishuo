@@ -224,6 +224,7 @@ module.exports = {
   faceApiSecretKey: 'xxx', // face++ Secret key
   elasticUrl: 'http://localhost:9200', // ElasticSearch
   neteaseUrl: 'http://localhost:5000', // Service of Netease cloud music，I deploy on port 5000.
+  baseImageUrl: 'http://localhost:3000/image/', // static image 
 };
 ```
 

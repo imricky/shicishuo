@@ -224,6 +224,7 @@ module.exports = {
   faceApiSecretKey: 'xxx', // face++ 的私有秘钥
   elasticUrl: 'http://localhost:9200', // ElasticSearch
   neteaseUrl: 'http://localhost:5000', // 网易云音乐的服务，我部署在5000端口
+  baseImageUrl: 'http://localhost:3000/image/', // 首页的诗人头像存放目录
 };
 ```
 
