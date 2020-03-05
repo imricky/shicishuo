@@ -5,6 +5,7 @@ const fsPromises = require('fs').promises;
 const { AllPoets, DailyPoems, MingjuPoets } = require('../models/poemsModel');
 const { jiebaSeparateVerse, compare } = require('../utils/tools');
 const { logger } = require('../utils/logger');
+const { baseImageUrl } = require('../config/jwtSecret');
 
 
 class Poem {
@@ -76,7 +77,6 @@ class Poem {
     // 从每日名句里找到诗人的头像
     const authorId = dailyParagraph[0].poetId;
     let src = 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg';
-    const baseImageUrl = 'http://localhost:3000/image/';
     // 读image里的文件，要是没有,就默认
     // app.use(express.static(path.join(__dirname, 'public')));
     const filePath = path.resolve(__dirname, '../public/image');
