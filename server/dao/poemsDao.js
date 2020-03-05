@@ -1,6 +1,6 @@
 const moment = require('moment');
 const _ = require('lodash');
-const { AllPoets, DailyPoems } = require('../models/poemsModel');
+const { AllPoets, DailyPoems, MingjuPoets } = require('../models/poemsModel');
 const { jiebaSeparateVerse, compare } = require('../utils/tools');
 const { logger } = require('../utils/logger');
 
@@ -65,11 +65,35 @@ class Poem {
       }
     }
 
+    // 生成每日名句
+    const dailyParagraph = await MingjuPoets.aggregate([
+      { $match: { poetName: { $exists: true } } },
+      { $sample: { size: 1 } },
+    ]);
+
     // 向每日一诗中存入得到的诗词
+    // eslint-disable-next-line prefer-destructuring
+    res[0].dailyParagraph = dailyParagraph[0];
     const insertDailyPoem = await new DailyPoems(res[0]).save();
     logger.info(insertDailyPoem);
     return res;
   }
+
+  /*
+   *  @author: imricky(github.com/imricky)
+   *  @time: 2020/3/5 11:23 上午
+   *  @function: 获取每日名句
+   *  @param:
+   *  @return:
+  */
+  static async generateDailyParagraph() {
+    const res = await MingjuPoets.aggregate([
+      { $match: { poetName: { $exists: true } } },
+      { $sample: { size: 1 } },
+    ]);
+    return res;
+  }
+
 
   /*
    *  author: imricky

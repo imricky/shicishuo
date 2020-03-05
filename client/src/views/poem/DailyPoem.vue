@@ -36,7 +36,7 @@
     </el-aside>
     <el-main class="main">
       <PoemCard :poemCardData="poemCardData"/>
-      <ParagraphCard />
+      <ParagraphCard :paragraphCardData="paragraphCardData"/>
     </el-main>
   </el-container>
   </div>
@@ -64,6 +64,7 @@ export default {
   data() {
     return {
       poemCardData: {},
+      paragraphCardData: {},
       historyDailyPoemData: [],
     };
   },
@@ -99,6 +100,7 @@ export default {
     this.getDailyPoem().then((res) => {
       // eslint-disable-next-line prefer-destructuring
       this.poemCardData = res.data.data[0];
+      this.paragraphCardData = res.data.data[0].dailyParagraph;
       loading.close();
     });
     this.getHistoryDailyPoem().then((res) => {
@@ -126,6 +128,7 @@ export default {
     /*background-color: #E9EEF3;*/
     /*color: #333;*/
     margin: 0 20px;
+    margin-top: -30px;
     display: flex;
     justify-content: flex-start;
     flex-direction: column;

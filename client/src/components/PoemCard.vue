@@ -11,7 +11,7 @@
         <p v-for="o in poemCardData.paragraphs" :key="o" class="text item">
           {{ o }}
         </p>
-        <el-divider></el-divider>
+<!--        <el-divider></el-divider>-->
         <div class="tags-and-button">
           <div>
       <span class="tag" v-for="i in poemCardData.tags" :key="i">
@@ -76,12 +76,12 @@ export default {
     justify-content: center;
     align-items: center;
     max-width: 680px;
-    min-height: 320px;
+    min-height: 300px;
   }
   .box-card {
     /*TODO: 媒体查询，适配不同分辨率*/
     max-width: 680px;
-    min-height: 320px;
+    min-height: 300px;
     /*是这一行导致了移动端css不出来*/
     min-width: 550px;
   }
@@ -95,6 +95,7 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-top: 30px;
     /*margin-bottom: 5px;*/
     .tag{
       float: left;
@@ -152,7 +153,7 @@ export default {
     }
     .box-card {
       max-width: 340px;
-      min-height: 320px;
+      min-height: 300px;
       min-width: 320px;
     }
     .tags-and-button-mobile{

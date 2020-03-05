@@ -26,6 +26,29 @@ router.get('/getDailyPoem', async (req, res, next) => {
 });
 
 /*
+ *  @author: imricky(github.com/imricky)
+ *  @time: 2020/3/5 11:27 上午
+ *  @function: 获取每日名句
+ *  @param:
+ *  @return:
+*/
+router.get('/getDailyParagraph', async (req, res, next) => {
+  try {
+    const data = await Poem.generateDailyParagraph();
+    res.json({
+      data,
+      code: 200,
+    });
+  } catch (e) {
+    res.json({
+      success: false,
+      errorMessage: e.stack,
+      code: 500,
+    });
+  }
+});
+
+/*
  *  author: imricky
  *  time: 2019/12/2 8:00 下午
  *  function: 获取历史每日一诗推荐表，分页

@@ -13,12 +13,13 @@
       <div class="paragraph-info">
         <div class="one-paragraph">
 <!--          TODO: 诗词移动端自适应，PC端是一行，移动端两行-->
-          宝剑锋从磨，梅花香自苦
+          {{paragraphCardData.content}}
+<!--          宝剑锋从磨，梅花香自苦-->
 <!--          宝剑锋从磨砺出，梅花香自苦寒来-->
         </div>
         <div class="other">
-          <span class="author">—— 杜甫</span>
-          <span class="title">《望岳》</span>
+          <span class="author">—— {{paragraphCardData.poetName}}</span>
+          <span class="title">《{{paragraphCardData.poetryName}}》</span>
         </div>
       </div>
     </div>
@@ -29,6 +30,9 @@
 <script>
 export default {
   name: 'ParagraphCard',
+  props: {
+    paragraphCardData: Object,
+  },
   data() {
     return {};
   },
