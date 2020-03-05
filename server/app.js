@@ -4,7 +4,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
-const history = require('connect-history-api-fallback');
+// const history = require('connect-history-api-fallback');
 
 const app = express();
 // face++前端传图片过来的时候，需要加上这三行，不然会请求体太大了
@@ -63,7 +63,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(history());
+// 该死的这个，用了直接404
+// app.use(history());
 
 // 后端添加token校验
 app.use(checkToken);
@@ -80,7 +81,7 @@ app.use((req, res, next) => {
 });
 
 // error handler
-app.use((err, req, res) => {
+app.use((err, req, res, next) => {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
