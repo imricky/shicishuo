@@ -99,7 +99,7 @@ export default {
     forget(e) {
       this.$message({
         message: '敬请期待',
-        type: 'info',
+        type: 'success',
       });
     },
   },
