@@ -283,7 +283,19 @@ https://binaryify.github.io/NeteaseCloudMusicApi/#/
 ```
 
 
+## TODO:
+- [ ] 找回密码
+- [ ] 个人设置页面，重置密码，设置个性签名和头像
+- [ ] 诗词注释功能
+- [ ] 诗词可视化
+- [ ] 移除收藏
+- [ ] 我的创作列表
+- [ ] 创作中心
+- [ ] 创作点赞按钮和统计
+
+
 ## Thanks
+- [chinese-poetry](https://github.com/chinese-poetry/chinese-poetry)
 - [Vue](https://cn.vuejs.org/)
 - [MongoDB](https://www.mongodb.com/cn)
 - [Element](https://element.eleme.cn/#/zh-CN)
