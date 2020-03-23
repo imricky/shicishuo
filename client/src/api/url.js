@@ -24,6 +24,8 @@ export const Url = {
   getUserInfoApi: `${baseURL}/users/getUserInfo`, // 获取当前用户的信息
   updateUserInfoApi: `${baseURL}/users/updateUserInfo`, // 更新用户信息
   collectApi: `${baseURL}/users/collect`, // 用户收藏
+  removeCollectOneApi: `${baseURL}/users/removeCollectOne`, // 移除用户收藏（一首）
+  removeCollectAllApi: `${baseURL}/users/removeCollectAll`, // 移除用户收藏（全部）
 
 
   // 公共接口

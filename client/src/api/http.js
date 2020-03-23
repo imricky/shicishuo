@@ -87,6 +87,14 @@ class Http {
     return post(Url.collectApi, { userid, poemid });
   }
 
+  removeCollectOne(userid, poemid) {
+    return post(Url.removeCollectOneApi, { userid, poemid });
+  }
+
+  removeCollectAll(userid) {
+    return post(Url.removeCollectAllApi, { userid });
+  }
+
 
   // 公共方法
   // 搜索接口
