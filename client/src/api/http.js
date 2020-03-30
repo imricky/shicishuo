@@ -79,8 +79,8 @@ class Http {
     return post(Url.getUserInfoApi, { _id });
   }
 
-  updateUserInfo(_id, username) {
-    return post(Url.updateUserInfoApi, { _id, username });
+  updateUserInfo(userid, data) {
+    return post(Url.updateUserInfoApi, { userid, data });
   }
 
   collect(userid, poemid) {
