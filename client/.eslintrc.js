@@ -35,7 +35,8 @@ module.exports = {
     "no-underscore-dangle": 0, // 允许res._id这种形式的
     "consistent-return": "off",
     "array-callback-return": "off",
-    "import/no-unresolved": "off"
+    "import/no-unresolved": "off",
+    "no-undef":"off"
     // 'import/extensions': ['error', 'always', {
     //   'js': 'never',
     //   'vue': 'never'

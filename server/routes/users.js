@@ -26,6 +26,12 @@ router.post('/register', async (req, res, next) => {
         msg: '注册失败，密码长度最少为6位',
       });
     }
+    if (username === '') {
+      return res.json({
+        code: 401,
+        msg: '用户名为空',
+      });
+    }
     if (password !== repassword) {
       return res.json({
         code: 401,
